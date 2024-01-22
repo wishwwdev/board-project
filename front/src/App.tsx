@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 
 import Header from 'src/layouts/Header';
 import Footer from 'src/layouts/Footer';
@@ -25,6 +25,9 @@ import './App.css';
 
 
 function App() {
+
+  const path = useLocation();
+
   return (
   <>
     <Header />
@@ -40,8 +43,7 @@ function App() {
         <Route path='update/:boardNumber' element={<BoardUpdate />} />
       </Route>
     </Routes>
-    {/* TODO : auth 경로일 때는 안보이도록 작업  */}
-    <Footer />
+    { path.pathname !== '/auth' && (<Footer />) }
   </>
   );
 }
