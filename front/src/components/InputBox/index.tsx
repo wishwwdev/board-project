@@ -1,26 +1,37 @@
 import React from 'react'
 import './style.css';
+import { INPUT_ICON } from '..';
 
 interface Props {
-  lable: string;
+  label: string;
   type: string;
   placeholder: string;
-  helper: string;
-  icon?: string;
+  helper?: string;
+  icon?: INPUT_ICON;
+  error?: boolean;
 }
 
-export default function InputBox({ lable, type, placeholder, helper, icon }: Props) {
+export default function InputBox({ label, type, placeholder, helper, icon, error }: Props) {
 
   return (
     <div className='input-box'>
-      <div className='input-box-label'>{ lable }</div>
-      <div className='input-box-container input-box-container-error'>
+      <div className='input-box-label'>{ label }</div>
+      <div className={error ? 'input-box-container-error' : 'input-box-container'}>
         <input className='input' type={type} placeholder={placeholder}/>
-        <div className='input-box-icon'>
-          <div className='input-on-icon'></div>
-        </div>
+        {
+          icon && (
+            <div className='input-box-icon'>
+              {
+                icon === INPUT_ICON.ON ? (<div className='input-on-icon'></div>) :
+                icon === INPUT_ICON.OFF ? (<div className='input-off-icon'></div>) :
+                icon === INPUT_ICON.ARROW ? (<div className='input-right-arrow-icon'></div>) :
+                (<></>)
+              }
+            </div>
+          )
+        }
       </div>
-      <div className='input-box-helper'>{ helper }</div>
+      { helper && (<div className='input-box-helper'>{ helper }</div>) }
     </div>
   )
 }

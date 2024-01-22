@@ -7,16 +7,12 @@ import Authentication from 'src/views/Authentication';
 import Main from 'src/views/Main';
 import Search from 'src/views/Search';
 import MyPage from 'src/views/MyPage';
-import BoardDetil from 'src/views/Board/Detail';
+import BoardDetail from 'src/views/Board/Detail';
 import BoardWrite from 'src/views/Board/Write';
 import BoardUpdate from 'src/views/Board/Update';
 
 
 import './App.css';
-import BoardListItem from './components/BoardListItem';
-import Top3ListItem from './components/Top3ListItem';
-import CommentListItem from './components/CommentListItem';
-import InputBox from './components/InputBox';
 
 // 메인화면          - path: '/',                         / component : <Main />
 // 로그인 / 회원가입 - path: '/auth'                      / component : <Authentication />
@@ -31,7 +27,6 @@ import InputBox from './components/InputBox';
 function App() {
   return (
   <>
-    <InputBox lable='주소 *' type='text' placeholder='우편번호 찾기' helper='우편번호를 선택해주세요.'/>
     <Header />
     <Routes>
       <Route path='/' element={<Main />} />
@@ -40,7 +35,7 @@ function App() {
       <Route path='/my-page' element={<MyPage />} />
     
       <Route path='/board'>
-        <Route path='detail/:boardNumber' element={<BoardDetil />} />
+        <Route path='detail/:boardNumber' element={<BoardDetail />} />
         <Route path='write' element={<BoardWrite />} />
         <Route path='update/:boardNumber' element={<BoardUpdate />} />
       </Route>
