@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import './style.css';
 import InputBox from 'src/components/InputBox';
 import { INPUT_ICON } from 'src/components';
+import { error } from 'console';
 
 export default function Authentication() {
 
@@ -11,6 +12,13 @@ export default function Authentication() {
   // 지금은 함수 내부에 컴포넌트를 선언했기 때문에 매개변수를 받지 않고 사용가능
   // 컴포넌트를 외부에서 선언하면 Authentication(props)식으로 컴포넌트를 매개변수로 줘야 사용가능
   const SignInCard = () => {
+
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [error, setError] = useState<boolean>(false);
+
+    const onPasswordIconClickHandler = () => {
+      setShowPassword(!showPassword);
+    }
 
     const onSignUpClickHandler = () => {
       setView('sign_up');
@@ -23,11 +31,16 @@ export default function Authentication() {
             <div className='auth-card-top-text'>로그인</div>
           </div>
           <div className='auth-card-top-input-container'>
-            <InputBox label='이메일 주소' type='text' placeholder='이메일 주소를 입력해주세요.' />
-            <InputBox label='비밀전호' type='password' placeholder='비밀번호를 입력해주세요.' icon={INPUT_ICON.OFF} />
+            <InputBox label='이메일 주소' type='text' placeholder='이메일 주소를 입력해주세요.' error={error}/>
+            <InputBox label='비밀전호' type={showPassword ? 'text' : 'password'} placeholder='비밀번호를 입력해주세요.' icon={showPassword ? INPUT_ICON.ON : INPUT_ICON.OFF} buttonHandler={onPasswordIconClickHandler} error={error}/>
           </div>
         </div>
         <div className='auth-card-bottom'>
+          { error && (
+            <div className='auth-card-bottom-error-message'>
+              {'이메일 주소 또는 비밀번호를 잘못 입력했습니다. \n입력하신 내용을 다시 확인해주세요.'}
+            </div>
+          )}
           <div className='auth-card-bottom-button'>로그인</div>
           <div className='auth-card-bottom-text'>
             신규 사용자이신가요? <span className='auth-emphasis' onClick={onSignUpClickHandler}>회원가입</span>
@@ -42,6 +55,15 @@ export default function Authentication() {
     const [page, setPage] = useState<1 | 2>(1);
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [showPasswordCheck, setShowPasswordCheck] = useState<boolean>(false);
+
+    const [emailPatternError, setEmailPatternError] = useState<boolean>(false);
+    const [emailDuplicationError, setEmailDuplicationError] = useState<boolean>(false);
+    const [passwordError, setPasswordError] = useState<boolean>(false);
+    const [passwordCheckError, setPasswordCheckError] = useState<boolean>(false);
+    
+    const [nicknameError, setNicknameError] = useState<boolean>(false);
+    const [telNumberError, setTelNumberError] = useState<boolean>(false);
+    const [addressError, setAddressError] = useState<boolean>(false);
 
     const onPasswordIconClickHandler = () => {
       setShowPassword(!showPassword);
@@ -70,15 +92,15 @@ export default function Authentication() {
           <div className='auth-card-top-input-container'>
             {page === 1 ? (
               <>  
-                <InputBox label='이메일 주소*' type='text' placeholder='이메일 주소를 입력해주세요.'/>
-                <InputBox label='비밀번호*' type={showPassword ? 'text' : 'password'} placeholder='비밀번호를 입력해주세요.' icon={showPassword ? INPUT_ICON.ON : INPUT_ICON.OFF} buttonHandler={onPasswordIconClickHandler}/>
-                <InputBox label='비밀번호 확인*' type={showPasswordCheck ? 'text' : 'password'}  placeholder='비밀번호를 다시 입력해주세요.' icon={showPasswordCheck ? INPUT_ICON.ON : INPUT_ICON.OFF} buttonHandler={onPasswordCheckIconClickHandler}/>
+                <InputBox label='이메일 주소*' type='text' placeholder='이메일 주소를 입력해주세요.' error={emailDuplicationError || emailPatternError} helper={emailPatternError ? '이메일 주소 포맷이 맞지않습니다.' : emailDuplicationError ? '중복되는 이메일 주소입니다.' : '' }/>
+                <InputBox label='비밀번호*' type={showPassword ? 'text' : 'password'} placeholder='비밀번호를 입력해주세요.' icon={showPassword ? INPUT_ICON.ON : INPUT_ICON.OFF} buttonHandler={onPasswordIconClickHandler} error={passwordError} helper={passwordError ? '비밀번호는 8자 이상 입력해주세요.' : ''}/>
+                <InputBox label='비밀번호 확인*' type={showPasswordCheck ? 'text' : 'password'}  placeholder='비밀번호를 다시 입력해주세요.' icon={showPasswordCheck ? INPUT_ICON.ON : INPUT_ICON.OFF} buttonHandler={onPasswordCheckIconClickHandler} error={passwordCheckError} helper={passwordCheckError ? '비밀번호가 일치하지않습니다.' : ''}/>
               </>
             ) : (
               <>
-                <InputBox label='닉네임*' type='text' placeholder='닉네임을 입력해주세요.'/>
-                <InputBox label='핸드폰 번호*' type='text' placeholder='핸드폰 번호를 입력해주세요.'/>
-                <InputBox label='주소*' type='text' placeholder='우편번호 찾기' icon={INPUT_ICON.ARROW}/>
+                <InputBox label='닉네임*' type='text' placeholder='닉네임을 입력해주세요.' error={nicknameError} helper={nicknameError ? '닉네임을 입력해주세요.' : ''}/>
+                <InputBox label='핸드폰 번호*' type='text' placeholder='핸드폰 번호를 입력해주세요.' error={telNumberError} helper={telNumberError ? '숫자만 입력해주세요' : ''}/>
+                <InputBox label='주소*' type='text' placeholder='우편번호 찾기' icon={INPUT_ICON.ARROW} error={addressError} helper={addressError ? '우편번호를 선택해주세요.' : ''}/>
                 <InputBox label='상세 주소' type='text' placeholder='상세 주소를 입력해주세요.'/>
               </>
             )}
