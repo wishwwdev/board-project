@@ -6,19 +6,25 @@ interface Props {
   label: string;
   type: string;
   placeholder: string;
+  value: string;
   helper?: string;
   icon?: INPUT_ICON;
   error?: boolean;
+  setValue:React.Dispatch<React.SetStateAction<string>>
   buttonHandler?: () => void;
 }
 
-export default function InputBox({ label, type, placeholder, helper, icon, error, buttonHandler }: Props) {
+export default function InputBox({ label, type, placeholder, value, helper, icon, error, setValue, buttonHandler }: Props) {
+
+  const onChangeHandler = (value: string) =>  {
+    setValue(value);
+  }
 
   return (
     <div className='input-box'>
       <div className='input-box-label'>{ label }</div>
       <div className={error ? 'input-box-container-error' : 'input-box-container'}>
-        <input className='input' type={type} placeholder={placeholder}/>
+        <input className='input' type={type} placeholder={placeholder} value={value} onChange={(event) => onChangeHandler(event.target.value)}/>
         {
           icon && (
             <div className='input-box-icon' onClick={buttonHandler}>
