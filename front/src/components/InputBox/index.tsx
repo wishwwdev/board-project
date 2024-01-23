@@ -1,6 +1,6 @@
 import React from 'react'
 import './style.css';
-import { INPUT_ICON } from '..';
+import { INPUT_ICON } from 'src/constants';
 
 interface Props {
   label: string;
