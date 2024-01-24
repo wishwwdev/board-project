@@ -1,5 +1,6 @@
 .board-list-item-box {
-  padding: 24px;
+  margin-bottom: 22px;
+  padding: 24px;    
   background-color: #ffffff;
 
   display: flex;
@@ -7,7 +8,7 @@
 
 .board-list-item-box:hover {
   cursor: pointer;
-  background-color: rgba(240, 240, 240, 0.3);
+  background-color: rgba(0, 0, 0, 0.03);
 }
 
 .board-list-item-left {
