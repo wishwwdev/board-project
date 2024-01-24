@@ -5,6 +5,8 @@ import { CurrentListResponseDto, Top3ListResponseDto } from 'src/interfaces/resp
 import { currentBoardListMock, popularWordListMock, top3ListMock } from 'src/mocks';
 import BoardListItem from 'src/components/BoardListItem';
 import { useNavigate } from 'react-router-dom';
+import { COUNT_BY_PAGE, COUNT_BY_SECTION, PAGE_BY_SECTION } from 'src/constants';
+import { getPagination } from 'src/utils';
 
 export default function Main() {
 
@@ -44,6 +46,10 @@ export default function Main() {
     const [totalPage, setTotalPage] = useState<number[]>([]);
     const [totalSection, setTotalSection] = useState<number>(1);
 
+    const [totalPageCount, setTotalPageCount] = useState<number>(0);
+    const [minPage, setminPage] = useState<number>(0);
+    const [maxPage, setMaxPage] = useState<number>(0);
+
     const onPupularClickHandler = (word: string) => {
       navigator(`/search/${word}`);
     }
@@ -54,26 +60,48 @@ export default function Main() {
 
     const onPreviousClickHandler = () => {
       // 한 페이지씩 이동
-      if (currentPage != 1) setCurrentPage(currentPage - 1);
+      // if (currentPage != 1) setCurrentPage(currentPage - 1);
+
+      // 섹션 이동
+      // if (currentSection !== 1) setCurrentSection(currentSection - 1);
+
+      // 한 페이지씩 이동 + 섹션 이동
+      if (currentPage == 1) return; 
+      if (currentPage == minPage) setCurrentSection(currentSection - 1);
+      setCurrentPage(currentPage - 1);
     }
 
     const onNextClickHandler = () => {
       // 한 페이지씩 이동
-      if (currentPage != totalPage.length)setCurrentPage(currentPage + 1);
+      // if (currentPage != totalPage.length)setCurrentPage(currentPage + 1);
+
+      // 섹션 이동
+      // if (currentSection !== totalSection) setCurrentSection(currentSection + 1);
+
+      // 한 페이지씩 이동 + 섹션 이동
+      if (currentPage == totalPageCount) return; 
+      if (currentPage == maxPage) setCurrentSection(currentSection + 1);
+      setCurrentPage(currentPage + 1);
     }
 
     useEffect(() => {
 
       const boardCount = 72;
 
-      if (!currentList.length) setCurrentList(currentBoardListMock);
-      if (!totalPage.length) {
-        const pageList = [];
-        for (let page = 1; page <= 10; page++) pageList.push(page);
-        setTotalPage(pageList);
-      }
+      const {section, maxPage, minPage, totalPageCount } = getPagination(boardCount, currentSection);
+      setTotalSection(section);
+      setminPage(minPage);
+      setMaxPage(maxPage);
+      setTotalPageCount(totalPageCount);
 
-    }, []);
+      if (!currentList.length) setCurrentList(currentBoardListMock);
+     
+      const pageList = [];
+      for (let page = minPage; page <= maxPage; page++) pageList.push(page);
+      setTotalPage(pageList);
+      
+
+    }, [currentSection]);
 
     useEffect(() => {
       if (!popularWordList.length) setpopulrWordList(popularWordListMock);
