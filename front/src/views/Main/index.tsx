@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react'
 import './style.css';
 import Top3ListItem from 'src/components/Top3ListItem';
 import { CurrentListResponseDto, Top3ListResponseDto } from 'src/interfaces/response';
-import { currentBoardListMock, top3ListMock } from 'src/mocks';
+import { currentBoardListMock, popularWordListMock, top3ListMock } from 'src/mocks';
 import BoardListItem from 'src/components/BoardListItem';
+import { useNavigate } from 'react-router-dom';
 
 export default function Main() {
+
+  const navigator = useNavigate();
 
   const MainTop = () => {
 
@@ -34,15 +37,28 @@ export default function Main() {
   const MainBottom = () => {
 
     const [currentList, setCurrentList] = useState<CurrentListResponseDto[]>([]);
-    // const [popularWordList, setpopulrWordList] = useState<string[]>([]);
+    const [popularWordList, setpopulrWordList] = useState<string[]>([]);
+
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [totalPage, setTotalPage] = useState<number[]>([]);
+
+    const onPupularClickHandler = (word: string) => {
+      navigator(`/search/${word}`);
+    }
 
     useEffect(() => {
       if (!currentList.length) setCurrentList(currentBoardListMock);
+      if (!totalPage.length) {
+        const pageList = [];
+        for (let page = 1; page <= 10; page++) pageList.push(page);
+        setTotalPage(pageList);
+      }
+
     }, []);
 
-    // useEffect(() => {
-    //   if (!popularWordList.length) setCurrentList(popularWordList);
-    // }, []);
+    useEffect(() => {
+      if (!popularWordList.length) setpopulrWordList(popularWordListMock);
+    }, []);
     
     return (
       <div className='main-bottom'>
@@ -55,11 +71,16 @@ export default function Main() {
             <div className='main-bottom-popular-card'>
               <div className='main-bottom-popular-text'>인기 검색어</div>
               <div className='main-bottom-popular-list'>
-            </div>
+                { popularWordList.map((item) => (<span className='popular-chip' onClick={() => onPupularClickHandler(item)}>{item}</span>)) }
+              </div>
             </div>
           </div>
         </div>
-        <div className='main-bottom-pagination'></div>
+        <div className='main-bottom-pagination'>
+          <div className='pagination-left'>{'<이전'}</div>
+          { totalPage.map((page) => (<div className='pagination-page'>{page}</div>)) }
+          <div className='pagination-right'>{' 다음 >'}</div>
+        </div>
       </div>
     )
   }
