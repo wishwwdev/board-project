@@ -70,7 +70,7 @@ export default function Authentication() {
 
     const open =useDaumPostcodePopup();
 
-    const [page, setPage] = useState<1 | 2>(2);
+    const [page, setPage] = useState<1 | 2>(1);
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [showPasswordCheck, setShowPasswordCheck] = useState<boolean>(false);
 
