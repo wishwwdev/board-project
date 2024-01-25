@@ -76,3 +76,47 @@
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.05);
 }
+
+.search-pagination {
+  margin-top: 58px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination-text {
+  margin: 0 10px;
+
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 19.6px;
+  align-items: center;
+}
+
+.pagination-page {
+  margin: 0 10px;
+
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 19.6px;
+  align-items: center;
+}
+
+.pagination-page:hover {
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.pagination-page-active {
+  margin: 0 10px;
+
+  color: black;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 19.6px;
+  align-items: center;
+}
+
