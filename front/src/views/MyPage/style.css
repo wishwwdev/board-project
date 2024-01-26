@@ -4,6 +4,7 @@
 
 .my-page-top-container {
   display: flex;
+  align-items: center;
 }
 
 .my-page-top-profile-box {
@@ -25,7 +26,7 @@
 }
 
 .my-page-top-info-box {
-  margin-bottom: 25px;
+  margin-left: 25px;
 }
 
 .my-page-info-nickname-container {
