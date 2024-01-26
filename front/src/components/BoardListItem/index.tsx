@@ -2,10 +2,10 @@ import React from 'react'
 import './style.css';
 import { boardListItemMock } from 'src/mocks';
 import { useNavigate } from 'react-router-dom';
-import { CurrentListResponseDto, SearchListResponseDto } from 'src/interfaces/response';
+import { CurrentListResponseDto, MyPageBoardListResponseDto, SearchListResponseDto } from 'src/interfaces/response';
 
 interface Props {
-  item: CurrentListResponseDto | SearchListResponseDto;
+  item: CurrentListResponseDto | SearchListResponseDto | MyPageBoardListResponseDto;
 }
 
 export default function BoardListItem({item}: Props) {

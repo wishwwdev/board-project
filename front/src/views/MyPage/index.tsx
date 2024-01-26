@@ -1,10 +1,14 @@
-import { ChangeEvent, useRef, useState } from 'react'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import './style.css';
 import DefaultProfile from './asset/my_page_profile_default.png'
 import Pagination from 'src/components/Pagination';
 import { usePagination } from 'src/hooks';
 import { MyPageBoardListResponseDto } from 'src/interfaces/response';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
+import { myPageBoardListMock } from 'src/mocks';
+import { COUNT_BY_PAGE } from 'src/constants';
+import BoardListItem from 'src/components/BoardListItem';
+import { useNavigate } from 'react-router-dom';
 
 //            component            //
 // description: 마이페이지 화면 //
@@ -90,39 +94,76 @@ export default function MyPage() {
     const [myPageBoardList, setMyPageBoardList] = useState<MyPageBoardListResponseDto[]>([]);
     // description: 전체 게시물 갯수 상태 //
     const [boardCount, setBoardCount] = useState<number>(0);
+    // description: 현재 페이지에서 보여줄 게시물 리스트 상태 //
+    const [pageBoardList, setPageBoardList] = useState<MyPageBoardListResponseDto[]>([]);
     // description: 페이지네이션과 관련된 상태 및 함수 //
-    const {totalPage, currentPage, onPreviousClickHandler, onNextClickHandler, onPageClickHandler} = usePagination();
+    const {totalPage, currentPage, currentSection, onPreviousClickHandler, onNextClickHandler, onPageClickHandler, changeSection} = usePagination();
 
     //            function            //
+    // description: 페이지 이동을 위한 네비게이트 함수 //
+    const navigator = useNavigate();
+    // description: 현재 페이지의 게시물 리스트 분류 함수 //
+    const getPageBoardList = (boardCount: number) => {
+      const startIndex = COUNT_BY_PAGE * (currentPage - 1) ;
+      const lastIndex =  boardCount > COUNT_BY_PAGE * currentPage ?
+        COUNT_BY_PAGE * currentPage : boardCount ;
+      const pageBoardList = myPageBoardListMock.slice(startIndex, lastIndex);
+
+      setPageBoardList(pageBoardList);
+    }
 
     //            event handler            //
+    const onWriteButtonClickHandler = () => {
+      navigator('/board/write');
+    }
 
     //            effect            //
+    // description: 화면 첫 로드시 게시물 리스트 불러오기 //
+    useEffect(() => {
+      setMyPageBoardList(myPageBoardListMock);
+      setBoardCount(0);
+    }, []);
+
+    // description: 현재 페이지가 바뀔때 마다 마이페이지 게시물 분류하기 //
+    useEffect(() => {
+      getPageBoardList(myPageBoardListMock.length);
+    }, [currentPage])
+
+    // description: 현재 섹션이 바뀔때 마다 페이지 리스트 변경 //
+    useEffect(() => {
+      changeSection(myPageBoardListMock.length);
+    }, [currentSection])
 
     //            render            //
     return (
       <div className='my-page-bottom'>
         <div className='my-page-bottom-text'>
-          내 게시물 <span className='my-page-bottom-text-emhasis'>10</span>
+          내 게시물 <span className='my-page-bottom-text-emhasis'>{boardCount}</span>
         </div>
         <div className='my-page-bottom-container'>
-          <div className='my-page-bottom-board-list'>
-          
-          </div>
+          { boardCount ? (
+            <div className='my-page-bottom-board-list'>
+            { pageBoardList.map((item) => (<BoardListItem item={item} />))}
+            </div>
+          ) : (
+            <div className='my-page-bottom-board-list-nothing'>게시물이 없습니다.</div>
+          ) }
           <div className='my-page-bottom-write-box'>
-            <div className='my-page-bottom-write-box-button'>
+            <div className='my-page-bottom-write-box-button' onClick={onWriteButtonClickHandler}>
               <div className='my-page-edit-icon'></div>
               <div className='my-page-bottom-write-box-button-text'>글쓰기</div>
             </div>
           </div>
         </div>
-        <Pagination
-          totalPage={totalPage}
-          currentPage={currentPage}
-          onPreviousClickHandler={onPreviousClickHandler}
-          onNextClickHandler={onNextClickHandler}
-          onPageClickHandler={onPageClickHandler}
-        />
+        { boardCount !== 0 && (
+          <Pagination
+            totalPage={totalPage}
+            currentPage={currentPage}
+            onPreviousClickHandler={onPreviousClickHandler}
+            onNextClickHandler={onNextClickHandler}
+            onPageClickHandler={onPageClickHandler}
+          />
+        ) }
       </div>
     );
   }

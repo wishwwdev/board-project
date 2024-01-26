@@ -121,16 +121,29 @@
   flex: 8;
 }
 
+.my-page-bottom-board-list-nothing {
+  flex: 8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: rgba(0, 0, 0, 0.4);
+
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 140%; /* 33.6px */
+}
+
 .my-page-bottom-write-box {
   margin-left: 24px;
-
-  background-color: white;
 
   flex: 4;
 }
 
 .my-page-bottom-write-box-button {
   height: 76px;
+
+  background-color: white;
 
   display: flex;
   align-items: center;
