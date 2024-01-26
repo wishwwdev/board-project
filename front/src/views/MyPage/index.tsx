@@ -1,6 +1,10 @@
 import { ChangeEvent, useRef, useState } from 'react'
 import './style.css';
 import DefaultProfile from './asset/my_page_profile_default.png'
+import Pagination from 'src/components/Pagination';
+import { usePagination } from 'src/hooks';
+import { MyPageBoardListResponseDto } from 'src/interfaces/response';
+import { useDaumPostcodePopup } from 'react-daum-postcode';
 
 //            component            //
 // description: 마이페이지 화면 //
@@ -23,10 +27,12 @@ export default function MyPage() {
     const [profileImagaUrl, setProfileImageUrl] = useState<string>(DefaultProfile);
     // description: 사용자 닉네입 상태 //
     const [nickname, setNickname] = useState<string>('나는 디벨림');
+    // description: 닉네임 변경 버튼 상태 //
+    const [nicknameChange, setNicknameChange] = useState<boolean>(false);
 
     //            function            //
 
-    //            event handler            //\
+    //            event handler            //
     // description: 프로필 이미지 선택시 파일 인풋창 열림 이벤트 //
     const onProfileClickHandler = () => {
       fileInputRef.current?.click();
@@ -37,6 +43,14 @@ export default function MyPage() {
       // description: 입력받은 이미지 파일을 URL 형태로 변경해주는 구문 //
       const imageUrl = URL.createObjectURL(event.target.files[0]);
       setProfileImageUrl(imageUrl);
+    }
+    // description: 닉네임 변경 //
+    const onNicknameChangeHandler = (nickname: string) => {
+      setNickname(nickname);
+    }
+    // description: 닉네임 변경 버튼 클릭 이벤트 //
+    const onNicknameButtonClickHandler = () => {
+      setNicknameChange(!nicknameChange)
     }
 
     //            effect            //
@@ -51,9 +65,12 @@ export default function MyPage() {
           </div>
           <div className='my-page-top-info-box'>
             <div className='my-page-info-nickname-container'>
-              <div className='my-page-info-nickname'>{nickname}</div>
-              <input type='text' value={nickname} />
-              <div className='my-page-info-nickname-button'>
+              { nicknameChange ? (
+                <input className='my-page-info-nickname-input' type='text' value={nickname} onChange={(event) => onNicknameChangeHandler(event.target.value)} size={nickname.length * 2} />
+              ) : (
+                <div className='my-page-info-nickname'>{nickname}</div>
+              ) }
+              <div className='my-page-info-nickname-button' onClick={onNicknameButtonClickHandler}>
                 <div className='my-page-edit-icon'></div>
               </div>
             </div>
@@ -65,10 +82,16 @@ export default function MyPage() {
   }
 
   //            component            //
-  // description: 마이페이지 상단 //
+  // description: 마이페이지 하단 //
   const MyPageBottom = () => {
 
     //            state            //
+    // description: 전체 게시물 리스트 상태 //
+    const [myPageBoardList, setMyPageBoardList] = useState<MyPageBoardListResponseDto[]>([]);
+    // description: 전체 게시물 갯수 상태 //
+    const [boardCount, setBoardCount] = useState<number>(0);
+    // description: 페이지네이션과 관련된 상태 및 함수 //
+    const {totalPage, currentPage, onPreviousClickHandler, onNextClickHandler, onPageClickHandler} = usePagination();
 
     //            function            //
 
@@ -78,7 +101,29 @@ export default function MyPage() {
 
     //            render            //
     return (
-      <div className='my-page-bottom'></div>
+      <div className='my-page-bottom'>
+        <div className='my-page-bottom-text'>
+          내 게시물 <span className='my-page-bottom-text-emhasis'>10</span>
+        </div>
+        <div className='my-page-bottom-container'>
+          <div className='my-page-bottom-board-list'>
+          
+          </div>
+          <div className='my-page-bottom-write-box'>
+            <div className='my-page-bottom-write-box-button'>
+              <div className='my-page-edit-icon'></div>
+              <div className='my-page-bottom-write-box-button-text'>글쓰기</div>
+            </div>
+          </div>
+        </div>
+        <Pagination
+          totalPage={totalPage}
+          currentPage={currentPage}
+          onPreviousClickHandler={onPreviousClickHandler}
+          onNextClickHandler={onNextClickHandler}
+          onPageClickHandler={onPageClickHandler}
+        />
+      </div>
     );
   }
 

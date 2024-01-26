@@ -47,6 +47,22 @@
   line-height: 140%; /* 33.6px */
 }
 
+.my-page-info-nickname-input {
+  margin-right: 10px;
+  padding: 0;
+
+  border: none;
+  background: none;
+  outline: none;
+
+  color: rgba(0, 0, 0, 0.70);
+  font-family: "Pretendard Variable";
+  font-size: 23px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%; /* 33.6px */
+}
+
 .my-page-info-nickname-button {
   border-radius: 24px;
 
@@ -77,3 +93,60 @@
   line-height: 140%; /* 22.4px */
 }
 
+.my-page-bottom {
+  padding: 34px 120px 46px;
+
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.my-page-bottom-text {
+  margin-bottom: 20px;
+
+  color: black;
+
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 140%; /* 33.6px */
+}
+
+.my-page-bottom-text-emhasis {
+  font-weight: 700;
+}
+
+.my-page-bottom-container {
+  display: flex;
+}
+
+.my-page-bottom-board-list {
+  flex: 8;
+}
+
+.my-page-bottom-write-box {
+  margin-left: 24px;
+
+  background-color: white;
+
+  flex: 4;
+}
+
+.my-page-bottom-write-box-button {
+  height: 76px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.my-page-bottom-write-box-button:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.my-page-bottom-write-box-button-text {
+  margin-left: 6px;
+
+  color: black;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 140%; /* 25.2px */
+}
