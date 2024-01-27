@@ -101,4 +101,21 @@
 
   top: 20px;
   right: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.board-write-image-delete-button:hover {
+  cursor: pointer;
+}
+
+.image-close-icon {
+  width: 21px;
+  height: 21px;
+
+  background-image: url(asset/close_square.png);
+  background-position: 50% 50%;
+  background-size: 100% 100%;
 }
