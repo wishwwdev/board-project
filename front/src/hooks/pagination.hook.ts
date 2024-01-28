@@ -56,8 +56,8 @@ const usePagination = () => {
 
   //            function            //
   // description: 현재 섹션이 변경될 때 호출할 함수 //
-  const changeSection = (boardCount: number) => {
-    const {section, maxPage, minPage, totalPageCount } = getPagination(boardCount, currentSection);
+  const changeSection = (boardCount: number, countByPage: number) => {
+    const {section, maxPage, minPage, totalPageCount } = getPagination(boardCount, currentSection, countByPage);
     
     setMaxPage(maxPage);
     setminPage(minPage);
