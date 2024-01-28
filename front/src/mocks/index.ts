@@ -325,3 +325,31 @@ export const boardDetailMock = {
     boardImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Haeundae_2008.png/375px-Haeundae_2008.png',
     boardNumber: 3,
 }
+
+export const likeListMock = [
+  {
+    likeUserProfileImage: 'https://cdn.eroun.net/news/photo/202309/37398_66688_2128.jpg',
+    likeUserNickName: '좋아요누른사람닉네임',
+    likeUserEmail: 'email@email.com'
+  },
+  {
+    likeUserProfileImage: 'https://cdn.eroun.net/news/photo/202309/37398_66688_2128.jpg',
+    likeUserNickName: '좋아요누른사람닉네임',
+    likeUserEmail: 'email@email.com'
+  },
+  {
+    likeUserProfileImage: 'https://cdn.eroun.net/news/photo/202309/37398_66688_2128.jpg',
+    likeUserNickName: '좋아요누른사람닉네임',
+    likeUserEmail: 'email@email.com'
+  },
+  {
+    likeUserProfileImage: 'https://cdn.eroun.net/news/photo/202309/37398_66688_2128.jpg',
+    likeUserNickName: '좋아요누른사람닉네임',
+    likeUserEmail: 'email@email.com'
+  },
+  {
+    likeUserProfileImage: 'https://cdn.eroun.net/news/photo/202309/37398_66688_2128.jpg',
+    likeUserNickName: '좋아요누른사람닉네임',
+    likeUserEmail: 'email@email.com'
+  }
+]

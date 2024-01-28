@@ -193,7 +193,7 @@
   background-color: rgba(0, 0, 0, 0.08);
 }
 
-.favorit-icon {
+.favorite-icon {
   width: 21px;
   height: 21px;
 
@@ -202,7 +202,7 @@
   background-size: 100% 100%;
 }
 
-.favorit-fill-icon {
+.favorite-fill-icon {
   width: 21px;
   height: 21px;
 
@@ -246,4 +246,58 @@
   background-image: url(asset/chat_light.png);
   background-position: 50% 50%;
   background-size: 100% 100%;
+}
+
+.like-list-box {
+  margin-top: 21px;
+  margin-bottom: 20px;
+  padding: 20px 83px 13px 20px;
+
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.like-list-title {
+  color: #000;
+
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 140%; /* 22.4px */  
+}
+
+.like-list-title-emphasis {
+  font-weight: 700;
+}
+
+.like-list-container {
+  margin-top: 20px;
+  
+  display: flex;
+}
+
+.like-list-item {
+  margin-right: 30px;
+  margin-bottom: 25px;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.like-user-profile {
+  margin-right: 8px;
+
+  width: 32px;
+  height: 32px;
+
+  border-radius: 32px;
+  background-position: 50% 50%;
+  background-size: 100% 100%;
+}
+
+.like-user-nickname {
+  color: rgba(0, 0, 0, 0.7);
+
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 140%; /* 22.4px */
 }
