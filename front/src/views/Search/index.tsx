@@ -79,7 +79,7 @@ export default function Search() {
         <div className='search-text'>에 대한 검색결과입니다.</div>
         <div className='search-text-emphasis'>{boardCount}</div>
       </div>
-      <div className='serach-container'>
+      <div className='search-container'>
         { boardCount ? (
           <div className='search-board-list'>
             { pageBoardList.map((item) => (<BoardListItem item={item} />)) }

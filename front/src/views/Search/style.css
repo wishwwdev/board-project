@@ -24,7 +24,8 @@
   line-height: 140%;
 }
 
-.serach-container {
+.search-container {
+  margin-bottom: 40px;
   margin-top: 20px;
 
   display: flex;

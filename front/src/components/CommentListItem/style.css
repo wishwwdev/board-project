@@ -1,4 +1,5 @@
 .comment-list-item-box {
+  display: inline-block;
   margin: 15px 0;
 }
 
