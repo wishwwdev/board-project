@@ -9,6 +9,7 @@ import Pagination from 'src/components/Pagination';
 import CommentListResponseDto from 'src/interfaces/response/comment-list.response.dto';
 import { usePagination } from 'src/hooks';
 import { COUNT_BY_PAGE_COMMENT, COUNT_BY_SECTION_COMMENT } from 'src/constants';
+import { useUserStore } from 'src/stores';
 
 //            component           //
 // description: 게시물 상세 화면 //
@@ -18,6 +19,8 @@ export default function BoardDetail() {
   const {boardNumber} = useParams();
   // description: //
   const { totalPage, currentPage, currentSection, onPreviousClickHandler, onNextClickHandler, onPageClickHandler, changeSection } = usePagination();
+  // description: 로그인 유저 정보 상태 //
+  const { user } = useUserStore();
   // description: 게시물 정보 상태 //
   const [board, setBoard] = useState<BoardDetailResponseDto | null >(null);
   // description: 게시물 좋아요 회원 리스트 상태 //
@@ -75,6 +78,10 @@ export default function BoardDetail() {
     }
 
     //            effect           //
+    // description: 게시물 번호 혹은 로그인 유저 정보가 변경되면 실행 //
+    useEffect(() => {
+      setviewMore(user?.email === board?.writerEamil);
+    }, [boardNumber, user]);
 
     //            render           //
     return (

@@ -9,13 +9,18 @@ import { myPageBoardListMock } from 'src/mocks';
 import { COUNT_BY_PAGE } from 'src/constants';
 import BoardListItem from 'src/components/BoardListItem';
 import { useNavigate } from 'react-router-dom';
+import { useUserStore } from 'src/stores';
 
 //            component            //
 // description: 마이페이지 화면 //
 export default function MyPage() {
   //            state            //
+  // description: 로그인한 사용자의 정보 상태 //
+  const { user } = useUserStore();
 
   //            function            //
+  // description: 화면 이동을 위한 네비게이트 함수 //
+  const navigator = useNavigate();
 
   //            event handler            //
 
@@ -64,21 +69,21 @@ export default function MyPage() {
       <div className='my-page-top'>
         <div className='my-page-top-container'>
           <div className='my-page-top-profile-box'>
-            <div className='my-page-top-profile' style={{ backgroundImage: `url(${profileImagaUrl})`}} onClick={onProfileClickHandler}></div>
+            <div className='my-page-top-profile' style={{ backgroundImage: `url(${user?.profileImage})`}} onClick={onProfileClickHandler}></div>
             <input type='file' style={{ display: 'none' }} ref={fileInputRef} accept='image/*' onChange={onImageInputChangeHandler}/>
           </div>
           <div className='my-page-top-info-box'>
             <div className='my-page-info-nickname-container'>
               { nicknameChange ? (
-                <input className='my-page-info-nickname-input' type='text' value={nickname} onChange={(event) => onNicknameChangeHandler(event.target.value)} size={nickname.length * 2} />
+                <input className='my-page-info-nickname-input' type='text' value={user?.nickname} onChange={(event) => onNicknameChangeHandler(event.target.value)} size={nickname.length * 2} />
               ) : (
-                <div className='my-page-info-nickname'>{nickname}</div>
+                <div className='my-page-info-nickname'>{user?.nickname}</div>
               ) }
               <div className='my-page-info-nickname-button' onClick={onNicknameButtonClickHandler}>
                 <div className='my-page-edit-icon'></div>
               </div>
             </div>
-            <div className='my-page-info-email'>{'email@email.com'}</div>
+            <div className='my-page-info-email'>{user?.email}</div>
           </div>
         </div>
       </div>
@@ -100,8 +105,6 @@ export default function MyPage() {
     const {totalPage, currentPage, currentSection, onPreviousClickHandler, onNextClickHandler, onPageClickHandler, changeSection} = usePagination();
 
     //            function            //
-    // description: 페이지 이동을 위한 네비게이트 함수 //
-    const navigator = useNavigate();
     // description: 현재 페이지의 게시물 리스트 분류 함수 //
     const getPageBoardList = (boardCount: number) => {
       const startIndex = COUNT_BY_PAGE * (currentPage - 1) ;
@@ -167,6 +170,10 @@ export default function MyPage() {
       </div>
     );
   }
+  //            effect            //
+  useEffect(() => {
+    if (!user) navigator('/auth');
+  }, [])
 
   //            render            //
   return (

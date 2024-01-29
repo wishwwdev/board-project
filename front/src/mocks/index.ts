@@ -1,4 +1,9 @@
-// 게시판 리스트 아이템 목(임시) 데이터 
+export const userMock = {
+  email: 'email@email.com',
+  nickname: '디블림',
+  profileImage: 'https://cdn.eroun.net/news/photo/202309/37398_66688_2128.jpg',
+}
+
 export const boardListItemMock = {
   writerProfileImage: 'https://cdn.eroun.net/news/photo/202309/37398_66688_2128.jpg',
   writerNickName: '안녕하세요나는디블림',
