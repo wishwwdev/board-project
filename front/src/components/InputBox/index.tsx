@@ -1,6 +1,6 @@
-import React from 'react'
-import './style.css';
+import { Dispatch, SetStateAction } from 'react'
 import { INPUT_ICON } from 'src/constants';
+import './style.css';
 
 interface Props {
   label: string;
@@ -10,16 +10,28 @@ interface Props {
   helper?: string;
   icon?: INPUT_ICON;
   error?: boolean;
-  setValue:React.Dispatch<React.SetStateAction<string>>
+  setValue:Dispatch<SetStateAction<string>>
   buttonHandler?: () => void;
 }
-
+//            component           //
+// description: 인풋 상자 컴포넌트 //
 export default function InputBox({ label, type, placeholder, value, helper, icon, error, setValue, buttonHandler }: Props) {
 
+  //            state           //
+
+  //            function           //
+
+  //            event handler           //
+  // description: 입력값 변경 이벤트 //
   const onChangeHandler = (value: string) =>  {
     setValue(value);
   }
 
+  //            component           //
+
+  //            effect           //
+
+  //            render           //
   return (
     <div className='input-box'>
       <div className='input-box-label'>{ label }</div>

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import './style.css';
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useBoardWriteStore, useUserStore } from 'src/stores';
+import './style.css';
 
 //            component           //
 // description: Header 레이아웃 //

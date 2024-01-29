@@ -1,26 +1,38 @@
-import React from 'react'
-import './style.css';
-import { boardListItemMock } from 'src/mocks';
 import { useNavigate } from 'react-router-dom';
+
 import { CurrentListResponseDto, MyPageBoardListResponseDto, SearchListResponseDto } from 'src/interfaces/response';
+
+import './style.css';
 
 interface Props {
   item: CurrentListResponseDto | SearchListResponseDto | MyPageBoardListResponseDto;
 }
 
+//            component           //
+// description: 게시물 리스트 아이템 컴포넌트 //
 export default function BoardListItem({item}: Props) {
 
+  //            state           //
+  // description: 속성으로 받아오는 게시물 관련 상태 //
   const { boardNumber, boardTitle, boardContent, boardImage } = item;
   const { writerProfileImage, writerNickName, writeDate } = item;
   const { likeCount, commentCount, viewCount } = item;
   
-  // useNavigate() : 자바스크립트 로직 중에 페이지 이동을 시켜주는 훅 함수
+  //            function           //
+  // description: 페이지 이동을 위한 네비게이트 함수 //
   const navigator = useNavigate();
 
+  //            event handler           //
+  // description: 컴포넌트 클릭 이벤트 //
   const onClickHandler = () => {
     navigator(`/board/detail/${boardNumber}`)
   }
-  
+
+  //            component           //
+
+  //            effect           //
+
+  //            render           //
   return (
     <div className='board-list-item-box' onClick={onClickHandler}>
       <div className='board-list-item-left'>

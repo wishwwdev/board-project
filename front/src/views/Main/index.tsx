@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
-import './style.css';
-import Top3ListItem from 'src/components/Top3ListItem';
-import { CurrentListResponseDto, Top3ListResponseDto } from 'src/interfaces/response';
-import { currentBoardListMock, popularWordListMock, top3ListMock } from 'src/mocks';
-import BoardListItem from 'src/components/BoardListItem';
 import { useNavigate } from 'react-router-dom';
-import Pagination from 'src/components/Pagination';
+
+import { CurrentListResponseDto, Top3ListResponseDto } from 'src/interfaces/response';
 import { usePagination } from 'src/hooks';
+import Top3ListItem from 'src/components/Top3ListItem';
+import BoardListItem from 'src/components/BoardListItem';
+import Pagination from 'src/components/Pagination';
+import { currentBoardListMock, popularWordListMock, top3ListMock } from 'src/mocks';
 import { COUNT_BY_PAGE } from 'src/constants';
+import './style.css';
 
 //             component            //
 // description: 메인 화면 컴포넌트 //

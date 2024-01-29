@@ -1,15 +1,15 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
-import './style.css';
-import DefaultProfile from './asset/my_page_profile_default.png'
-import Pagination from 'src/components/Pagination';
-import { usePagination } from 'src/hooks';
+import { useNavigate } from 'react-router-dom';
+
 import { MyPageBoardListResponseDto } from 'src/interfaces/response';
-import { useDaumPostcodePopup } from 'react-daum-postcode';
+import { usePagination } from 'src/hooks';
+import { useUserStore } from 'src/stores';
+import Pagination from 'src/components/Pagination';
+import BoardListItem from 'src/components/BoardListItem';
 import { myPageBoardListMock } from 'src/mocks';
 import { COUNT_BY_PAGE } from 'src/constants';
-import BoardListItem from 'src/components/BoardListItem';
-import { useNavigate } from 'react-router-dom';
-import { useUserStore } from 'src/stores';
+import './style.css';
+import DefaultProfile from './asset/my_page_profile_default.png'
 
 //            component            //
 // description: 마이페이지 화면 //

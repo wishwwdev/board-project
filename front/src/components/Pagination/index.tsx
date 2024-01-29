@@ -8,8 +8,21 @@ interface Props {
   onNextClickHandler: () => void;
   
 }
-
+//            component           //
+// description: 페이징 처리 컴포넌트 //
 export default function Pagination({ totalPage, currentPage, onPreviousClickHandler, onNextClickHandler, onPageClickHandler }: Props) {
+
+  //            state           //
+
+  //            function           //
+
+  //            event handler           //
+
+  //            component           //
+
+  //            effect           //
+
+  //            render           //
   return (
       <div className='pagination'>
         <div className='pagination-button' onClick={onPreviousClickHandler}>

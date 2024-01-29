@@ -1,8 +1,8 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
-import './style.css';
-import { useBoardWriteStore } from 'src/stores';
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom';
+import { useBoardWriteStore } from 'src/stores';
 import { boardUpdateMock } from 'src/mocks';
+import './style.css';
 
 //            component           //
 // description: 게시물 쓰기 화면 //

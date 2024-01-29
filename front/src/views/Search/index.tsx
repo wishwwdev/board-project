@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
-import './style.css';
-import BoardListItem from 'src/components/BoardListItem';
 import { useNavigate, useParams } from 'react-router-dom';
-import { relationWordListMock, searchBoardListMock } from 'src/mocks';
+
 import { SearchListResponseDto } from 'src/interfaces/response';
-import { COUNT_BY_PAGE } from 'src/constants';
-import Pagination from 'src/components/Pagination';
 import { usePagination } from 'src/hooks';
+import BoardListItem from 'src/components/BoardListItem';
+import Pagination from 'src/components/Pagination';
+import { relationWordListMock, searchBoardListMock } from 'src/mocks';
+import { COUNT_BY_PAGE } from 'src/constants';
+import './style.css';
 
 
 //            component            //

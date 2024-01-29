@@ -1,5 +1,5 @@
-import UserResponseDto from "src/interfaces/response/user.response.dto";
 import { create } from "zustand";
+import { UserResponseDto } from "src/interfaces/response";
 
 interface UserStore {
   user: UserResponseDto | null;
