@@ -70,88 +70,8 @@
   background-size: 100% 100%;
 }
 
-.header-black-button {
-  border-radius: 46px;
 
-  margin-left: 10px;
 
-  width: 95px;
-  height: 30px;
-
-  background-color: black;
-
-  color: #ffffff;
-
-  font-family: 'Pretendard';
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 19.6px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.header-black-button:hover {
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.75);
-}
-
-.header-black-disable-button {
-  border-radius: 46px;
-
-  margin-left: 10px;
-
-  width: 95px;
-  height: 30px;
-
-  background-color: black;
-  opacity: 0.4;
-
-  color: #ffffff;
-
-  font-family: 'Pretendard';
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 19.6px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.header-black-disable-button:hover {
-  cursor: not-allowed;
-}
-
-.header-white-button {
-  border-radius: 46px;
-
-  margin-left: 10px;
-
-  width: 93px;
-  height: 28px;
-
-  background-color: #ffffff;
-
-  border: 1px solid rgba(0, 0, 0, 0.5);
-
-  color: rgba(0, 0, 0, 0.5);
-
-  font-family: 'Pretendard';
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 19.6px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.header-white-button:hover {
-  cursor: pointer;
-  background-color: rgba(240, 240, 240, 0.75);
-}
 
 .header-search-box {
   border-radius: 43px;
