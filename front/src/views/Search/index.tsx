@@ -17,6 +17,8 @@ export default function Search() {
   //            state            //
   // description: 검색어 path parameter 상태 //
   const { searchWord } = useParams();
+  // description: 페이지네이션과 관련된 상태 및 함수 //
+  const { totalPage, currentPage, currentSection, onPreviousClickHandler, onNextClickHandler, onPageClickHandler, changeSection } = usePagination();
   // description: 게시물 수를 저장하는 상태 //
   const [boardCount, setboardCount] = useState<number>(0);
   // description: 전체 게시물 리스트 상태 //
@@ -26,8 +28,6 @@ export default function Search() {
   // description: 연관 검색어 리스트 상태 //
   const [relationList, setRelationList] = useState<string[]>([]);
   
-  // description: 페이지네이션과 관련된 상태 및 함수 //
-  const { totalPage, currentPage, currentSection, onPreviousClickHandler, onNextClickHandler, onPageClickHandler, changeSection } = usePagination();
 
   //            function            //
   // description: 페이지 이동을 위한 네비게이트 함수
@@ -49,6 +49,8 @@ export default function Search() {
     navigator(`/search/${word}`);
   }
 
+  //            component            //
+
   //            effect            //
   // description: 검색어 상태가 바뀔때 마다 해당 검색어의 검색 결과 불러오기 //
   useEffect(() => {
@@ -61,12 +63,10 @@ export default function Search() {
     changeSection(searchBoardListMock.length, COUNT_BY_PAGE);
 
   }, [searchWord]);
-
   // description: 현재 섹션이 바뀔때 마다 페이지 리스트 변경 //
   useEffect(() => {
     changeSection(searchBoardListMock.length, COUNT_BY_PAGE);
   }, [currentSection])
-
   // description: 현재 페이지가 바뀔때 마다 검색 게시물 분류하기 //
   useEffect(() => {
     getPageBoardList();

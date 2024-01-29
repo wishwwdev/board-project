@@ -17,10 +17,10 @@ export default function BoardDetail() {
   //            state           //
   // description: 게시물 번호 상태 //
   const {boardNumber} = useParams();
-  // description: //
-  const { totalPage, currentPage, currentSection, onPreviousClickHandler, onNextClickHandler, onPageClickHandler, changeSection } = usePagination();
   // description: 로그인 유저 정보 상태 //
   const { user } = useUserStore();
+  // description: 페이지네이션 관련 상태 및 함수 //
+  const { totalPage, currentPage, currentSection, onPreviousClickHandler, onNextClickHandler, onPageClickHandler, changeSection } = usePagination();
   // description: 게시물 정보 상태 //
   const [board, setBoard] = useState<BoardDetailResponseDto | null >(null);
   // description: 게시물 좋아요 회원 리스트 상태 //
@@ -88,17 +88,17 @@ export default function BoardDetail() {
     }
 
     //            effect           //
+    // description: 좋아요 리스트가 변경되면 실행 //
+    useEffect(() => {
+      const liked = likeList.findIndex((item) => item.likeUserEmail === user?.email);
+      setFavorite(liked !== -1);
+    }, [likeList])
     // description: 게시물 번호 혹은 로그인 유저 정보가 변경되면 실행 //
     useEffect(() => {
       setviewMore(user?.email === board?.writerEamil);
       const liked = likeList.findIndex((item) => item.likeUserEmail === user?.email);
       setFavorite(liked !== -1);
     }, [boardNumber, user]);
-    // description: 좋아요 리스트가 변경되면 실행 //
-    useEffect(() => {
-      const liked = likeList.findIndex((item) => item.likeUserEmail === user?.email);
-      setFavorite(liked !== -1);
-    }, [likeList])
 
     //            render           //
     return (
@@ -160,8 +160,20 @@ export default function BoardDetail() {
       </div>
     );
   }
+
+  //            component           //
   // description: 종아요 리스트 컴포넌트 //
   const LikeList = () => {
+    
+    //            state           //
+
+    //            function           //
+
+    //            event handler           //
+
+    //            component           //
+
+    //            effect           //
 
     //            render           //
     return (
@@ -178,17 +190,26 @@ export default function BoardDetail() {
       </div>
     );
   }
+
+  //            component           //
   // description: 댓글 리스트 컴포넌트 //
   const Comments = () => {
+
     //            state           //
     // description: 사용자 댓글 입력 상태 //
     const [comment, setComment] = useState<string>('');
+
+    //            function           //
 
     //            event handler           //
     // description: 사용자 댓글 입력 변경 이벤트 //
     const onCommentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
       setComment(event.target.value);
     }
+
+    //            component           //
+
+    //            effect           //
 
     //            render           //
     return (
