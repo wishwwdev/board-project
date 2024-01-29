@@ -6,7 +6,7 @@ export default interface MyPageBoardListResponseDto {
   boardContent: string;
   boardImage: string;
   commentCount: number;
-  likeCount: number;
+  favoriteCount: number;
   viewCount: number;
   boardNumber: number;
 }

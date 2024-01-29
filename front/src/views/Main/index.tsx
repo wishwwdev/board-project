@@ -53,7 +53,7 @@ export default function Main() {
         <div className='main-top-3-container'>
           <div className='main-top-3-text'>주간 TOP 3 게시글</div>
           <div className='main-top-3-list'>
-            {top3List.map((item) => (<Top3ListItem item={item} />))}
+            {top3List.map((item) => (<Top3ListItem item={item}/>))}
           </div>
         </div>
       </div>

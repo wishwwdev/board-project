@@ -289,9 +289,9 @@ export const top3ListMock = [
     boardTitle: '점심',
     boardContent: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software favorite Aldus PageMaker including versions of Lorem Ipsum.',
     boardImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Haeundae_2008.png/375px-Haeundae_2008.png',
-    commentCount: 99,
-    favoriteCount: 99,
-    viewCount: 99,
+    commentCount: 22,
+    favoriteCount: 22,
+    viewCount: 22,
     boardNumber: 2,
   },
   {

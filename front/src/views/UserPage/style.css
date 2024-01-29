@@ -141,7 +141,7 @@
   flex: 4;
 }
 
-.my-page-bottom-write-box-button {
+.user-page-bottom-button {
   height: 76px;
 
   background-color: white;
@@ -151,16 +151,25 @@
   justify-content: center;
 }
 
-.my-page-bottom-write-box-button:hover {
+.user-page-bottom-button:hover {
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.08);
 }
 
-.my-page-bottom-write-box-button-text {
-  margin-left: 6px;
+.user-page-bottom-button-text {
+  margin: 0 6px;
 
   color: black;
   font-size: 18px;
   font-weight: 500;
   line-height: 140%; /* 25.2px */
+}
+
+.user-page-right-arrow-icon {
+  width: 24px;
+  height: 24px;
+
+  background-image: url(asset/arrow_right.png);
+  background-position: 50% 50%;
+  background-size: 100% 100%;
 }
