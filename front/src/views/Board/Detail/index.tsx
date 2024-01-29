@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 import './style.css';
 import { boardDetailMock, commentListMock, likeListMock } from 'src/mocks';
 import { BoardDetailResponseDto } from 'src/interfaces/response';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import LikeListResponseDto from 'src/interfaces/response/like-list.response.dto';
 import CommentListItem from 'src/components/CommentListItem';
 import Pagination from 'src/components/Pagination';
@@ -35,6 +35,8 @@ export default function BoardDetail() {
   const [showCommentList, setShowCommentList] = useState<boolean>(false);
 
   //            function           //
+  // description: 페이지 이동을 위한 네비게이트 함수 //
+  const navigator = useNavigate();
   // description: 현재 페이지의 댓글 리스트 분류 함수 //
   const getPageCommentlist = () => {
     const lastIndex = commentListMock.length > COUNT_BY_PAGE_COMMENT * currentPage ?
@@ -64,6 +66,14 @@ export default function BoardDetail() {
     const onMoreButtonClickHandler = () => {
       setOpenMore(!openMore);
     }
+    // description: 수정 버튼 클릭 이벤트 //
+    const onUpdateButtonClickHandler = () => {
+      navigator(`/board/update/${boardNumber}`);
+    }
+    // description: 삭제 버튼 클릭 이벤트 //
+    const onDeleteButtonClickHandler = () => {
+      navigator('/')
+    }
     // description: 좋아요 버튼 클릭 이벤트 //
     const onLikeButtonClickHandler = () => {
       setFavorite(!favorite);
@@ -81,7 +91,14 @@ export default function BoardDetail() {
     // description: 게시물 번호 혹은 로그인 유저 정보가 변경되면 실행 //
     useEffect(() => {
       setviewMore(user?.email === board?.writerEamil);
+      const liked = likeList.findIndex((item) => item.likeUserEmail === user?.email);
+      setFavorite(liked !== -1);
     }, [boardNumber, user]);
+    // description: 좋아요 리스트가 변경되면 실행 //
+    useEffect(() => {
+      const liked = likeList.findIndex((item) => item.likeUserEmail === user?.email);
+      setFavorite(liked !== -1);
+    }, [likeList])
 
     //            render           //
     return (
@@ -100,9 +117,9 @@ export default function BoardDetail() {
           <div className='board-detail-meta-right'>
             { openMore && (
               <div className='more-button-group'>
-                <div className='more-button'>수정</div>
+                <div className='more-button' onClick={onUpdateButtonClickHandler}>수정</div>
                 <div className='divider'></div>
-                <div className='more-button-red'>삭제</div>
+                <div className='more-button-red' onClick={onDeleteButtonClickHandler}>삭제</div>
               </div>
             ) }
             { viewMore && (

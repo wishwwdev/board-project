@@ -1,6 +1,4 @@
-import React from 'react'
 import './style.css';
-import { top3ListItemMock } from 'src/mocks';
 import { useNavigate } from 'react-router-dom';
 import { Top3ListResponseDto } from 'src/interfaces/response';
 
