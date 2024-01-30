@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Top3ListResponseDto } from 'src/interfaces/response';
+import { BOARD_DETAIL_PATH } from 'src/constants';
 import './style.css';
 
 interface Props {
@@ -22,7 +23,7 @@ export default function Top3ListItem({item}: Props) {
   //            event handler           //
   // description: 컴포넌트 클릭 이벤트 //
   const onClickHandler = () => {
-    navigator(`/board/detail/${boardNumber}`)
+    navigator(BOARD_DETAIL_PATH(boardNumber))
   };
 
   //            component           //

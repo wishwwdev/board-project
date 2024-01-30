@@ -7,7 +7,7 @@ import { useUserStore } from 'src/stores';
 import Pagination from 'src/components/Pagination';
 import BoardListItem from 'src/components/BoardListItem';
 import { myPageBoardListMock } from 'src/mocks';
-import { COUNT_BY_PAGE } from 'src/constants';
+import { AUTH_PATH, BOARD_WRITE_PATH, COUNT_BY_PAGE, MAIN_PATH, USER_PAGE_PATH } from 'src/constants';
 import './style.css';
 import DefaultProfile from './asset/my_page_profile_default.png'
 
@@ -38,7 +38,7 @@ export default function UserPage() {
     // description: useRef를 사용하면 HTML 요소를 JS 객체로 다룰 수 있음 //
     const fileInputRef = useRef<HTMLInputElement>(null);
     // description: 사용자 프로필 사진 URL 상태 //
-    const [profileImagaUrl, setProfileImageUrl] = useState<string>(DefaultProfile);
+    const [profileImageUrl, setProfileImageUrl] = useState<string>(DefaultProfile);
     // description: 사용자 닉네입 상태 //
     const [nickname, setNickname] = useState<string>('나는 디벨림');
     // description: 닉네임 변경 버튼 상태 //
@@ -86,7 +86,7 @@ export default function UserPage() {
       <div className='my-page-top'>
         <div className='my-page-top-container'>
           <div className='my-page-top-profile-box'>
-            <div className='my-page-top-profile' style={{ backgroundImage: `url(${profileImagaUrl})`}} onClick={onProfileClickHandler}></div>
+            <div className='my-page-top-profile' style={{ backgroundImage: `url(${profileImageUrl})`}} onClick={onProfileClickHandler}></div>
             <input type='file' style={{ display: 'none' }} ref={fileInputRef} accept='image/*' onChange={onImageInputChangeHandler}/>
           </div>
           <div className='my-page-top-info-box'>
@@ -137,16 +137,17 @@ export default function UserPage() {
     //            event handler            //
     // description: 글쓰기 버튼 클릭 이벤트 //
     const onWriteButtonClickHandler = () => {
-      navigator('/board/write');
+      navigator(BOARD_WRITE_PATH());
     }
     // description: 내 게시물로 가기 버튼 클릭 이벤트 //
     const onMoveMyPageButtonClickHandler = () => {
       if (!user) {
         alert('로그인이 필요합니다.');
-        navigator('/auth');
+        navigator(AUTH_PATH);
         return;
       }
-      navigator(`/user-page/${user.email}`);
+      if (!userEmail) return;
+      navigator(USER_PAGE_PATH(userEmail));
     }
 
     //            component            //
@@ -212,7 +213,7 @@ export default function UserPage() {
   //            effect            //
   // description: 유저 이메일 상태가 바뀔 때마다 실행 //
   useEffect(() => {
-    if (!userEmail) navigator('/');
+    if (!userEmail) navigator(MAIN_PATH);
 
     const isMyPage = user?.email === userEmail;
     setMyPage(isMyPage);

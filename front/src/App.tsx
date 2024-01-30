@@ -13,6 +13,7 @@ import BoardUpdate from 'src/views/Board/Update';
 
 
 import './App.css';
+import { AUTH_PATH, BOARD_DETAIL_PATH, BOARD_NUMBER_PATH_VARIABLE, BOARD_PATH, BOARD_UPDATE_PATH, MAIN_PATH, SEARCH_PATH, SEARCH_WORD_PATH_VALIABLE, USER_EMAIL_PATH_VALIABLE, USER_PAGE_PATH, WRITE_PATH } from './constants';
 
 // 메인화면          - path: '/',                         / component : <Main />
 // 로그인 / 회원가입 - path: '/auth'                      / component : <Authentication />
@@ -39,18 +40,18 @@ function App() {
   <>
     <Header />
     <Routes>
-      <Route path='/' element={<Main />} />
-      <Route path='/auth' element={<Authentication />} />
-      <Route path='/search/:searchWord' element={<Search />} />
-      <Route path='/user-page/:userEmail' element={<UserPage />} />
+      <Route path={MAIN_PATH} element={<Main />} />
+      <Route path={AUTH_PATH} element={<Authentication />} />
+      <Route path={SEARCH_PATH(SEARCH_WORD_PATH_VALIABLE)} element={<Search />} />
+      <Route path={USER_PAGE_PATH(USER_EMAIL_PATH_VALIABLE)} element={<UserPage />} />
     
-      <Route path='/board'>
-        <Route path='detail/:boardNumber' element={<BoardDetail />} />
-        <Route path='write' element={<BoardWrite />} />
-        <Route path='update/:boardNumber' element={<BoardUpdate />} />
+      <Route path={BOARD_PATH}>
+        <Route path={BOARD_DETAIL_PATH(BOARD_NUMBER_PATH_VARIABLE)} element={<BoardDetail />} />
+        <Route path={WRITE_PATH} element={<BoardWrite />} />
+        <Route path={BOARD_UPDATE_PATH(BOARD_NUMBER_PATH_VARIABLE)} element={<BoardUpdate />} />
       </Route>
     </Routes>
-    { pathname !== '/auth' && (<Footer />) }
+    { pathname !== AUTH_PATH && (<Footer />) }
   </>
   );
 }

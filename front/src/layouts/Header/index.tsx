@@ -2,6 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useBoardWriteStore, useUserStore } from 'src/stores';
 import './style.css';
+import { AUTH_PATH, BOARD_UPDATE_PATH, BOARD_WRITE_PATH, MAIN_PATH, SEARCH_PATH, SEARCH_WORD_PATH_VALIABLE, USER_PAGE_PATH } from 'src/constants';
 
 //            component           //
 // description: Header 레이아웃 //
@@ -26,13 +27,13 @@ export default function Header() {
   const navigator = useNavigate();
   
   // description: search 버튼 출력 여부 //
-  const showSearch = pathname !== '/my-page' && pathname !== '/board/write' && pathname.indexOf('/board/update') === -1
+  const showSearch = !pathname.includes(USER_PAGE_PATH('')) && !pathname.includes(BOARD_WRITE_PATH()) && !pathname.includes(BOARD_UPDATE_PATH(''));
   // description: 현재 페이지가 인증 화면인지 여부 //
-  const isAuth = pathname === '/auth';
+  const isAuth = pathname === AUTH_PATH;
   // description: 현재 페이지가 마이페이지인지 여부 //
-  const isMyPage = pathname === '/my-page';
+  const isMyPage = pathname.includes(USER_PAGE_PATH(''));
   // description: upload 버튼 출력 여부 //
-  const showUpload = pathname === '/board/write' || pathname.indexOf('/board/update') !== -1;
+  const showUpload = pathname === BOARD_WRITE_PATH() || pathname.indexOf(BOARD_UPDATE_PATH('')) !== -1;
   // description: upload 버튼 활성화 여부 //
   const astiveUpload = boardTitle !== '' && boardContent !== '';
 
@@ -52,26 +53,27 @@ export default function Header() {
       setSearchState(false)
       return;
     }
-    navigator(`/search/${search}`)
+    navigator(SEARCH_PATH(search))
   }
   // description: 로고 클릭 이벤트 //
   const onLogoClickHandler = () => {
-    navigator('/');
+    navigator(MAIN_PATH);
   }
   // description: 로그인 버튼 클릭 이벤트 //
   const onSignInButtonClickHandler = () => {
     setLogin(true);
-    navigator('/auth');
+    navigator(AUTH_PATH);
   }
   // description: 마이페이지 버튼 클릭 이벤트 //
   const onMyPageButtonClickHandler = () => {
-    navigator('/my-page');
+    if (!user) return;
+    navigator(USER_PAGE_PATH(user?.email));
   }
   // description: 로그아웃 버튼 클릭 이벤트 //
   const onSignOutButtonClickHandler = () => {
     setLogin(false);
     setUser(null);
-    navigator('/');
+    navigator(MAIN_PATH);
   }
   // description: 업로드 버튼 클릭 이벤트 //
   const onUploadButtonClickHandler = () => {

@@ -46,6 +46,10 @@
   line-height: 140%; /* 22.4px */
 }
 
+.board-detail-writer-nickname:hover {
+  cursor: pointer;
+}
+
 .board-detail-write-date {
   margin-left: 8px;
 
