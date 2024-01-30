@@ -77,7 +77,7 @@ export default function Header() {
   }
   // description: 업로드 버튼 클릭 이벤트 //
   const onUploadButtonClickHandler = () => {
-    if (pathname === '/board/write') alert('작성!')
+    if (pathname === BOARD_WRITE_PATH()) alert('작성!')
     else alert('업로드!');
     resetBoard();
   }
@@ -89,7 +89,7 @@ export default function Header() {
   }, [user])
   // description: path url이 바뀔 때마다 실행 //
   useEffect(() => {
-    if (pathname.indexOf('/search/') === -1) {
+    if (!pathname.includes((SEARCH_PATH('')))) {
       setSearch('');
       setSearchState(false);
     }

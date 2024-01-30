@@ -1,5 +1,5 @@
 .my-page-top {
-  padding: 40px 120px 46px;
+  padding: 40px 8.333333vw 46px;
 }
 
 .my-page-top-container {
@@ -94,7 +94,7 @@
 }
 
 .my-page-bottom {
-  padding: 34px 120px 46px;
+  padding: 34px 8.333333vw 46px;
 
   background-color: rgba(0, 0, 0, 0.05);
 }

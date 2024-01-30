@@ -6,8 +6,10 @@ import { Address, useDaumPostcodePopup } from 'react-daum-postcode';
 import { useUserStore } from 'src/stores';
 import InputBox from 'src/components/InputBox';
 import { signInMock, userMock } from 'src/mocks';
-import { INPUT_ICON, emailPattern, telNumberPattern } from 'src/constants';
+import { INPUT_ICON, MAIN_PATH, emailPattern, telNumberPattern } from 'src/constants';
 import './style.css';
+import axios from 'axios';
+import { SignInRequestDto, SignUpRequestDto } from 'src/interfaces/request';
 
 //            component           //
 // description: 인증 화면 //
@@ -55,13 +57,14 @@ export default function Authentication() {
       setView('sign_up');
     }
     // description: 로그인 버튼 클릭 이벤트 //
-    const onSignInButtonClickHandler = () => {
+    const onSignInButtonClickHandler = async () => {
+
       if (email !== signInMock.email || password !== signInMock.password) {
         setError(true);
         return;
       }
       setUser(userMock);
-      navigator('/');
+      navigator(MAIN_PATH);
     }
 
     //            component            //
@@ -157,7 +160,7 @@ export default function Authentication() {
       const telNumberFlag = !telNumberPattern.test(telNumber);
 
       setTelNumberError(telNumberFlag);
-      setNicknameError(!nickname); /* nickname이 문자열이면 false라서 !false를 통해 error가 true라는고 전달하는거임 */
+      setNicknameError(!nickname); /* nickname이 문자열이면 false라서 !false를 통해 error가 true라는걸 전달하는거임 */
       setAddressError(!address);
       
       if (!telNumberFlag && nickname && address ) setView('sign-in');
