@@ -1,15 +1,15 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Address, useDaumPostcodePopup } from 'react-daum-postcode';
+import axios from 'axios';
 
-
+import { SignInRequestDto, SignUpRequestDto } from 'src/interfaces/request';
 import { useUserStore } from 'src/stores';
 import InputBox from 'src/components/InputBox';
 import { signInMock, userMock } from 'src/mocks';
 import { INPUT_ICON, MAIN_PATH, emailPattern, telNumberPattern } from 'src/constants';
 import './style.css';
-import axios from 'axios';
-import { SignInRequestDto, SignUpRequestDto } from 'src/interfaces/request';
+
 
 //            component           //
 // description: 인증 화면 //
