@@ -10,7 +10,7 @@ import com.woolim.board.common.response.CustomResponse;
 
 // controller : 검색 컨트롤러 //
 @RestController
-@RequestMapping("/api/vi/search")
+@RequestMapping("/api/v1/search")
 public class SearchController {
 
   // API : 인기 검색어 리스트 불러오기 메서드 //

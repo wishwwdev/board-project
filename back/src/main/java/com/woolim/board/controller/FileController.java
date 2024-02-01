@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 // controller : 파일 컨트롤러 //
 @RestController
-@RequestMapping("/api/vi/file")
+@RequestMapping("/api/v1/file")
 public class FileController {
   
   // API : 파일 업로드 메서드 //

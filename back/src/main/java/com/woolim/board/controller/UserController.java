@@ -4,14 +4,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.woolim.board.common.response.CustomResponse;
+import com.woolim.board.dto.request.user.PatchUserNicknameRequestDto;
+import com.woolim.board.dto.request.user.PatchUserProfileRequestDto;
+
+import jakarta.validation.Valid;
 
 // controller : 유저 컨트롤러 //
 @RestController
-@RequestMapping("/api/vi/user")
+@RequestMapping("/api/v1/user")
 public class UserController {
 
   // API : 유저 정보 불러오기 메서드 //
@@ -31,7 +36,8 @@ public class UserController {
   // API : 유저 닉네임 수정 메서드 //
   @PatchMapping("/{email}/nickname")
   public ResponseEntity<?> patchNickname(
-    @PathVariable("email") String email
+    @PathVariable("email") String email,
+    @RequestBody @Valid PatchUserNicknameRequestDto requestBody
   ) {
     return CustomResponse.serviceUnavailable;
   }
@@ -39,7 +45,8 @@ public class UserController {
   // API : 유저 프로필 수정 메서드 //
   @PatchMapping("/{email}/profile")
   public ResponseEntity<?> patchProfile(
-    @PathVariable("email") String email
+    @PathVariable("email") String email,
+    @RequestBody @Valid PatchUserProfileRequestDto requestBody
   ) {
     return CustomResponse.serviceUnavailable;
   }

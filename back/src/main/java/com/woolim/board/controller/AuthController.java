@@ -9,20 +9,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.woolim.board.dto.request.auth.SignInRequestDto;
 import com.woolim.board.dto.request.auth.SignUpRequestDto;
+import com.woolim.board.dto.response.auth.SignUpResponseDto;
 
 import jakarta.validation.Valid;
 
 // controller : 인증 컨트롤러 //
 @RestController
-@RequestMapping("/api/vi/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
   
   // API : 회원가입 메서드 //
   @PostMapping("/sign-up")
-  public ResponseEntity<?> signUp(
+  public ResponseEntity<SignUpResponseDto> signUp(
     @RequestBody @Valid SignUpRequestDto requestBody
   ) {
-    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(null);
+    SignUpResponseDto response = SignUpResponseDto.existedEmail();
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   // API : 로그인 메서드 //
