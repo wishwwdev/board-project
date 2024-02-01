@@ -22,9 +22,5 @@ public class PostBoardResponseDto extends ResponseDto {
     ResponseDto result = new ResponseDto("NU", "No Existed User");
     return result;
   }
-
-  public static ResponseDto databaseError() {
-    ResponseDto result = new ResponseDto("DE", "Database Error");
-    return result;
-  }
+  
 }

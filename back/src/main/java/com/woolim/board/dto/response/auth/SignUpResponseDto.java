@@ -23,10 +23,4 @@ public class SignUpResponseDto extends ResponseDto {
     return result;
   }
 
-  public static ResponseDto databaseError() {
-    ResponseDto result = new ResponseDto("DE", "Database Error");
-    return result;
-  }
-
-
 }

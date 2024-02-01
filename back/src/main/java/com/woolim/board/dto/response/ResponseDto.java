@@ -8,6 +8,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseDto {
+
   private String code;
   private String message;
-};
+
+  public static ResponseDto databaseError() {
+    ResponseDto result = new ResponseDto("DE", "Database Error");
+    return result;
+  }
+
+}
