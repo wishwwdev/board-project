@@ -13,7 +13,7 @@ public class SignUpResponseDto extends ResponseDto {
     super(code, message);
   }
 
-  public static SignUpResponseDto sucess() {
+  public static SignUpResponseDto success() {
     SignUpResponseDto result = new SignUpResponseDto("SU", "Success");
     return result;
   }
@@ -23,6 +23,10 @@ public class SignUpResponseDto extends ResponseDto {
     return result;
   }
 
+  public static ResponseDto databaseError() {
+    ResponseDto result = new ResponseDto("DE", "Database Error");
+    return result;
+  }
 
-  
+
 }
