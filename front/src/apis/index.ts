@@ -6,7 +6,7 @@ const SIGN_UP_URL = () => `${API_DOMAIN}/auth/sign-up`;
 const SIGN_IN_URL = () => `${API_DOMAIN}/auth/sign-in`;
 
 const GET_TOP3_BOARD_LIST_URL = () => `${API_DOMAIN}/board/top-3`;
-const GET_CURRENT_BOARD_LIST_URL = () => `${API_DOMAIN}/auth/current-board`;
+const GET_CURRENT_BOARD_LIST_URL = () => `${API_DOMAIN}/board/current-board`;
 const GET_POPULAR_LIST_URL = () => `${API_DOMAIN}/search/popular`;
 
 const GET_SEARCH_BOARD_LIST_URL = (searchWord: string) => `${API_DOMAIN}/board/search/${searchWord}`;
