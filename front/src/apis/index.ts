@@ -3,7 +3,7 @@ import { PostBoardRequestDto, SignInRequestDto, SignUpRequestDto } from "src/int
 
 const API_DOMAIN = 'http://localhost:4040/api/v1';
 const SIGN_UP_URL = () => `${API_DOMAIN}/auth/sign-up`;
-const SIGN_IN_URL = () => `${API_DOMAIN}/auth/sign-up`;
+const SIGN_IN_URL = () => `${API_DOMAIN}/auth/sign-in`;
 
 const GET_TOP3_BOARD_LIST_URL = () => `${API_DOMAIN}/board/top-3`;
 const GET_CURRENT_BOARD_LIST_URL = () => `${API_DOMAIN}/auth/current-board`;
