@@ -11,21 +11,26 @@ import com.woolim.board.dto.request.auth.SignInRequestDto;
 import com.woolim.board.dto.request.auth.SignUpRequestDto;
 import com.woolim.board.dto.response.auth.SignInResponseDto;
 import com.woolim.board.dto.response.auth.SignUpResponseDto;
+import com.woolim.board.service.AuthService;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 // controller : 인증 컨트롤러 //
 @RestController
 @RequestMapping("/api/v1/auth")
+@RequiredArgsConstructor
 public class AuthController {
+
+  private final AuthService authService;
   
   // API : 회원가입 메서드 //
   @PostMapping("/sign-up")
-  public ResponseEntity<SignUpResponseDto> signUp(
+  public ResponseEntity<? super SignUpResponseDto> signUp(
     @RequestBody @Valid SignUpRequestDto requestBody
   ) {
-    SignUpResponseDto response = SignUpResponseDto.existedEmail();
-    return ResponseEntity.status(HttpStatus.OK).body(response);
+    ResponseEntity<? super SignUpResponseDto> response = authService.signUp(requestBody);
+    return response;
   }
 
   // API : 로그인 메서드 //
@@ -33,8 +38,8 @@ public class AuthController {
   public ResponseEntity<? super SignInResponseDto> signIn(
     @RequestBody @Valid SignInRequestDto requestBody
   ) {
-    SignInResponseDto result = SignInResponseDto.success("aaaa");
-    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(result);
+    ResponseEntity<? super SignInResponseDto> response = authService.signIn(requestBody);
+    return response;
   }
 
 }

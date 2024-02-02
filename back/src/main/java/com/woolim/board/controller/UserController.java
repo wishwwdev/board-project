@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.woolim.board.common.response.CustomResponse;
 import com.woolim.board.dto.request.user.PatchUserNicknameRequestDto;
 import com.woolim.board.dto.request.user.PatchUserProfileRequestDto;
-import com.woolim.board.dto.response.board.DeleteBoardResponseDto;
 import com.woolim.board.dto.response.user.PatchUserNicknameResponseDto;
 import com.woolim.board.dto.response.user.PatchUserProfileResponseDto;
 

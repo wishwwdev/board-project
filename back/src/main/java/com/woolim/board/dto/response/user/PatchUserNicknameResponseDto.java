@@ -1,5 +1,7 @@
 package com.woolim.board.dto.response.user;
 
+import com.woolim.board.common.response.ResponseCode;
+import com.woolim.board.common.response.ResponseMessage;
 import com.woolim.board.dto.response.ResponseDto;
 
 import lombok.AllArgsConstructor;
@@ -14,17 +16,17 @@ public class PatchUserNicknameResponseDto extends ResponseDto {
   }
 
   public static PatchUserNicknameResponseDto success() {
-    PatchUserNicknameResponseDto result = new PatchUserNicknameResponseDto("SU", "Success");
+    PatchUserNicknameResponseDto result = new PatchUserNicknameResponseDto(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
     return result;
   }
 
   public static ResponseDto noExistedUser() {
-    ResponseDto result = new ResponseDto("NU", "No Existed User");
+    ResponseDto result = new ResponseDto(ResponseCode.NO_EXISTED_USER, ResponseMessage.NO_EXISTED_USER);
     return result;
   }
 
   public static ResponseDto existedNickname() {
-    ResponseDto result = new ResponseDto("EN", "Existed Nickname");
+    ResponseDto result = new ResponseDto(ResponseCode.EXISTED_NICKNAME, ResponseMessage.EXISTED_NICKNAME);
     return result;
   }
 
