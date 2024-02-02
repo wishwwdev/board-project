@@ -13,7 +13,7 @@ public class DeleteBoardResponseDto extends ResponseDto {
     super(code, message);
   }
 
-  public DeleteBoardResponseDto success() {
+  public static DeleteBoardResponseDto success() {
     DeleteBoardResponseDto result = new DeleteBoardResponseDto("SU", "Success");
     return result;
   }

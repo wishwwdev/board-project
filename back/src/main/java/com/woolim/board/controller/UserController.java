@@ -1,5 +1,6 @@
 package com.woolim.board.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.woolim.board.common.response.CustomResponse;
 import com.woolim.board.dto.request.user.PatchUserNicknameRequestDto;
 import com.woolim.board.dto.request.user.PatchUserProfileRequestDto;
+import com.woolim.board.dto.response.board.DeleteBoardResponseDto;
+import com.woolim.board.dto.response.user.PatchUserNicknameResponseDto;
+import com.woolim.board.dto.response.user.PatchUserProfileResponseDto;
 
 import jakarta.validation.Valid;
 
@@ -35,20 +39,22 @@ public class UserController {
 
   // API : 유저 닉네임 수정 메서드 //
   @PatchMapping("/{email}/nickname")
-  public ResponseEntity<?> patchNickname(
+  public ResponseEntity<? super PatchUserNicknameResponseDto> patchNickname(
     @PathVariable("email") String email,
     @RequestBody @Valid PatchUserNicknameRequestDto requestBody
   ) {
-    return CustomResponse.serviceUnavailable;
+    PatchUserNicknameResponseDto responseBody = PatchUserNicknameResponseDto.success();
+    return ResponseEntity.status(HttpStatus.OK).body(responseBody); 
   }
 
-  // API : 유저 프로필 수정 메서드 //
+  // API : 유저 프로필 이미지 수정 메서드 //
   @PatchMapping("/{email}/profile")
-  public ResponseEntity<?> patchProfile(
+  public ResponseEntity<? super PatchUserProfileResponseDto> patchProfile(
     @PathVariable("email") String email,
     @RequestBody @Valid PatchUserProfileRequestDto requestBody
   ) {
-    return CustomResponse.serviceUnavailable;
+    PatchUserProfileResponseDto responseBody = PatchUserProfileResponseDto.success();
+    return ResponseEntity.status(HttpStatus.OK).body(responseBody); 
   }
 
 

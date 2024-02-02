@@ -1,5 +1,6 @@
 package com.woolim.board.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,11 @@ import com.woolim.board.dto.request.board.PatchBoardRequestDto;
 import com.woolim.board.dto.request.board.PostBoardRequestDto;
 import com.woolim.board.dto.request.board.PostCommentRequestDto;
 import com.woolim.board.dto.request.board.PutFavoriteRequestDto;
+import com.woolim.board.dto.response.board.DeleteBoardResponseDto;
+import com.woolim.board.dto.response.board.PatchBoardResponseDto;
+import com.woolim.board.dto.response.board.PostBoardResponseDto;
+import com.woolim.board.dto.response.board.PostCommentResponseDto;
+import com.woolim.board.dto.response.board.PutFavoriteResponseDto;
 
 import jakarta.validation.Valid;
 
@@ -78,46 +84,51 @@ public class BoardController {
 
   // API : 게시물 작성 메서드 //
   @PostMapping("")
-  public ResponseEntity<?> postBoard(
+  public ResponseEntity<? super PostBoardResponseDto> postBoard(
     @RequestBody @Valid PostBoardRequestDto requestBody
   ) {
-    return CustomResponse.serviceUnavailable;
+    PostBoardResponseDto responseBody = PostBoardResponseDto.success();
+    return ResponseEntity.status(HttpStatus.OK).body(responseBody);
   }
 
   // API : 댓글 작성 메서드 //
   @PostMapping("/{boardNumber}/comment")
-  public ResponseEntity<?> postComment(
+  public ResponseEntity<? super PostCommentResponseDto> postComment(
     @PathVariable("boardNumber") Integer boardNumber,
     @RequestBody @Valid PostCommentRequestDto requestBody
   ) {
-    return CustomResponse.serviceUnavailable;
+    PostCommentResponseDto responseBody = PostCommentResponseDto.success();
+    return ResponseEntity.status(HttpStatus.OK).body(responseBody); 
   }
 
   // API : 좋아요 기능 메서드 //
   @PutMapping("/{boardNumber}/favorite")
-  public ResponseEntity<?> putFavorite(
+  public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(
     @PathVariable("boardNumber") Integer boardNumber,
     @RequestBody @Valid PutFavoriteRequestDto requestBody
   ) {
-    return CustomResponse.serviceUnavailable;
+    PutFavoriteResponseDto responseBody = PutFavoriteResponseDto.success();
+    return ResponseEntity.status(HttpStatus.OK).body(responseBody); 
   }
 
   // API : 게시물 수정 메서드 //
   @PatchMapping("/{boardNumber}")
-  public ResponseEntity<?> patchBoard(
+  public ResponseEntity<? super PatchBoardResponseDto> patchBoard(
     @PathVariable("boardNumber") Integer boardNumber,
     @RequestBody @Valid PatchBoardRequestDto requestBody
   ) {
-    return CustomResponse.serviceUnavailable;
+    PatchBoardResponseDto responseBody = PatchBoardResponseDto.success();
+    return ResponseEntity.status(HttpStatus.OK).body(responseBody); 
   }
 
   // API : 게시물 삭제 메서드 //
   @DeleteMapping("/{boardNumber}/{email}")
-  public ResponseEntity<?> deleteBoard(
+  public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(
     @PathVariable("boardNumber") Integer boardNumber,
     @PathVariable("email") String email
   ) {
-    return CustomResponse.serviceUnavailable;
+    DeleteBoardResponseDto responseBody = DeleteBoardResponseDto.success();
+    return ResponseEntity.status(HttpStatus.OK).body(responseBody); 
   }
 
 }

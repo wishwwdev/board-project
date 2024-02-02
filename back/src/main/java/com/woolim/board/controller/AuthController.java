@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.woolim.board.dto.request.auth.SignInRequestDto;
 import com.woolim.board.dto.request.auth.SignUpRequestDto;
-import com.woolim.board.dto.response.ResponseDto;
 import com.woolim.board.dto.response.auth.SignInResponseDto;
 import com.woolim.board.dto.response.auth.SignUpResponseDto;
 
