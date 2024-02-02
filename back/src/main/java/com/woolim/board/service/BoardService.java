@@ -1,6 +1,19 @@
 package com.woolim.board.service;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.woolim.board.dto.request.board.PatchBoardRequestDto;
+import com.woolim.board.dto.request.board.PostBoardRequestDto;
+import com.woolim.board.dto.request.board.PostCommentRequestDto;
+import com.woolim.board.dto.request.board.PutFavoriteRequestDto;
+import com.woolim.board.dto.response.board.DeleteBoardResponseDto;
+import com.woolim.board.dto.response.board.PatchBoardResponseDto;
+import com.woolim.board.dto.response.board.PostBoardResponseDto;
+import com.woolim.board.dto.response.board.PostCommentResponseDto;
+import com.woolim.board.dto.response.board.PutFavoriteResponseDto;
+
 
 public interface BoardService {
   
@@ -18,6 +31,18 @@ public interface BoardService {
   ResponseEntity<?> getCommentList(Integer boardNumber);
   // method : 특정 유저의 게시물 리스트 불러오기 메서드 //
   ResponseEntity<?> getUserList(String email);
+  // method : 게시물 작성 메서드 //
+  ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto);
+  // method : 댓글 작성 메서드 //
+  ResponseEntity<? super PostCommentResponseDto> postComment(Integer boardNumber, PostCommentRequestDto dto);
+  // method : 좋아요 기능 메서드 //
+  ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber, PutFavoriteRequestDto dto);
+  // method : 게시물 수정 메서드 //
+  ResponseEntity<? super PatchBoardResponseDto> patchBoard(Integer boardNumber, PatchBoardRequestDto dto);
+  // method : 게시물 삭제 메서드 //
+  ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardNumber, String email);
+
+
 
 
 
