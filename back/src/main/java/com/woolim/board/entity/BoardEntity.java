@@ -3,7 +3,9 @@ package com.woolim.board.entity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.woolim.board.dto.request.board.PatchBoardRequestDto;
 import com.woolim.board.dto.request.board.PostBoardRequestDto;
+import com.woolim.board.dto.response.board.PatchBoardResponseDto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -42,5 +44,11 @@ public class BoardEntity {
     this.imageUrl = dto.getImageUrl();
     this.writeDatetime = writeDatetime;
     this.writerEmail = dto.getWriterEmail();
+  }
+
+  public void patch (PatchBoardRequestDto dto) {
+    this.title = dto.getTitle();
+    this.contents = dto.getContents();
+    this.imageUrl = dto.getImageUrl();
   }
 }

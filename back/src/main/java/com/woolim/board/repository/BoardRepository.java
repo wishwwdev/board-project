@@ -10,4 +10,6 @@ import com.woolim.board.entity.BoardEntity;
 @Repository
 public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
   boolean existsByBoardNumber(Integer boardNumber);
+  
+  BoardEntity findByBoardNumber(Integer boardNumber);
 }

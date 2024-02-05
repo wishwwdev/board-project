@@ -170,8 +170,37 @@ public class BoardServiceImplement implements BoardService {
 
   @Override
   public ResponseEntity<? super PatchBoardResponseDto> patchBoard(Integer boardNumber, PatchBoardRequestDto dto) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'patchBoard'");
+
+    String userEmail = dto.getUserEmail();
+
+    try {
+      // todo: 추후 controller로 이동 //
+      if (boardNumber == null) return PatchBoardResponseDto.noExistedBoard();
+
+      // description: 존재하는 유저인지 확인 //
+      boolean hasUser = userRepository.existsByEmail(userEmail);
+      if (!hasUser) return PatchBoardResponseDto.noExistedUser();
+
+      // description: 존재하는 게시물인지 확인 //
+      BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+      if (boardEntity == null) return PatchBoardResponseDto.noExistedBoard();
+
+      // description: 작성자 이메일과 입력받은 이메일이 같은지 확인 //
+      boolean equalWriter = userEmail.equals(boardEntity.getWriterEmail());
+      if (!equalWriter) return PatchBoardResponseDto.noPermission();
+
+      // description: 수정 //
+      boardEntity.patch(dto);
+
+      // description: 데이터베이스에 저장 //
+      boardRepository.save(boardEntity);
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return PatchBoardResponseDto.success();
   }
 
   @Override
@@ -190,16 +219,21 @@ public class BoardServiceImplement implements BoardService {
       if (!hasUser) return DeleteBoardResponseDto.noExixtedUser();
 
       // description: 존재하는 게시물인지 확인 //
-      boolean hasBoard = boardRepository.existsByBoardNumber(boardNumber);
-      if (!hasBoard) return DeleteBoardResponseDto.noExixtedBoard();
+      BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+      if (boardEntity == null) return DeleteBoardResponseDto.noExixtedBoard();
 
       // description: 게시물 작성자 이메일과 입력받은 이메일이 같은지 확인 //
+      boolean equalWriter = email.equals(boardEntity.getWriterEmail());
+      if (!equalWriter) return DeleteBoardResponseDto.noPermission();
 
       // description: 댓글 데이터 삭제 //
+      commentRepository.deleteByBoardNumber(boardNumber);
 
-      // description: 좋아요 데이터 삭재 //
+      // description: 좋아요 데이터 삭제 //
+      favoriteRepository.deleteByBoardNumber(boardNumber);
 
       // description: 게시물 삭제 //
+      boardRepository.delete(boardEntity);
 
       
 

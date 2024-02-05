@@ -5,7 +5,12 @@ import org.springframework.stereotype.Repository;
 
 import com.woolim.board.entity.CommentEntity;
 
+import jakarta.transaction.Transactional;
+
 @Repository
 public interface CommentRepository extends JpaRepository<CommentEntity, Integer> {
-  
+
+  @Transactional
+  void deleteByBoardNumber(Integer boardNumber);
+
 }
