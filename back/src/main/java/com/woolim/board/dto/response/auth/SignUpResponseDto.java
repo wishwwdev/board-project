@@ -18,9 +18,9 @@ public class SignUpResponseDto extends ResponseDto {
     super(code, message);
   }
 
-  public static SignUpResponseDto success() {
+  public static ResponseEntity<SignUpResponseDto> success() {
     SignUpResponseDto result = new SignUpResponseDto(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-    return result;
+    return ResponseEntity.status(HttpStatus.OK).body(result);
   }
 
   public static ResponseEntity<ResponseDto> existedEmail() {

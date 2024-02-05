@@ -1,5 +1,8 @@
 package com.woolim.board.dto.response;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import com.woolim.board.common.response.ResponseCode;
 import com.woolim.board.common.response.ResponseMessage;
 
@@ -15,9 +18,9 @@ public class ResponseDto {
   private String code;
   private String message;
 
-  public static ResponseDto databaseError() {
+  public static ResponseEntity<ResponseDto> databaseError() {
     ResponseDto result = new ResponseDto(ResponseCode.DATABASE_ERROR, ResponseMessage.DATABASE_ERROR);
-    return result;
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
   }
 
 }

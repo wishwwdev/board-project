@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FavoritePK implements Serializable {
   @Column(name = "board_number")
-  private int boareNumber;
+  private int boardNumber;
   @Column(name = "user_email")
   private String userEmail;
 }
