@@ -32,24 +32,29 @@ const PATCH_USER_PROFILE_URL = (email: string) => `${API_DOMAIN}/user/${email}/p
 const GET_SIGN_IN_USER_URL = () => `${API_DOMAIN}/user`;
 const POST_FILE = () => `${API_DOMAIN}/file/upload`;
 
-export const signUpRequest = async (data: SignUpRequestDto) => 
-  await axios.post(SIGN_UP_URL(), data)
-    .then((response) => {
-      return response;
-    })
-    .catch((error) => null);
+export const signUpRequest = async (data: SignUpRequestDto) => {
+  const result = await axios.post(SIGN_UP_URL(), data)
+  .then((response) => {
+    return response;
+  }).catch((error) => null);
+
+  return result;
+}
+
 
 export const signInRequest = async (data: SignInRequestDto) => {
   const result = await axios.post(SIGN_IN_URL(), data)
     .then((response) => {
       return response;
     })
-    .catch((error) => null)
+    .catch((error) => null);
 
   return result;
 }
 
-export const getTop3BoardListRequest = async () =>
+// 괄호 같은거 최대로 생략 했을 때 코드
+// 위의 코드랑 같은 작동함
+export const getTop3BoardListRequest = async () => 
   await axios.get(GET_TOP3_BOARD_LIST_URL())
     .then((response) => response)
     .catch((error) => null);
@@ -61,51 +66,51 @@ export const getCurrentBoardListRequest = async () =>
 
 export const getPopularListRequest = async () =>
   await axios.get(GET_POPULAR_LIST_URL())
-  .then((response) => response)
-  .catch((error) => null);
+    .then((response) => response)
+    .catch((error) => null);
 
 export const getSearchBoardListRequest = async (searchWord: string) =>
   await axios.get(GET_SEARCH_BOARD_LIST_URL(searchWord))
-  .then((response) => response)
-  .catch((error) => null);
+    .then((response) => response)
+    .catch((error) => null);
   
 export const getRelationListRequest = async (searchWord: string) =>
   await axios.get(GET_RELATION_LIST_URL(searchWord))
-  .then((response) => response)
-  .catch((error) => null);
+    .then((response) => response)
+    .catch((error) => null);
 
 export const getBoardRequest = async (boardNumber: number | string) =>
   await axios.get(GET_BOARD_URL(boardNumber))
-  .then((response) => response)
-  .catch((error) => null);
+    .then((response) => response)
+    .catch((error) => null);
 
 export const getFavoriteListRequest = async (boardNumber: number | string) =>
   await axios.get(GET_FAVORITE_LIST_URL(boardNumber))
-  .then((response) => response)
-  .catch((error) => null);
+    .then((response) => response)
+    .catch((error) => null);
 
   
 export const getCommentListRequest = async (boardNumber: number | string) =>
   await axios.get(GET_COMMENT_LIST_URL(boardNumber))
-  .then((response) => response)
-  .catch((error) => null);
+    .then((response) => response)
+    .catch((error) => null);
 
 
 export const putFavoriteRequest = async (boardNumber: number | string, data: any) =>
   await axios.put(PUT_FAVORTIE_URL(boardNumber), data)
-  .then((response) => response)
-  .catch((error) => null);
+    .then((response) => response)
+    .catch((error) => null);
 
   
 export const postCommentRequest = async (boardNumber: number | string, data: any) =>
   await axios.post(POST_COMMENT_URL(boardNumber), data)
-  .then((response) => response)
-  .catch((error) => null);
+    .then((response) => response)
+    .catch((error) => null);
 
 export const patchBoardRequest = async (boardNumber: number | string, data: any) =>
   await axios.patch(PATCH_BOARD_URL(boardNumber), data)
-  .then((response) => response)
-  .catch((error) => null);
+    .then((response) => response)
+    .catch((error) => null);
 
 export const deleteBoardRequest = async (boardNumber: number | string) =>
   await axios.delete(DELETE_BOARD_URL(boardNumber))

@@ -9,6 +9,7 @@ import InputBox from 'src/components/InputBox';
 import { signInMock, userMock } from 'src/mocks';
 import { INPUT_ICON, MAIN_PATH, emailPattern, telNumberPattern } from 'src/constants';
 import './style.css';
+import { signUpRequest } from 'src/apis';
 
 
 //            component           //
@@ -187,13 +188,10 @@ export default function Authentication() {
         address,
         addressDetail
       }
-      axios.post('url', data)
-        .then((response) => {
-          // todo: 정상 결과
-          setView('sign-in');
-        }).catch((error) => {
-          // todo: 실패 결과
-        });
+
+      signUpRequest(data).then((response) => {
+        console.log(response);
+      })
     }
 
     //            event handler            //

@@ -1,5 +1,8 @@
 package com.woolim.board.dto.response.board;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import com.woolim.board.common.response.ResponseCode;
 import com.woolim.board.common.response.ResponseMessage;
 import com.woolim.board.dto.response.ResponseDto;
@@ -15,14 +18,14 @@ public class PostBoardResponseDto extends ResponseDto {
     super(code, message);
   }
 
-  public static PostBoardResponseDto success() {
+  public static ResponseEntity<PostBoardResponseDto> success() {
     PostBoardResponseDto result = new PostBoardResponseDto(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-    return result;
+    return ResponseEntity.status(HttpStatus.OK).body(result);
   }
 
-  public static ResponseDto nonExistedUser() {
+  public static ResponseEntity<ResponseDto> nonExistedUser() {
     ResponseDto result = new ResponseDto(ResponseCode.NO_EXISTED_USER, ResponseMessage.NO_EXISTED_USER);
-    return result;
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
   }
   
 }
