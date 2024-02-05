@@ -1,5 +1,8 @@
 package com.woolim.board.dto.response.auth;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import com.woolim.board.common.response.ResponseCode;
 import com.woolim.board.common.response.ResponseMessage;
 import com.woolim.board.dto.response.ResponseDto;
@@ -20,19 +23,19 @@ public class SignUpResponseDto extends ResponseDto {
     return result;
   }
 
-  public static ResponseDto existedEmail() {
+  public static ResponseEntity<ResponseDto> existedEmail() {
     ResponseDto result = new ResponseDto(ResponseCode.EXISTED_EMAIL, ResponseMessage.EXISTED_EMAIL);
-    return result;
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
   }
 
-  public static ResponseDto existedNickname() {
+  public static ResponseEntity<ResponseDto> existedNickname() {
     ResponseDto result = new ResponseDto(ResponseCode.EXISTED_NICKNAME, ResponseMessage.EXISTED_NICKNAME);
-    return result;
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
   }
 
-  public static ResponseDto existedTelNumber() {
+  public static ResponseEntity<ResponseDto> existedTelNumber() {
     ResponseDto result = new ResponseDto(ResponseCode.EXISTED_TEL_NUMBER, ResponseMessage.EXISTED_TEL_NUMBER);
-    return result;
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
   }
 
 
