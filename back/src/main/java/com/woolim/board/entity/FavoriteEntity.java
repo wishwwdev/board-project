@@ -17,8 +17,10 @@ import lombok.NoArgsConstructor;
 @Table(name = "favorite")
 @IdClass(FavoritePK.class)
 public class FavoriteEntity {
+  
   @Id
   private int boardNumber;
   @Id
   private String userEmail;
+
 }
