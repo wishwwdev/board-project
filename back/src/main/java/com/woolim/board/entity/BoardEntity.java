@@ -1,5 +1,10 @@
 package com.woolim.board.entity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import com.woolim.board.dto.request.board.PostBoardRequestDto;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,4 +31,16 @@ public class BoardEntity {
   private int favoriteCount;
   private String writeDatetime;
   private String writerEmail;
+
+  public BoardEntity (PostBoardRequestDto dto) {
+    Date now = new Date();
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    String writeDatetime = simpleDateFormat.format(now);
+
+    this.title = dto.getTitle();
+    this.contents = dto.getContents();
+    this.imageUrl = dto.getImageUrl();
+    this.writeDatetime = writeDatetime;
+    this.writerEmail = dto.getWriterEmail();
+  }
 }
