@@ -1,5 +1,7 @@
 package com.woolim.board.service.implement;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +11,12 @@ import com.woolim.board.dto.request.board.PostCommentRequestDto;
 import com.woolim.board.dto.request.board.PutFavoriteRequestDto;
 import com.woolim.board.dto.response.ResponseDto;
 import com.woolim.board.dto.response.board.DeleteBoardResponseDto;
+import com.woolim.board.dto.response.board.GetCurrentBoardResponseDto;
 import com.woolim.board.dto.response.board.PatchBoardResponseDto;
 import com.woolim.board.dto.response.board.PostBoardResponseDto;
 import com.woolim.board.dto.response.board.PostCommentResponseDto;
 import com.woolim.board.dto.response.board.PutFavoriteResponseDto;
+import com.woolim.board.dto.response.board.boardListResponseDto;
 import com.woolim.board.entity.BoardEntity;
 import com.woolim.board.entity.CommentEntity;
 import com.woolim.board.entity.FavoriteEntity;
@@ -40,9 +44,20 @@ public class BoardServiceImplement implements BoardService {
   }
 
   @Override
-  public ResponseEntity<?> getCurrnetBoard() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getCurrnetBoard'");
+  public ResponseEntity<? super GetCurrentBoardResponseDto> getCurrnetBoard() {
+
+    List<boardListResponseDto> boardList = null;
+
+    try {
+
+      
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetCurrentBoardResponseDto.success(boardList);
   }
 
   @Override

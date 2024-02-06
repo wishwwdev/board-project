@@ -1,5 +1,7 @@
 package com.woolim.board.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,7 @@ import com.woolim.board.dto.request.board.PostBoardRequestDto;
 import com.woolim.board.dto.request.board.PostCommentRequestDto;
 import com.woolim.board.dto.request.board.PutFavoriteRequestDto;
 import com.woolim.board.dto.response.board.DeleteBoardResponseDto;
+import com.woolim.board.dto.response.board.GetCurrentBoardResponseDto;
 import com.woolim.board.dto.response.board.PatchBoardResponseDto;
 import com.woolim.board.dto.response.board.PostBoardResponseDto;
 import com.woolim.board.dto.response.board.PostCommentResponseDto;
@@ -42,8 +45,8 @@ public class BoardController {
 
   // API : 최신 게시물 리스트 불러오기 메서드 //
   @GetMapping("/current-board")
-  public ResponseEntity<?> getCurrnetBoard() {
-    ResponseEntity<?> response = boardService.getCurrnetBoard();
+  public ResponseEntity<? super GetCurrentBoardResponseDto> getCurrnetBoard() {
+    ResponseEntity<? super GetCurrentBoardResponseDto> response = boardService.getCurrnetBoard();
     return response;
   }
 

@@ -5,7 +5,6 @@ import java.util.Date;
 
 import com.woolim.board.dto.request.board.PatchBoardRequestDto;
 import com.woolim.board.dto.request.board.PostBoardRequestDto;
-import com.woolim.board.dto.response.board.PatchBoardResponseDto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
