@@ -12,15 +12,18 @@ import com.woolim.board.dto.request.board.PutFavoriteRequestDto;
 import com.woolim.board.dto.response.ResponseDto;
 import com.woolim.board.dto.response.board.DeleteBoardResponseDto;
 import com.woolim.board.dto.response.board.GetCurrentBoardResponseDto;
+import com.woolim.board.dto.response.board.GetTop3ResponseDto;
 import com.woolim.board.dto.response.board.PatchBoardResponseDto;
 import com.woolim.board.dto.response.board.PostBoardResponseDto;
 import com.woolim.board.dto.response.board.PostCommentResponseDto;
 import com.woolim.board.dto.response.board.PutFavoriteResponseDto;
-import com.woolim.board.dto.response.board.boardListResponseDto;
+import com.woolim.board.dto.response.board.BoardListResponseDto;
 import com.woolim.board.entity.BoardEntity;
 import com.woolim.board.entity.CommentEntity;
 import com.woolim.board.entity.FavoriteEntity;
+import com.woolim.board.entity.resultSet.BoardListResultSet;
 import com.woolim.board.repository.BoardRepository;
+import com.woolim.board.repository.BoardViewRepository;
 import com.woolim.board.repository.CommentRepository;
 import com.woolim.board.repository.FavoriteRepository;
 import com.woolim.board.repository.UserRepository;
@@ -36,21 +39,26 @@ public class BoardServiceImplement implements BoardService {
   private final BoardRepository boardRepository;
   private final CommentRepository commentRepository;
   private final FavoriteRepository favoriteRepository;
+  private final BoardViewRepository boardViewRepository;
 
   @Override
-  public ResponseEntity<?> getTop3() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getTop3'");
+  public ResponseEntity<? super GetTop3ResponseDto> getTop3() {
+    
   }
 
   @Override
   public ResponseEntity<? super GetCurrentBoardResponseDto> getCurrnetBoard() {
 
-    List<boardListResponseDto> boardList = null;
+    List<BoardListResponseDto> boardList = null;
 
     try {
 
-      
+      // description: 최신 게시물 리스트 불러오기 //
+      List<BoardListResultSet> resultSets = boardRepository.getCurrentList();
+
+      // description: 검색 결과를 ResponseDto 형태로 변환 //
+      boardList = BoardListResponseDto.copyList(resultSets);
+
 
     } catch (Exception exception) {
       exception.printStackTrace();
@@ -99,6 +107,8 @@ public class BoardServiceImplement implements BoardService {
       // description: 작성자 이메일이 존재하는 이메일 인지 확인 //
       boolean hasUser = userRepository.existsByEmail(writerEmail);
       if (!hasUser) return PostBoardResponseDto.nonExistedUser();
+
+      // todo: 로그인한 유저와 작성자가 같은지
       
       // description: entity 생성 //
       BoardEntity boardEntity = new BoardEntity(dto);

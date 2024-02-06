@@ -8,6 +8,7 @@ import com.woolim.board.dto.request.board.PostCommentRequestDto;
 import com.woolim.board.dto.request.board.PutFavoriteRequestDto;
 import com.woolim.board.dto.response.board.DeleteBoardResponseDto;
 import com.woolim.board.dto.response.board.GetCurrentBoardResponseDto;
+import com.woolim.board.dto.response.board.GetTop3ResponseDto;
 import com.woolim.board.dto.response.board.PatchBoardResponseDto;
 import com.woolim.board.dto.response.board.PostBoardResponseDto;
 import com.woolim.board.dto.response.board.PostCommentResponseDto;
@@ -17,7 +18,7 @@ import com.woolim.board.dto.response.board.PutFavoriteResponseDto;
 public interface BoardService {
   
   // method : Top3 게시물 불러오기 메서드 //
-  ResponseEntity<?> getTop3();
+  ResponseEntity<? super GetTop3ResponseDto> getTop3();
   // method : 최신 게시물 리스트 불러오기 메서드 //
   ResponseEntity<? super GetCurrentBoardResponseDto> getCurrnetBoard();
   // method : 게시물 불러오기 메서드 //

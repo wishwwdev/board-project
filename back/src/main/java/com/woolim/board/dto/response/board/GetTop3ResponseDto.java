@@ -14,17 +14,17 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class GetCurrentBoardResponseDto extends ResponseDto {
+public class GetTop3ResponseDto extends ResponseDto {
   
-  private List<BoardListResponseDto> boardList;
-  
-  private GetCurrentBoardResponseDto (String code, String message, List<BoardListResponseDto> boardList) {
+  private List<BoardListResponseDto> top3;
+
+  private GetTop3ResponseDto(String code, String message, List<BoardListResponseDto> top3) {
     super(code, message);
-    this.boardList = boardList;
+    this.top3 = top3;
   }
 
-  public static ResponseEntity<GetCurrentBoardResponseDto> success(List<BoardListResponseDto> boardList) {
-    GetCurrentBoardResponseDto result = new GetCurrentBoardResponseDto(ResponseCode.SUCCESS, ResponseMessage.SUCCESS, boardList);
+  public static ResponseEntity<GetTop3ResponseDto> success(List<BoardListResponseDto> top3) {
+    GetTop3ResponseDto result = new GetTop3ResponseDto(ResponseCode.SUCCESS, ResponseMessage.SUCCESS, top3);
     return ResponseEntity.status(HttpStatus.OK).body(result);
   }
 
