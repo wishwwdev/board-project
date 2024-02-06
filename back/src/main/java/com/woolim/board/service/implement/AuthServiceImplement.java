@@ -2,12 +2,9 @@ package com.woolim.board.service.implement;
 
 import java.util.UUID;
 
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.mysql.cj.protocol.x.Ok;
 import com.woolim.board.dto.request.auth.SignInRequestDto;
 import com.woolim.board.dto.request.auth.SignUpRequestDto;
 import com.woolim.board.dto.response.ResponseDto;

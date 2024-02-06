@@ -44,7 +44,7 @@ public class UserController {
   // API : 유저 닉네임 수정 메서드 //
   @PatchMapping("/{email}/nickname")
   public ResponseEntity<? super PatchUserNicknameResponseDto> patchNickname(
-    @PathVariable("email") String email,
+    @PathVariable(value="email", required=true) String email,
     @RequestBody @Valid PatchUserNicknameRequestDto requestBody
   ) {
     ResponseEntity<? super PatchUserNicknameResponseDto> response = userService.patchNickname(email, requestBody);
@@ -54,7 +54,7 @@ public class UserController {
   // API : 유저 프로필 이미지 수정 메서드 //
   @PatchMapping("/{email}/profile")
   public ResponseEntity<? super PatchUserProfileResponseDto> patchProfile(
-    @PathVariable("email") String email,
+    @PathVariable(value="email", required=true) String email,
     @RequestBody @Valid PatchUserProfileRequestDto requestBody
   ) {
     ResponseEntity<? super PatchUserProfileResponseDto> response = userService.patchProfile(email, requestBody);
