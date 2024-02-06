@@ -8,6 +8,7 @@ import com.woolim.board.dto.request.board.PostCommentRequestDto;
 import com.woolim.board.dto.request.board.PutFavoriteRequestDto;
 import com.woolim.board.dto.response.board.DeleteBoardResponseDto;
 import com.woolim.board.dto.response.board.GetCurrentBoardResponseDto;
+import com.woolim.board.dto.response.board.GetSearchBoardResponseDto;
 import com.woolim.board.dto.response.board.GetTop3ResponseDto;
 import com.woolim.board.dto.response.board.PatchBoardResponseDto;
 import com.woolim.board.dto.response.board.PostBoardResponseDto;
@@ -24,7 +25,7 @@ public interface BoardService {
   // method : 게시물 불러오기 메서드 //
   ResponseEntity<?> getBoard(Integer boardNumber);
   // method : 검색 게시물 리스트 불러오기 메서드 //
-  ResponseEntity<?> getSearchBoardList(String searchWord);
+  ResponseEntity<? super GetSearchBoardResponseDto> getSearchBoard(String searchWord);
   // method : 특정 게시물의 좋아요 리스트 불러오기 메서드 //
   ResponseEntity<?> getFavoriteList(Integer boardNumber);
   // method : 특정 게시물의 댓글 리스트 불러오기 메서드 //

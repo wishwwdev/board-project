@@ -12,6 +12,7 @@ import com.woolim.board.dto.request.board.PutFavoriteRequestDto;
 import com.woolim.board.dto.response.ResponseDto;
 import com.woolim.board.dto.response.board.DeleteBoardResponseDto;
 import com.woolim.board.dto.response.board.GetCurrentBoardResponseDto;
+import com.woolim.board.dto.response.board.GetSearchBoardResponseDto;
 import com.woolim.board.dto.response.board.GetTop3ResponseDto;
 import com.woolim.board.dto.response.board.PatchBoardResponseDto;
 import com.woolim.board.dto.response.board.PostBoardResponseDto;
@@ -19,6 +20,7 @@ import com.woolim.board.dto.response.board.PostCommentResponseDto;
 import com.woolim.board.dto.response.board.PutFavoriteResponseDto;
 import com.woolim.board.dto.response.board.BoardListResponseDto;
 import com.woolim.board.entity.BoardEntity;
+import com.woolim.board.entity.BoardViewEntity;
 import com.woolim.board.entity.CommentEntity;
 import com.woolim.board.entity.FavoriteEntity;
 import com.woolim.board.entity.resultSet.BoardListResultSet;
@@ -43,7 +45,23 @@ public class BoardServiceImplement implements BoardService {
 
   @Override
   public ResponseEntity<? super GetTop3ResponseDto> getTop3() {
-    
+
+    List<BoardListResponseDto> top3 = null;
+
+    try {
+
+      // description: 좋아요 순으로 상위 3개 게시물 조회 //
+      List<BoardViewEntity> boardViewEntitis = boardViewRepository.findTop3ByOrderByFavoriteCountDesc();
+
+      // description: entity를 dto 형태로 변환 //
+      top3 = BoardListResponseDto.copyEntityList(boardViewEntitis);
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetTop3ResponseDto.success(top3);
   }
 
   @Override
@@ -75,9 +93,18 @@ public class BoardServiceImplement implements BoardService {
   }
 
   @Override
-  public ResponseEntity<?> getSearchBoardList(String searchWord) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getSearchBoardList'");
+  public ResponseEntity<? super GetSearchBoardResponseDto> getSearchBoard(String searchWord) {
+
+    List<BoardListResponseDto> boardList = null;
+
+    try {
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetSearchBoardResponseDto.success(boardList);
   }
 
   @Override

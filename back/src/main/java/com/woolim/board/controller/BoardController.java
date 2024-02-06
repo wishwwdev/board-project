@@ -19,6 +19,7 @@ import com.woolim.board.dto.request.board.PostCommentRequestDto;
 import com.woolim.board.dto.request.board.PutFavoriteRequestDto;
 import com.woolim.board.dto.response.board.DeleteBoardResponseDto;
 import com.woolim.board.dto.response.board.GetCurrentBoardResponseDto;
+import com.woolim.board.dto.response.board.GetSearchBoardResponseDto;
 import com.woolim.board.dto.response.board.GetTop3ResponseDto;
 import com.woolim.board.dto.response.board.PatchBoardResponseDto;
 import com.woolim.board.dto.response.board.PostBoardResponseDto;
@@ -62,10 +63,10 @@ public class BoardController {
 
   // API : 검색 게시물 리스트 불러오기 메서드 //
   @GetMapping("/search/{searchWord}")
-  public ResponseEntity<?> getSearchBoardList(
-    @PathVariable("searchWord") String searchWord
+  public ResponseEntity<? super GetSearchBoardResponseDto> getSearchBoard(
+    @PathVariable(value = "searchWord", required = true) String searchWord
   ) {
-    ResponseEntity<?> response = boardService.getSearchBoardList(searchWord);
+    ResponseEntity<? super GetSearchBoardResponseDto> response = boardService.getSearchBoard(searchWord);
     return response;
   }
 
