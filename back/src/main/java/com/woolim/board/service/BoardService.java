@@ -25,7 +25,7 @@ public interface BoardService {
   // method : 게시물 불러오기 메서드 //
   ResponseEntity<?> getBoard(Integer boardNumber);
   // method : 검색 게시물 리스트 불러오기 메서드 //
-  ResponseEntity<? super GetSearchBoardResponseDto> getSearchBoard(String searchWord);
+  ResponseEntity<? super GetSearchBoardResponseDto> getSearchBoard(String searchWord, String relationWord);
   // method : 특정 게시물의 좋아요 리스트 불러오기 메서드 //
   ResponseEntity<?> getFavoriteList(Integer boardNumber);
   // method : 특정 게시물의 댓글 리스트 불러오기 메서드 //

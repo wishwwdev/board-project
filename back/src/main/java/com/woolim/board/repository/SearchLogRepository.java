@@ -3,9 +3,9 @@ package com.woolim.board.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.woolim.board.entity.SearchEntity;
+import com.woolim.board.entity.SearchLogEntity;
 
 @Repository
-public interface SearchRepository extends JpaRepository<SearchEntity, Integer> {
+public interface SearchLogRepository extends JpaRepository<SearchLogEntity, Integer> {
   
 }

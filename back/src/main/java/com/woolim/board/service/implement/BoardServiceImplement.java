@@ -23,11 +23,13 @@ import com.woolim.board.entity.BoardEntity;
 import com.woolim.board.entity.BoardViewEntity;
 import com.woolim.board.entity.CommentEntity;
 import com.woolim.board.entity.FavoriteEntity;
+import com.woolim.board.entity.SearchLogEntity;
 import com.woolim.board.entity.resultSet.BoardListResultSet;
 import com.woolim.board.repository.BoardRepository;
 import com.woolim.board.repository.BoardViewRepository;
 import com.woolim.board.repository.CommentRepository;
 import com.woolim.board.repository.FavoriteRepository;
+import com.woolim.board.repository.SearchLogRepository;
 import com.woolim.board.repository.UserRepository;
 import com.woolim.board.service.BoardService;
 
@@ -42,6 +44,7 @@ public class BoardServiceImplement implements BoardService {
   private final CommentRepository commentRepository;
   private final FavoriteRepository favoriteRepository;
   private final BoardViewRepository boardViewRepository;
+  private final SearchLogRepository searchLogRepository;
 
   @Override
   public ResponseEntity<? super GetTop3ResponseDto> getTop3() {
@@ -93,11 +96,27 @@ public class BoardServiceImplement implements BoardService {
   }
 
   @Override
-  public ResponseEntity<? super GetSearchBoardResponseDto> getSearchBoard(String searchWord) {
+  public ResponseEntity<? super GetSearchBoardResponseDto> getSearchBoard(String searchWord, String relationWord) {
 
     List<BoardListResponseDto> boardList = null;
 
     try {
+
+      // description: 검색어가 제목과 내용에 포함되어 있는 데이터 조회 //
+      List<BoardViewEntity> boardViewEntities = boardViewRepository.findByTitleContainsOrContentsContainsOrderByWriteDatetimeDesc(searchWord, searchWord);
+
+      // description: entity를 dto형태로 변환 //
+      boardList = BoardListResponseDto.copyEntityList(boardViewEntities);
+
+      // description: 검색어 로그 저장 //
+      SearchLogEntity searchLogEntity = new SearchLogEntity(searchWord, relationWord);
+      searchLogRepository.save(searchLogEntity);
+      
+      // description: 첫번째 검색이 아닐 겅우 (relationWord가 null이 아님) //
+      if (relationWord != null) {
+        searchLogEntity = new SearchLogEntity(relationWord, searchWord);
+        searchLogRepository.save(searchLogEntity);
+      }
 
     } catch (Exception exception) {
       exception.printStackTrace();

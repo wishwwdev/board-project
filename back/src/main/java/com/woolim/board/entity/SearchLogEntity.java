@@ -12,12 +12,18 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "search")
-@Table(name = "search")
-public class SearchEntity {
+@Entity(name = "search_log")
+@Table(name = "search_log")
+public class SearchLogEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int logSequence;
   private String searchWord;
   private String relationWord;
+
+  public SearchLogEntity(String searchWord, String relationWord) {
+    this.searchWord = searchWord;
+    this.relationWord = relationWord;
+  }
+
 }

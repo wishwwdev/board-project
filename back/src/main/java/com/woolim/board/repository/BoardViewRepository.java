@@ -10,4 +10,5 @@ import com.woolim.board.entity.BoardViewEntity;
 @Repository
 public interface BoardViewRepository extends JpaRepository<BoardViewEntity, Integer> {
   List<BoardViewEntity> findTop3ByOrderByFavoriteCountDesc();
+  List<BoardViewEntity> findByTitleContainsOrContentsContainsOrderByWriteDatetimeDesc(String title, String Contents);
 }
