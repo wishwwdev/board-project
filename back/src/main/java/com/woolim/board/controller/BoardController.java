@@ -17,6 +17,7 @@ import com.woolim.board.dto.request.board.PostCommentRequestDto;
 import com.woolim.board.dto.request.board.PutFavoriteRequestDto;
 import com.woolim.board.dto.response.board.DeleteBoardResponseDto;
 import com.woolim.board.dto.response.board.GetBoardResponseDto;
+import com.woolim.board.dto.response.board.GetCommentListResponseDto;
 import com.woolim.board.dto.response.board.GetCurrentBoardResponseDto;
 import com.woolim.board.dto.response.board.GetFavoriteListResponseDto;
 import com.woolim.board.dto.response.board.GetSearchBoardResponseDto;
@@ -83,10 +84,10 @@ public class BoardController {
 
   // API : 특정 게시물의 댓글 리스트 불러오기 메서드 //
   @GetMapping("/{boardNumber}/comment-list")
-  public ResponseEntity<?> getCommentList(
+  public ResponseEntity<? super GetCommentListResponseDto> getCommentList(
     @PathVariable(value = "boardNumber", required = true) Integer boardNumber
   ) {
-    ResponseEntity<?> response = boardService.getCommentList(boardNumber);
+    ResponseEntity<? super GetCommentListResponseDto> response = boardService.getCommentList(boardNumber);
     return response;
   }
 

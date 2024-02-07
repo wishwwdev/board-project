@@ -2,6 +2,7 @@ package com.woolim.board.service.implement;
 
 import java.util.List;
 
+import org.hibernate.internal.ExceptionConverterImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import com.woolim.board.dto.response.ResponseDto;
 import com.woolim.board.dto.response.board.DeleteBoardResponseDto;
 import com.woolim.board.dto.response.board.FavoriteListResponseDto;
 import com.woolim.board.dto.response.board.GetBoardResponseDto;
+import com.woolim.board.dto.response.board.GetCommentListResponseDto;
 import com.woolim.board.dto.response.board.GetCurrentBoardResponseDto;
 import com.woolim.board.dto.response.board.GetFavoriteListResponseDto;
 import com.woolim.board.dto.response.board.GetSearchBoardResponseDto;
@@ -23,6 +25,7 @@ import com.woolim.board.dto.response.board.PostBoardResponseDto;
 import com.woolim.board.dto.response.board.PostCommentResponseDto;
 import com.woolim.board.dto.response.board.PutFavoriteResponseDto;
 import com.woolim.board.dto.response.board.BoardListResponseDto;
+import com.woolim.board.dto.response.board.CommentListResponseDto;
 import com.woolim.board.entity.BoardEntity;
 import com.woolim.board.entity.BoardViewEntity;
 import com.woolim.board.entity.CommentEntity;
@@ -30,6 +33,7 @@ import com.woolim.board.entity.FavoriteEntity;
 import com.woolim.board.entity.SearchLogEntity;
 import com.woolim.board.entity.UserEntity;
 import com.woolim.board.entity.resultSet.BoardListResultSet;
+import com.woolim.board.entity.resultSet.CommentListResultSet;
 import com.woolim.board.repository.BoardRepository;
 import com.woolim.board.repository.BoardViewRepository;
 import com.woolim.board.repository.CommentRepository;
@@ -174,9 +178,23 @@ public class BoardServiceImplement implements BoardService {
   }
 
   @Override
-  public ResponseEntity<?> getCommentList(Integer boardNumber) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getCommentList'");
+  public ResponseEntity<? super GetCommentListResponseDto> getCommentList(Integer boardNumber) {
+
+    List<CommentListResponseDto> commentList = null;
+
+    try {
+      // description: 게시물의 댓글 리스트 조회 /
+      List<CommentListResultSet> resultSets = commentRepository.getCommentList(boardNumber);
+
+      // description: resultSet을 dto로 변환
+      commentList = CommentListResponseDto.copyList(resultSets);
+
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+    return GetCommentListResponseDto.success(commentList);
   }
 
   @Override
