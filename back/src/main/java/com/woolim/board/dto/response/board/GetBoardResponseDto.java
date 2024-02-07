@@ -40,4 +40,9 @@ public class GetBoardResponseDto extends ResponseDto {
     return ResponseEntity.status(HttpStatus.OK).body(result);
   }
 
+  public static ResponseEntity<ResponseDto> noExistedBoard() {
+    ResponseDto result = new ResponseDto(ResponseCode.NO_EXISTED_BOARD, ResponseMessage.NO_EXISTED_BOARD);
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+  }
+
 }

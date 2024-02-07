@@ -101,6 +101,16 @@ public class BoardServiceImplement implements BoardService {
       // description: 게시물 번호에 해당하는 게시물 조회 //
       boardViewEntity = boardViewRepository.findByBoardNumber(boardNumber);
 
+      // description: 존재하는 게시물인지 확인 //
+      if (boardViewEntity == null) return GetBoardResponseDto.noExistedBoard();
+
+      // description: 게시물 조회수 증가 //
+      BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+      boardEntity.increaseViewCount();
+      
+      // description: 데이터베이스에 저장 //
+      boardRepository.save(boardEntity);
+
     } catch (Exception exception) {
       exception.printStackTrace();
       return ResponseDto.databaseError();
@@ -204,24 +214,26 @@ public class BoardServiceImplement implements BoardService {
 
     String userEmail = dto.getUserEmail();
 
-
     try {
-      // description: boardNumber가 null 인지 (추후 controller로 이동) //
-      if (boardNumber == null) return PostCommentResponseDto.noExistedBoard();
-
       // description: 존재하는 회원인지 확인 //
       boolean hasUser = userRepository.existsByEmail(userEmail);
       if (!hasUser) return PostBoardResponseDto.nonExistedUser();
 
       // description: 존재하는 게시물인지 확인 //
-      boolean hasBoard = boardRepository.existsByBoardNumber(boardNumber);
-      if (!hasBoard) return PostCommentResponseDto.noExistedBoard();
+      BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+      if (boardEntity == null) return PostCommentResponseDto.noExistedBoard();
 
       // description: entity 생성 //
       CommentEntity commentEntity = new CommentEntity(boardNumber, dto);
 
       // description: 데이터베이스 저장 //
       commentRepository.save(commentEntity);
+
+      // description: 게시물 댓글 수 증가 //
+      boardEntity.increaseCommentCount();
+
+      // description: 데이터베이스 저장 //
+      boardRepository.save(boardEntity);
 
     } catch (Exception exception) {
       exception.printStackTrace();
@@ -246,8 +258,8 @@ public class BoardServiceImplement implements BoardService {
       if (!hasUser) return PutFavoriteResponseDto.noExistedUser();
 
       // description: 존재하는 게시물인지 확인 //
-      boolean hasBoard = boardRepository.existsByBoardNumber(boardNumber);
-      if (!hasBoard) return PutFavoriteResponseDto.noExistedBoard();
+      BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+      if (boardEntity == null) return PutFavoriteResponseDto.noExistedBoard();
 
       // description: 해당 유저가 해당 게시물에 좋아요 했는지 확인 //
       boolean idFavorite = favoriteRepository.existsByUserEmailAndBoardNumber(userEmail, boardNumber);
@@ -256,9 +268,19 @@ public class BoardServiceImplement implements BoardService {
       FavoriteEntity favoriteEntity = new FavoriteEntity(boardNumber, userEmail);
 
       // description: 이미 좋아요 했을 때 //
-      if (idFavorite) favoriteRepository.delete(favoriteEntity);
+      if (idFavorite) {
+        favoriteRepository.delete(favoriteEntity);
+        boardEntity.decreaseFavoriteCount();
+      } 
+
       // description: 아직 좋아요 하지 않았을 때 //
-      else favoriteRepository.save(favoriteEntity);
+      else {
+        favoriteRepository.save(favoriteEntity);
+        boardEntity.increaseFavoriteCount();
+      }
+
+      // description: 데이터베이스에 저장 //
+      boardRepository.save(boardEntity);
 
      } catch (Exception exception) {
       exception.printStackTrace();
@@ -274,9 +296,6 @@ public class BoardServiceImplement implements BoardService {
     String userEmail = dto.getUserEmail();
 
     try {
-      // todo: 추후 controller로 이동 //
-      if (boardNumber == null) return PatchBoardResponseDto.noExistedBoard();
-
       // description: 존재하는 유저인지 확인 //
       boolean hasUser = userRepository.existsByEmail(userEmail);
       if (!hasUser) return PatchBoardResponseDto.noExistedUser();
@@ -307,13 +326,6 @@ public class BoardServiceImplement implements BoardService {
   public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardNumber, String email) {
 
     try {
-
-      // todo: 추후 controller로 이동 //
-      if (boardNumber == null) return DeleteBoardResponseDto.noExixtedBoard();
-
-      // todo: 추후 controller로 이동 //
-      if (email == null) return DeleteBoardResponseDto.noExixtedUser();
-
       // description: 존재하는 유저인지 확인 //
       boolean hasUser = userRepository.existsByEmail(email);
       if (!hasUser) return DeleteBoardResponseDto.noExixtedUser();

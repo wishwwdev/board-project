@@ -7,8 +7,8 @@ public interface ResponseMessage {
   String EXISTED_NICKNAME = "Existed Nickname";
   String EXISTED_TEL_NUMBER = "Existed Tel Number";
 
-  String NO_EXISTED_USER = "Existed User";
-  String NO_EXISTED_BOARD = "Existed Board";
+  String NO_EXISTED_USER = "No Existed User";
+  String NO_EXISTED_BOARD = "No Existed Board";
 
   String NO_PERMISSION = "No Permission";
 
