@@ -11,8 +11,10 @@ import com.woolim.board.dto.request.board.PostCommentRequestDto;
 import com.woolim.board.dto.request.board.PutFavoriteRequestDto;
 import com.woolim.board.dto.response.ResponseDto;
 import com.woolim.board.dto.response.board.DeleteBoardResponseDto;
+import com.woolim.board.dto.response.board.FavoriteListResponseDto;
 import com.woolim.board.dto.response.board.GetBoardResponseDto;
 import com.woolim.board.dto.response.board.GetCurrentBoardResponseDto;
+import com.woolim.board.dto.response.board.GetFavoriteListResponseDto;
 import com.woolim.board.dto.response.board.GetSearchBoardResponseDto;
 import com.woolim.board.dto.response.board.GetTop3ResponseDto;
 import com.woolim.board.dto.response.board.GetUserListResponseDto;
@@ -26,6 +28,7 @@ import com.woolim.board.entity.BoardViewEntity;
 import com.woolim.board.entity.CommentEntity;
 import com.woolim.board.entity.FavoriteEntity;
 import com.woolim.board.entity.SearchLogEntity;
+import com.woolim.board.entity.UserEntity;
 import com.woolim.board.entity.resultSet.BoardListResultSet;
 import com.woolim.board.repository.BoardRepository;
 import com.woolim.board.repository.BoardViewRepository;
@@ -151,9 +154,23 @@ public class BoardServiceImplement implements BoardService {
   }
 
   @Override
-  public ResponseEntity<?> getFavoriteList(Integer boardNumber) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getFavoriteList'");
+  public ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(Integer boardNumber) {
+
+    List<FavoriteListResponseDto> favoriteList = null;
+
+    try {
+      // description: 게시물 번호의 좋아요 리스트 조회  //
+      List<UserEntity> userEntities = userRepository.getFavoriteList(boardNumber);
+
+      // description: entity를 dto로 변환 //
+      favoriteList = FavoriteListResponseDto.copyEntityList(userEntities);
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetFavoriteListResponseDto.success(favoriteList);
   }
 
   @Override

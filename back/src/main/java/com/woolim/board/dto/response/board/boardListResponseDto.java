@@ -71,4 +71,5 @@ public class BoardListResponseDto {
     return boardList;
   }
 
+
 }

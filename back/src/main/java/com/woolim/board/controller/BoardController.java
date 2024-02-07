@@ -18,6 +18,7 @@ import com.woolim.board.dto.request.board.PutFavoriteRequestDto;
 import com.woolim.board.dto.response.board.DeleteBoardResponseDto;
 import com.woolim.board.dto.response.board.GetBoardResponseDto;
 import com.woolim.board.dto.response.board.GetCurrentBoardResponseDto;
+import com.woolim.board.dto.response.board.GetFavoriteListResponseDto;
 import com.woolim.board.dto.response.board.GetSearchBoardResponseDto;
 import com.woolim.board.dto.response.board.GetTop3ResponseDto;
 import com.woolim.board.dto.response.board.GetUserListResponseDto;
@@ -73,10 +74,10 @@ public class BoardController {
 
   // API : 특정 게시물의 좋아요 리스트 불러오기 메서드 //
   @GetMapping("/{boardNumber}/favorite-list")
-  public ResponseEntity<?> getFavoriteList(
+  public ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(
     @PathVariable(value = "boardNumber", required = true) Integer boardNumber
   ) {
-    ResponseEntity<?> response = boardService.getFavoriteList(boardNumber);
+    ResponseEntity<? super GetFavoriteListResponseDto> response = boardService.getFavoriteList(boardNumber);
     return response;
   }
 
