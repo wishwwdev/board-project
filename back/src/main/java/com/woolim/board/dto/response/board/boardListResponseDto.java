@@ -15,7 +15,7 @@ public class BoardListResponseDto {
   private int boardNumber;
   private String title;
   private String contents;
-  private String imagUrl;
+  private String imageUrl;
   private int viewCount;
   private int commentCount;
   private int favoriteCount;
@@ -27,7 +27,7 @@ public class BoardListResponseDto {
     this.boardNumber = resultSet.getBoardNumber();
     this.title = resultSet.getTitle();
     this.contents = resultSet.getContents();
-    this.imagUrl = resultSet.getImageUrl();
+    this.imageUrl = resultSet.getImageUrl();
     this.viewCount = resultSet.getViewCount();
     this.commentCount = resultSet.getCommentCount();
     this.favoriteCount = resultSet.getFavoriteCount();
@@ -40,7 +40,7 @@ public class BoardListResponseDto {
     this.boardNumber = boardViewEntity.getBoardNumber();
     this.title = boardViewEntity.getTitle();
     this.contents = boardViewEntity.getContents();
-    this.imagUrl = boardViewEntity.getImageUrl();
+    this.imageUrl = boardViewEntity.getImageUrl();
     this.viewCount = boardViewEntity.getViewCount();
     this.commentCount = boardViewEntity.getCommentCount();
     this.favoriteCount = boardViewEntity.getFavoriteCount();

@@ -9,6 +9,9 @@ import com.woolim.board.entity.BoardViewEntity;
 
 @Repository
 public interface BoardViewRepository extends JpaRepository<BoardViewEntity, Integer> {
+  BoardViewEntity findByBoardNumber(Integer boardNumber);
+
   List<BoardViewEntity> findTop3ByOrderByFavoriteCountDesc();
   List<BoardViewEntity> findByTitleContainsOrContentsContainsOrderByWriteDatetimeDesc(String title, String Contents);
+  List<BoardViewEntity> findByWriterEmailOrderByWriteDatetimeDesc(String email);
 }

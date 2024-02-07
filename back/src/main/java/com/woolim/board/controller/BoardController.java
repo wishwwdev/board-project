@@ -18,9 +18,11 @@ import com.woolim.board.dto.request.board.PostBoardRequestDto;
 import com.woolim.board.dto.request.board.PostCommentRequestDto;
 import com.woolim.board.dto.request.board.PutFavoriteRequestDto;
 import com.woolim.board.dto.response.board.DeleteBoardResponseDto;
+import com.woolim.board.dto.response.board.GetBoardResponseDto;
 import com.woolim.board.dto.response.board.GetCurrentBoardResponseDto;
 import com.woolim.board.dto.response.board.GetSearchBoardResponseDto;
 import com.woolim.board.dto.response.board.GetTop3ResponseDto;
+import com.woolim.board.dto.response.board.GetUserListResponseDto;
 import com.woolim.board.dto.response.board.PatchBoardResponseDto;
 import com.woolim.board.dto.response.board.PostBoardResponseDto;
 import com.woolim.board.dto.response.board.PostCommentResponseDto;
@@ -54,10 +56,10 @@ public class BoardController {
 
   // API : 게시물 불러오기 메서드 //
   @GetMapping("/{boardNumber}")
-  public ResponseEntity<?> getBoard(
-    @PathVariable("boardNumber") Integer boardNumber
+  public ResponseEntity<? super GetBoardResponseDto> getBoard(
+    @PathVariable(value = "boardNumber", required = true) Integer boardNumber
   ) {
-    ResponseEntity<?> response = boardService.getBoard(boardNumber);
+    ResponseEntity<? super GetBoardResponseDto> response = boardService.getBoard(boardNumber);
     return response;
   }
 
@@ -91,10 +93,10 @@ public class BoardController {
 
   // API : 특정 유저의 게시물 리스트 불러오기 메서드 //
   @GetMapping("/user-list/{email}")
-  public ResponseEntity<?> getUserList(
-    @PathVariable("email") String email
+  public ResponseEntity<? super GetUserListResponseDto> getUserList(
+    @PathVariable(value = "email", required = true) String email
   ) {
-    ResponseEntity<?> response = boardService.getUserList(email);
+    ResponseEntity<? super GetUserListResponseDto> response = boardService.getUserList(email);
     return response;
   }
 

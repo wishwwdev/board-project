@@ -1,0 +1,43 @@
+package com.woolim.board.dto.response.board;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import com.woolim.board.common.response.ResponseCode;
+import com.woolim.board.common.response.ResponseMessage;
+import com.woolim.board.dto.response.ResponseDto;
+import com.woolim.board.entity.BoardViewEntity;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+public class GetBoardResponseDto extends ResponseDto {
+  
+  private int boardNumber;
+  private String title;
+  private String contents;
+  private String imageUrl;
+  private String writeDatetime;
+  private String wiriterEmail;
+  private String writerNickname;
+  private String writerProfileImage;
+
+  private GetBoardResponseDto(String code, String message, BoardViewEntity boardViewEntity) {
+    super(code, message);
+    this.boardNumber = boardViewEntity.getBoardNumber();
+    this.title = boardViewEntity.getTitle();
+    this.contents = boardViewEntity.getContents();
+    this.imageUrl = boardViewEntity.getImageUrl();
+    this.writeDatetime = boardViewEntity.getWriteDatetime();
+    this.writerNickname = boardViewEntity.getWriterNickname();
+    this.writerProfileImage = boardViewEntity.getWriterProfileImage();
+  }
+
+  public static ResponseEntity<GetBoardResponseDto> success(BoardViewEntity boardViewEntity) {
+    GetBoardResponseDto result = new GetBoardResponseDto(ResponseCode.SUCCESS, ResponseMessage.SUCCESS, boardViewEntity);
+    return ResponseEntity.status(HttpStatus.OK).body(result);
+  }
+
+}

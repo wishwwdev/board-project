@@ -11,9 +11,11 @@ import com.woolim.board.dto.request.board.PostCommentRequestDto;
 import com.woolim.board.dto.request.board.PutFavoriteRequestDto;
 import com.woolim.board.dto.response.ResponseDto;
 import com.woolim.board.dto.response.board.DeleteBoardResponseDto;
+import com.woolim.board.dto.response.board.GetBoardResponseDto;
 import com.woolim.board.dto.response.board.GetCurrentBoardResponseDto;
 import com.woolim.board.dto.response.board.GetSearchBoardResponseDto;
 import com.woolim.board.dto.response.board.GetTop3ResponseDto;
+import com.woolim.board.dto.response.board.GetUserListResponseDto;
 import com.woolim.board.dto.response.board.PatchBoardResponseDto;
 import com.woolim.board.dto.response.board.PostBoardResponseDto;
 import com.woolim.board.dto.response.board.PostCommentResponseDto;
@@ -90,9 +92,21 @@ public class BoardServiceImplement implements BoardService {
   }
 
   @Override
-  public ResponseEntity<?> getBoard(Integer boardNumber) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getBoard'");
+  public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {
+
+    BoardViewEntity boardViewEntity = null;
+    
+    try {
+
+      // description: 게시물 번호에 해당하는 게시물 조회 //
+      boardViewEntity = boardViewRepository.findByBoardNumber(boardNumber);
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetBoardResponseDto.success(boardViewEntity);
   }
 
   @Override
@@ -139,9 +153,24 @@ public class BoardServiceImplement implements BoardService {
   }
 
   @Override
-  public ResponseEntity<?> getUserList(String email) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getUserList'");
+  public ResponseEntity<? super GetUserListResponseDto> getUserList(String email) {
+
+    List<BoardListResponseDto> boardList = null;
+
+    try {
+
+      // description: 특정 이메일에 해당하는 게시물 리스트 조회 //
+      List<BoardViewEntity> boardViewEntits = boardViewRepository.findByWriterEmailOrderByWriteDatetimeDesc(email);
+
+      // description: entity를 dto로 변환 //
+      boardList = BoardListResponseDto.copyEntityList(boardViewEntits);
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetUserListResponseDto.success(boardList);
   }
 
   @Override
