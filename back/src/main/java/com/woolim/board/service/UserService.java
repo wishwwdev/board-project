@@ -4,13 +4,14 @@ import org.springframework.http.ResponseEntity;
 
 import com.woolim.board.dto.request.user.PatchUserNicknameRequestDto;
 import com.woolim.board.dto.request.user.PatchUserProfileRequestDto;
+import com.woolim.board.dto.response.user.GetUserResponseDto;
 import com.woolim.board.dto.response.user.PatchUserNicknameResponseDto;
 import com.woolim.board.dto.response.user.PatchUserProfileResponseDto;
 
 public interface UserService {
   
   // method : 유저 정보 불러오기 메서드 //
-  ResponseEntity<?> getUser(String email);
+  ResponseEntity<? super GetUserResponseDto> getUser(String email);
   // method : 로그인 유저 정보 불러오기 메서드 //
   ResponseEntity<?> getSignInUser();
   // method : 유저 닉네임 수정 메서드 //
