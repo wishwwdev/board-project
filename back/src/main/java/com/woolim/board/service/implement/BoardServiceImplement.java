@@ -2,7 +2,6 @@ package com.woolim.board.service.implement;
 
 import java.util.List;
 
-import org.hibernate.internal.ExceptionConverterImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -142,12 +141,6 @@ public class BoardServiceImplement implements BoardService {
       // description: 검색어 로그 저장 //
       SearchLogEntity searchLogEntity = new SearchLogEntity(searchWord, relationWord);
       searchLogRepository.save(searchLogEntity);
-      
-      // description: 첫번째 검색이 아닐 겅우 (relationWord가 null이 아님) //
-      if (relationWord != null) {
-        searchLogEntity = new SearchLogEntity(relationWord, searchWord);
-        searchLogRepository.save(searchLogEntity);
-      }
 
     } catch (Exception exception) {
       exception.printStackTrace();
