@@ -17,9 +17,22 @@ public interface SearchLogRepository extends JpaRepository<SearchLogEntity, Inte
     "FROM search_log " +
     "GROUP BY search_word " + 
     "ORDER BY count DESC " + 
-    "LIMIT 15; ",
+    "LIMIT 15;",
     nativeQuery = true
   )
   List<SearchWordResultSet> getTop15SearchWord();
+
+  @Query(
+    value = 
+    "SELECT relation_word AS relationWord, count(*) AS count " +
+    "FROM search_log " +
+    "WHERE search_word = ?1 " +
+    "AND relation_word IS NOT NULL " +
+    "GROUP BY relationWord " +
+    "ORDER BY count DESC " +
+    "LIMIT 15;",
+    nativeQuery = true
+  )
+  List<SearchWordResultSet> getTop15RelationWord(String searchWord);
 
 }
