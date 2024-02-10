@@ -1,6 +1,7 @@
 package com.woolim.board.controller;
 
 import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,11 +32,12 @@ public class FileController {
   }
   
   // API : 이미지 불러오기 메서드 //
-  @GetMapping("/{fileName}")
+  @GetMapping(value = "/{fileName}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
   public Resource getFile(
     @PathVariable(value = "fileName", required = true) String fileName
   ) {
-    return null;
+    Resource resource = fileService.getFile(fileName);
+    return resource;
   }
 
 }
