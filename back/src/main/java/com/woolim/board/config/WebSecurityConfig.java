@@ -8,7 +8,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -33,7 +32,7 @@ public class WebSecurityConfig {
   protected SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
 
     httpSecurity
-      .cors(c -> c.disable())
+      .cors(Customizer.withDefaults())
       .csrf(c -> c.disable())
       .httpBasic(b -> b.disable())
       .sessionManagement(m -> m.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

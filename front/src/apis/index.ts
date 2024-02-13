@@ -4,6 +4,7 @@ import SignUpRequestDto from "src/interfaces/request/auth/sign-up.request.dto";
 import { PostBoardRequestDto } from "src/interfaces/request/board";
 import { SignInResponseDto, SignUpResponseDto } from "src/interfaces/response/auth";
 import ResponseDto from "src/interfaces/response/response.dto";
+import { GetLoginUserResponseDto, GetUserResponseDto } from "src/interfaces/response/user";
 
 const API_DOMAIN = 'http://localhost:4040/api/v1';
 const SIGN_UP_URL = () => `${API_DOMAIN}/auth/sign-up`;
@@ -142,10 +143,19 @@ export const getUserBoardRequest = async (email: string) =>
   .then((response) => response)
   .catch((error) => null);
 
-export const getSignInUserRequest = async () =>
-  await axios.get(GET_SIGN_IN_USER_URL())
-  .then((response) => response)
-  .catch((error) => null);
+export const getSignInUserRequest = async (token: string) => {
+  const headers = { headers: { 'Authorization': `Bearer ${token}` } };
+  const result = await axios.get(GET_SIGN_IN_USER_URL(), headers)
+  .then((response) => {
+    const responseBody: GetLoginUserResponseDto = response.data;
+    return responseBody;
+  })
+  .catch((error) => {
+    const responseBody: ResponseDto = error.response.data;
+    return responseBody;
+  });
+  return result;
+}
 
 export const postFileRequest = async () =>
   await axios.post(POST_FILE())
