@@ -9,7 +9,7 @@ import InputBox from 'src/components/InputBox';
 import { signInMock, userMock } from 'src/mocks';
 import { INPUT_ICON, MAIN_PATH, emailPattern, telNumberPattern } from 'src/constants';
 import './style.css';
-import { signUpRequest } from 'src/apis';
+import { signInRequest, signUpRequest } from 'src/apis';
 
 
 //            component           //
@@ -69,16 +69,16 @@ export default function Authentication() {
         email,
         password
       }
-      
-      axios.post('url', data)
-        .then((response) => {
-          // todo: 성공 시 처리
-          setUser(userMock);
-          navigator(MAIN_PATH);
-        })
-        .catch((error) => {
-          // todo: 실패 시 처리
-        });
+
+      signInRequest(data).then(result => {
+        const { code } = result;
+        if (code == 'SU') {
+          
+        }
+        if (code == 'DM') setError(true);
+        if (code == 'DE') alert('데이터베이스 에러입니다.');
+        
+      });
     }
 
     //            component            //
@@ -135,8 +135,12 @@ export default function Authentication() {
     const [passwordCheckError, setPasswordCheckError] = useState<boolean>(false);
     // description: 닉네임 에러 상태 //
     const [nicknameError, setNicknameError] = useState<boolean>(false);
+    // description: 닉네임 중복 에러 상태 //
+    const [nicknameDuplicationError, setNicknameDuplicationError] = useState<boolean>(false);
     // description: 휴대전화번호 패턴 에서 상태 //
     const [telNumberError, setTelNumberError] = useState<boolean>(false);
+    // description: 휴대전화번호 중복 에러 상태 //
+    const [telNumberDuplicationError, setTelNumberDuplicationError] = useState<boolean>(false);
     // description: 주소 에러 상태 //
     const [addressError, setAddressError] = useState<boolean>(false);
 
@@ -189,18 +193,27 @@ export default function Authentication() {
         addressDetail
       }
 
-      signUpRequest(data).then((code) => {
-        // description: SU : 성공 //
-        if (code == 'SU') setView('sign-in');
-        // description: EE : 존재하는 이메일 //
-        if (code == 'EE') setEmailDuplicationError(true);
-        // todo: EN : 존재하는 닉네임 //
-      
-        // todo: ET : 존재하는 전화번호 //
+      signUpRequest(data).then(signUpResponseHandler)
+    }
 
-        // description: DE : 데이터베이스 에러 //
-        if (code == 'DE') alert('데이터베이스 오류입니다.');
-      })
+    const signUpResponseHandler = (code: string) => {
+      // description: SU : 성공 //
+      if (code == 'SU') setView('sign-in');
+      // description: EE : 존재하는 이메일 //
+      if (code == 'EE') {
+        setEmailDuplicationError(true);
+        setPage(1);
+      }
+
+      // description: EN : 존재하는 닉네임 //
+      if (code == 'EN') setNicknameDuplicationError(true);
+      
+
+      // description: ET : 존재하는 전화번호 //
+      if (code == 'ET') setTelNumberDuplicationError(true);
+
+      // description: DE : 데이터베이스 에러 //
+      if (code == 'DE') alert('데이터베이스 오류입니다.');
     }
 
     //            event handler            //
@@ -218,6 +231,15 @@ export default function Authentication() {
     }
     // description: 다음 혹은 회원가입 버튼 클릭 이벤트 //
     const onButtonClickHandler = () => {
+      setEmailPatternError(false);
+      setPasswordError(false);
+      setPasswordCheckError(false);
+      setNicknameError(false);
+      setNicknameDuplicationError(false);
+      setTelNumberError(false);
+      setTelNumberDuplicationError(false);
+      setAddressError(false);
+
       if (page === 1) checkPage1();
       if (page === 2) checkPage2();
     }
@@ -252,8 +274,8 @@ export default function Authentication() {
               </>
             ) : (
               <>
-                <InputBox label='닉네임*' type='text' placeholder='닉네임을 입력해주세요.' error={nicknameError} helper={nicknameError ? '닉네임을 입력해주세요.' : ''} value={nickname} setValue={setNickname}/>
-                <InputBox label='핸드폰 번호*' type='text' placeholder='핸드폰 번호를 입력해주세요.' error={telNumberError} helper={telNumberError ? '숫자만 입력해주세요' : ''} value={telNumber} setValue={setTelNumber}/>
+                <InputBox label='닉네임*' type='text' placeholder='닉네임을 입력해주세요.' error={nicknameError || nicknameDuplicationError} helper={nicknameError ? '닉네임을 입력해주세요.' : nicknameDuplicationError ? '중복되는 닉네임입니다.' : ''} value={nickname} setValue={setNickname}/>
+                <InputBox label='핸드폰 번호*' type='text' placeholder='핸드폰 번호를 입력해주세요.' error={telNumberError || telNumberDuplicationError} helper={telNumberError ? '숫자만 입력해주세요' : telNumberDuplicationError ? '중복되는 휴대전화번호입니다.' : ''} value={telNumber} setValue={setTelNumber}/>
                 <InputBox label='주소*' type='text' placeholder='우편번호 찾기' icon={INPUT_ICON.ARROW} error={addressError} helper={addressError ? '우편번호를 선택해주세요.' : ''} value={address} setValue={setAddress} buttonHandler={onAddressIconClickHandler}/>
                 <InputBox label='상세 주소' type='text' placeholder='상세 주소를 입력해주세요.' value={addressDetail} setValue={setAddressDetail}/>
               </>

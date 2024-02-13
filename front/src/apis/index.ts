@@ -2,7 +2,7 @@ import axios from "axios";
 import SignInRequestDto from "src/interfaces/request/auth/sign-in.request.dto";
 import SignUpRequestDto from "src/interfaces/request/auth/sign-up.request.dto";
 import { PostBoardRequestDto } from "src/interfaces/request/board";
-import { SignUpResponseDto } from "src/interfaces/response/auth";
+import { SignInResponseDto, SignUpResponseDto } from "src/interfaces/response/auth";
 import ResponseDto from "src/interfaces/response/response.dto";
 
 const API_DOMAIN = 'http://localhost:4040/api/v1';
@@ -45,7 +45,7 @@ export const signUpRequest = async (data: SignUpRequestDto) => {
       return code;
     })
     .catch((error) => {
-      const responseBody: ResponseDto = error.data;
+      const responseBody: ResponseDto = error.response.data;
       const { code } = responseBody;
       return code;
     });
@@ -56,9 +56,13 @@ export const signUpRequest = async (data: SignUpRequestDto) => {
 export const signInRequest = async (data: SignInRequestDto) => {
   const result = await axios.post(SIGN_IN_URL(), data)
     .then((response) => {
-      return response;
+      const responseBody: SignInResponseDto = response.data;
+      return responseBody;
     })
-    .catch((error) => null);
+    .catch((error) => {
+      const responseBody: ResponseDto = error.response.data;
+      return responseBody;
+    });
 
   return result;
 }
