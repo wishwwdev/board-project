@@ -30,13 +30,13 @@ public class CommentEntity {
   private String contents;
   private String writeDatetime;
 
-  public CommentEntity (Integer boardNumber, PostCommentRequestDto dto) {
+  public CommentEntity (Integer boardNumber, String userEmail, PostCommentRequestDto dto) {
     Date now = new Date();
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     String writeDatetime = simpleDateFormat.format(now);
 
     this.boardNumber = boardNumber;
-    this.userEmail = dto.getUserEmail();
+    this.userEmail = userEmail;
     this.contents = dto.getContents();
     this.writeDatetime = writeDatetime;
   }

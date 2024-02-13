@@ -1,6 +1,7 @@
 package com.woolim.board.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.woolim.board.dto.request.board.PatchBoardRequestDto;
 import com.woolim.board.dto.request.board.PostBoardRequestDto;
 import com.woolim.board.dto.request.board.PostCommentRequestDto;
-import com.woolim.board.dto.request.board.PutFavoriteRequestDto;
 import com.woolim.board.dto.response.board.DeleteBoardResponseDto;
 import com.woolim.board.dto.response.board.GetBoardResponseDto;
 import com.woolim.board.dto.response.board.GetCommentListResponseDto;
@@ -103,47 +103,50 @@ public class BoardController {
   // API : 게시물 작성 메서드 //
   @PostMapping("")
   public ResponseEntity<? super PostBoardResponseDto> postBoard(
+    @AuthenticationPrincipal String email,
     @RequestBody @Valid PostBoardRequestDto requestBody
   ) {
-    ResponseEntity<? super PostBoardResponseDto> response = boardService.postBoard(requestBody);
+    ResponseEntity<? super PostBoardResponseDto> response = boardService.postBoard(email, requestBody);
     return response;
   }
 
   // API : 댓글 작성 메서드 //
   @PostMapping("/{boardNumber}/comment")
   public ResponseEntity<? super PostCommentResponseDto> postComment(
+    @AuthenticationPrincipal String email,
     @PathVariable(value = "boardNumber", required = true) Integer boardNumber,
     @RequestBody @Valid PostCommentRequestDto requestBody
   ) {
-    ResponseEntity<? super PostCommentResponseDto> response = boardService.postComment(boardNumber, requestBody);
+    ResponseEntity<? super PostCommentResponseDto> response = boardService.postComment(boardNumber, email, requestBody);
     return response;
   }
 
   // API : 좋아요 기능 메서드 //
   @PutMapping("/{boardNumber}/favorite")
   public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(
-    @PathVariable(value = "boardNumber", required = true) Integer boardNumber,
-    @RequestBody @Valid PutFavoriteRequestDto requestBody
+    @AuthenticationPrincipal String email,
+    @PathVariable(value = "boardNumber", required = true) Integer boardNumber
   ) {
-    ResponseEntity<? super PutFavoriteResponseDto> response = boardService.putFavorite(boardNumber, requestBody);
+    ResponseEntity<? super PutFavoriteResponseDto> response = boardService.putFavorite(boardNumber, email);
     return response;
   }
 
   // API : 게시물 수정 메서드 //
   @PatchMapping("/{boardNumber}")
   public ResponseEntity<? super PatchBoardResponseDto> patchBoard(
+    @AuthenticationPrincipal String email,
     @PathVariable(value = "boardNumber", required = true) Integer boardNumber,
     @RequestBody @Valid PatchBoardRequestDto requestBody
   ) {
-    ResponseEntity<? super PatchBoardResponseDto> response = boardService.patchBoard(boardNumber, requestBody);
+    ResponseEntity<? super PatchBoardResponseDto> response = boardService.patchBoard(boardNumber, email, requestBody);
     return response;
   }
 
   // API : 게시물 삭제 메서드 //
-  @DeleteMapping("/{boardNumber}/{email}")
+  @DeleteMapping("/{boardNumber}")
   public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(
-    @PathVariable(value = "boardNumber", required = true) Integer boardNumber,
-    @PathVariable(value = "email", required = true) String email
+    @AuthenticationPrincipal String email,
+    @PathVariable(value = "boardNumber", required = true) Integer boardNumber
   ) {
     ResponseEntity<? super DeleteBoardResponseDto> response = boardService.deleteBoard(boardNumber, email);
     return response;

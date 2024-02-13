@@ -14,10 +14,12 @@ import lombok.Getter;
 @AllArgsConstructor
 public class SignInResponseDto extends ResponseDto {
   private String token;
+  private int expiredTime;
 
   private SignInResponseDto (String code, String message, String token) {
     super(code, message);
     this.token = token;
+    this.expiredTime = 3600 * 5;
   }
 
   public static ResponseEntity<SignInResponseDto> success(String token) {

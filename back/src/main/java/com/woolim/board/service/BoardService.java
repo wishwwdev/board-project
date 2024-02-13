@@ -37,13 +37,13 @@ public interface BoardService {
   // method : 특정 유저의 게시물 리스트 불러오기 메서드 //
   ResponseEntity<? super GetUserListResponseDto> getUserList(String email);
   // method : 게시물 작성 메서드 //
-  ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto);
+  ResponseEntity<? super PostBoardResponseDto> postBoard(String email, PostBoardRequestDto dto);
   // method : 댓글 작성 메서드 //
-  ResponseEntity<? super PostCommentResponseDto> postComment(Integer boardNumber, PostCommentRequestDto dto);
+  ResponseEntity<? super PostCommentResponseDto> postComment(Integer boardNumber, String email, PostCommentRequestDto dto);
   // method : 좋아요 기능 메서드 //
-  ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber, PutFavoriteRequestDto dto);
+  ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber, String email);
   // method : 게시물 수정 메서드 //
-  ResponseEntity<? super PatchBoardResponseDto> patchBoard(Integer boardNumber, PatchBoardRequestDto dto);
+  ResponseEntity<? super PatchBoardResponseDto> patchBoard(Integer boardNumber, String email, PatchBoardRequestDto dto);
   // method : 게시물 삭제 메서드 //
   ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardNumber, String email);
 

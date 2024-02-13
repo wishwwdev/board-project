@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.woolim.board.dto.request.user.PatchUserNicknameRequestDto;
 import com.woolim.board.dto.request.user.PatchUserProfileRequestDto;
 import com.woolim.board.dto.response.ResponseDto;
+import com.woolim.board.dto.response.user.GetSignInUserResponseDto;
 import com.woolim.board.dto.response.user.GetUserResponseDto;
 import com.woolim.board.dto.response.user.PatchUserNicknameResponseDto;
 import com.woolim.board.dto.response.user.PatchUserProfileResponseDto;
@@ -42,7 +43,7 @@ public class UserServiceImplement implements UserService {
   }
 
   @Override
-  public ResponseEntity<?> getSignInUser() {
+  public ResponseEntity<? super GetSignInUserResponseDto> getSignInUser() {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'getSignInUser'");
   }

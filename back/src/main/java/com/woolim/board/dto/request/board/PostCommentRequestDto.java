@@ -10,8 +10,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class PostCommentRequestDto {
-  @NotBlank @Email
-  private String userEmail;
   @NotBlank
   private String contents;
 }

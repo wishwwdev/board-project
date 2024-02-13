@@ -33,7 +33,7 @@ public class BoardEntity {
   private String writeDatetime;
   private String writerEmail;
 
-  public BoardEntity (PostBoardRequestDto dto) {
+  public BoardEntity (String writerEmail, PostBoardRequestDto dto) {
     Date now = new Date();
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     String writeDatetime = simpleDateFormat.format(now);
@@ -42,7 +42,7 @@ public class BoardEntity {
     this.contents = dto.getContents();
     this.imageUrl = dto.getImageUrl();
     this.writeDatetime = writeDatetime;
-    this.writerEmail = dto.getWriterEmail();
+    this.writerEmail = writerEmail;
   }
 
   public void patch (PatchBoardRequestDto dto) {
