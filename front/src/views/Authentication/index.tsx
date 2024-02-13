@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Address, useDaumPostcodePopup } from 'react-daum-postcode';
 import axios from 'axios';
 
-import { SignInRequestDto, SignUpRequestDto } from 'src/interfaces/request';
+import { SignInRequestDto, SignUpRequestDto } from 'src/interfaces/request/auth';
 import { useUserStore } from 'src/stores';
 import InputBox from 'src/components/InputBox';
 import { signInMock, userMock } from 'src/mocks';
@@ -131,7 +131,7 @@ export default function Authentication() {
     const [emailDuplicationError, setEmailDuplicationError] = useState<boolean>(false);
     // description: 비밀번호 길이 에러 상태 //
     const [passwordError, setPasswordError] = useState<boolean>(false);
-    // description: 비밀번호 화기인 에러 상태 //
+    // description: 비밀번호 확인 에러 상태 //
     const [passwordCheckError, setPasswordCheckError] = useState<boolean>(false);
     // description: 닉네임 에러 상태 //
     const [nicknameError, setNicknameError] = useState<boolean>(false);
@@ -189,8 +189,17 @@ export default function Authentication() {
         addressDetail
       }
 
-      signUpRequest(data).then((response) => {
-        console.log(response);
+      signUpRequest(data).then((code) => {
+        // description: SU : 성공 //
+        if (code == 'SU') setView('sign-in');
+        // description: EE : 존재하는 이메일 //
+        if (code == 'EE') setEmailDuplicationError(true);
+        // todo: EN : 존재하는 닉네임 //
+      
+        // todo: ET : 존재하는 전화번호 //
+
+        // description: DE : 데이터베이스 에러 //
+        if (code == 'DE') alert('데이터베이스 오류입니다.');
       })
     }
 
