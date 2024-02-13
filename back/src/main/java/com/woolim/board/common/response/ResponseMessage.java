@@ -3,6 +3,8 @@ package com.woolim.board.common.response;
 public interface ResponseMessage {
   String SUCCESS = "Success";
 
+  String VALIDATE_FAIL = "Validate Fail";
+
   String EXISTED_EMAIL = "Existed Email";
   String EXISTED_NICKNAME = "Existed Nickname";
   String EXISTED_TEL_NUMBER = "Existed Tel Number";

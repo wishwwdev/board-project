@@ -43,9 +43,24 @@ public class UserServiceImplement implements UserService {
   }
 
   @Override
-  public ResponseEntity<? super GetSignInUserResponseDto> getSignInUser() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'getSignInUser'");
+  public ResponseEntity<? super GetSignInUserResponseDto> getSignInUser(String email) {
+
+    UserEntity userEntity = null;
+
+    try {
+
+      // description: 이메일로 유저 정보 불러오기 //
+      userEntity = userRepository.findByEmail(email);
+
+      // description: 존재하는 유저인지 확인 //
+      if (userEntity == null) return GetSignInUserResponseDto.noExistedUser();
+
+    } catch (Exception exception) {
+      exception.printStackTrace();
+      return ResponseDto.databaseError();
+    }
+
+    return GetSignInUserResponseDto.success(userEntity);
   }
 
   @Override

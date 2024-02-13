@@ -3,6 +3,8 @@ package com.woolim.board.common.response;
 public interface ResponseCode {
   String SUCCESS = "SU";
 
+  String VALIDATE_FAIL = "VF";
+
   String EXISTED_EMAIL = "EE";
   String EXISTED_NICKNAME = "EN";
   String EXISTED_TEL_NUMBER = "ET";
