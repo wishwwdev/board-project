@@ -135,8 +135,14 @@ export const deleteBoardRequest = async (boardNumber: number | string) =>
 
 export const getUserRequest = async (email: string) =>
   await axios.get(GET_USER_URL(email))
-  .then((response) => response)
-  .catch((error) => null);
+  .then((response) => {
+    const responseBody: GetUserResponseDto = response.data;
+    return responseBody;
+  })
+  .catch((error) => {
+    const responseBody: ResponseDto = error.response.data;
+    return responseBody;
+  });
 
 export const getUserBoardRequest = async (email: string) =>
   await axios.get(GET_USER_BOARD_LIST_URL(email))

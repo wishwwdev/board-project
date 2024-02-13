@@ -10,6 +10,9 @@ import { myPageBoardListMock } from 'src/mocks';
 import { AUTH_PATH, BOARD_WRITE_PATH, COUNT_BY_PAGE, MAIN_PATH, USER_PAGE_PATH } from 'src/constants';
 import './style.css';
 import DefaultProfile from './asset/my_page_profile_default.png'
+import { getUserRequest } from 'src/apis';
+import { GetUserResponseDto } from 'src/interfaces/response/user';
+import ResponseDto from 'src/interfaces/response/response.dto';
 
 //            component            //
 // description: 유저페이지 화면 //
@@ -45,6 +48,17 @@ export default function UserPage() {
     const [nicknameChange, setNicknameChange] = useState<boolean>(false);
 
     //            function            //
+    const getUserResponseHandler = (result: GetUserResponseDto | ResponseDto) => {
+      const { code } = result;
+      if (code === 'NU') alert('존재하지 않는 유저입니다.');
+      if (code === 'DE') alert('데이터베이스 오류입니다.');
+      if (code !== 'SU') navigator(MAIN_PATH);
+
+      const { nickname, profileImageUrl } = result as GetUserResponseDto;
+      setNickname(nickname);
+      if (profileImageUrl) setProfileImageUrl(profileImageUrl);
+      else setProfileImageUrl(DefaultProfile);
+    }
 
     //            event handler            //
     // description: 파일 인풋 변경 시 이미지 미리보기 //
@@ -72,12 +86,15 @@ export default function UserPage() {
     //            effect            //
     // description: 유저 이메일 상태가 바뀔 때마다 실행 //
     useEffect(() => {
-      if (!user) return;
+      if (!userEmail) navigator(MAIN_PATH);
       
       const isMyPage = user?.email === userEmail;
       if (isMyPage) {
-        if (user?.profileImage) setProfileImageUrl(user?.profileImage);
-        setNickname(user?.nickname)
+        if (user?.profileImageUrl) setProfileImageUrl(user?.profileImageUrl);
+        else setProfileImageUrl(DefaultProfile);
+        setNickname(user?.nickname as string);
+      } else {
+        getUserRequest(userEmail as string).then(getUserResponseHandler);
       }
     }, [userEmail])
 

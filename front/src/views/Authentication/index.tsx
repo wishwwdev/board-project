@@ -59,21 +59,12 @@ export default function Authentication() {
       if (code !== 'SU') return;
 
       const { token, expiredTime } = result as SignInResponseDto;
-      getSignInUserRequest(token).then(getSignInUserResponseHandler);
 
       const now = new Date().getTime();
       const expires = new Date(now + expiredTime * 1000);
-      setCookie("accessToken", token, { expires });
-    }
-
-    const getSignInUserResponseHandler = (result: GetLoginUserResponseDto | ResponseDto) => {
-      const { code } = result;
-
-      if (code === 'NU') alert('토큰 정보가 잘못됐습니다.');
-      if (code === 'DE') alert('데이터베이스 에러입니다.');
-      if (code !== 'SU') return;
-
       
+      setCookie("accessToken", token, { expires });
+      navigator("/");
     }
     
     //            event handler            //
