@@ -1,9 +1,9 @@
 import axios from "axios";
 import SignInRequestDto from "src/interfaces/request/auth/sign-in.request.dto";
 import SignUpRequestDto from "src/interfaces/request/auth/sign-up.request.dto";
-import { PostBoardRequestDto } from "src/interfaces/request/board";
+import { PatchBoardRequestDto, PostBoardRequestDto } from "src/interfaces/request/board";
 import { SignInResponseDto, SignUpResponseDto } from "src/interfaces/response/auth";
-import { PostBoardResponseDto } from "src/interfaces/response/board";
+import { PatchBoardResponseDto, PostBoardResponseDto } from "src/interfaces/response/board";
 import ResponseDto from "src/interfaces/response/response.dto";
 import { GetLoginUserResponseDto, GetUserResponseDto } from "src/interfaces/response/user";
 
@@ -36,7 +36,7 @@ const PATCH_USER_NICKNAME_URL = () => `${API_DOMAIN}/user/nickname`;
 const PATCH_USER_PROFILE_URL = () => `${API_DOMAIN}/user/profile`;
 
 const GET_SIGN_IN_USER_URL = () => `${API_DOMAIN}/user`;
-const POST_FILE = () => `${API_DOMAIN}/file/upload`;
+const UPLOAD_FILE = () => `http://localhost:4040/file/upload`;
 
 export const signUpRequest = async (data: SignUpRequestDto) => {
   const result = 
@@ -124,15 +124,23 @@ export const postCommentRequest = async (boardNumber: number | string, data: any
     .then((response) => response)
     .catch((error) => null);
 
-export const patchBoardRequest = async (boardNumber: number | string, data: any) =>
-  await axios.patch(PATCH_BOARD_URL(boardNumber), data)
-    .then((response) => response)
-    .catch((error) => null);
+export const patchBoardRequest = async (boardNumber: number | string, data: PatchBoardRequestDto, token: string) =>
+  await axios.patch(PATCH_BOARD_URL(boardNumber), data, { headers: { Authorization: `Bearer ${token}` } })
+    .then((response) => {
+      const responseBody: PatchBoardResponseDto = response.data;
+      const { code } = responseBody;
+      return code;
+    })
+    .catch((error) => {
+      const responseBody: ResponseDto = error.response.data;
+      const { code } = responseBody;
+      return code;
+    });
 
 export const deleteBoardRequest = async (boardNumber: number | string) =>
   await axios.delete(DELETE_BOARD_URL(boardNumber))
   .then((response) => response)
-  .catch((error) => null);
+  .catch((error) => {null});
 
 export const getUserRequest = async (email: string) =>
   await axios.get(GET_USER_URL(email))
@@ -165,7 +173,7 @@ export const getSignInUserRequest = async (token: string) => {
 }
 
 export const uploadFileRequest = async (data: FormData) =>
-  await axios.post(POST_FILE(), data, { headers: { 'Content-Type': 'multipart/form-data' }})
+  await axios.post(UPLOAD_FILE(), data, { headers: { 'Content-Type': 'multipart/form-data' }})
   .then((response) => {
     const imageUrl: string = response.data;
     return imageUrl;
@@ -173,7 +181,7 @@ export const uploadFileRequest = async (data: FormData) =>
   .catch((error) => null);
 
 export const postBoardRequest = async (data: PostBoardRequestDto, token: string) =>
-  await axios.post(POST_BOARD_URL(), data, { headers: { Authenrization: `Bearer ${token}` } })
+  await axios.post(POST_BOARD_URL(), data, { headers: { Authorization: `Bearer ${token}` } })
   .then((response) => {
     const responseBody: PostBoardResponseDto = response.data;
     const { code } = responseBody;
