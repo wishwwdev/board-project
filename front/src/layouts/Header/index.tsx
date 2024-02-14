@@ -1,11 +1,13 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
+import { Cookies, useCookies } from 'react-cookie';
 
 import { useBoardWriteStore, useUserStore } from 'src/stores';
 import { AUTH_PATH, BOARD_UPDATE_PATH, BOARD_WRITE_PATH, MAIN_PATH, SEARCH_PATH, USER_PAGE_PATH } from 'src/constants';
+
 import './style.css';
-import { PatchBoardRequestDto, PostBoardRequestDto } from 'src/interfaces/request';
+import { postBoardRequest, uploadFileRequest } from 'src/apis';
+import { PatchBoardRequestDto, PostBoardRequestDto } from 'src/interfaces/request/board';
 
 //            component           //
 // description: Header 레이아웃 //
@@ -17,10 +19,10 @@ export default function Header() {
   // description: 로그인 유저 정보 상태 //
   const { user, setUser } = useUserStore();
   // description: 게시물 작성 데이터 상태 //
-  const { boardTitle, boardContent, resetBoard } = useBoardWriteStore();
+  const { boardTitle, boardContent, boardImage, resetBoard } = useBoardWriteStore();
 
   // description: Cookie 상태 //
-  const [cookes, setCookie] = useCookies();
+  const [cookeis, setCookie] = useCookies();
 
   // description: 검색 아이콘 클릭 상태 //
   const [searchState, setSearchState] = useState<boolean>(false);
@@ -84,20 +86,39 @@ export default function Header() {
     navigator(MAIN_PATH);
   }
   // description: 업로드 버튼 클릭 이벤트 //
-  const onUploadButtonClickHandler = () => {
+  const onUploadButtonClickHandler = async () => {
     if (pathname === BOARD_WRITE_PATH()) {
+
+      let imageUrl = null;
+      if (boardImage !== null) {
+        const data = new FormData();
+        data.append('file', boardImage);
+
+        imageUrl = await uploadFileRequest(data); // Promise<string>
+      }
 
       const data: PostBoardRequestDto = {
         title: boardTitle,
         contents: boardContent,
-        imageUrl: '',
+        imageUrl
       }
+
+      const token = cookeis.accessToken;
+      postBoardRequest(data, token).then(code => {
+        if (code === 'NE') alert('존재하지 않는 회원입니다.');
+        if (code === 'VF') alert('필수 데이터를 입력하지 않았습니다.');
+        if (code === 'DE') alert('데이터베이스 에러입니다.');
+        if (code !== 'SU') return;
+
+        if (!user) return;
+        navigator(USER_PAGE_PATH(user.email));
+      })
+    
     }
     else {
 
       // todo: boardNumber 받아오기
       const data: PatchBoardRequestDto = {
-        boardNumber: 1,
         title: boardTitle,
         contents: boardContent,
         imageUrl: '',
