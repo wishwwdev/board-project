@@ -1,10 +1,10 @@
 import ResponseDto from "../response.dto";
 
 export default interface GetFavoriteListResponseDto extends ResponseDto {
-  favoriteList: FavoriteResponseDto[];
+  favoriteList: FavoriteListResponseDto[];
 }
 
-interface FavoriteResponseDto {
+export interface FavoriteListResponseDto {
   nickname: string;
   email: string;
   profileImageUrl: string;

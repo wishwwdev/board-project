@@ -1,16 +1,18 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
 
-import { BoardDetailResponseDto } from 'src/interfaces/response';
-import { FavoriteListResponseDto, CommentListResponseDto } from 'src/interfaces/response';
 import { usePagination } from 'src/hooks';
 import { useUserStore } from 'src/stores';
 import CommentListItem from 'src/components/CommentListItem';
 import Pagination from 'src/components/Pagination';
-import { boardDetailMock, commentListMock, favoriteListMock } from 'src/mocks';
 import { BOARD_UPDATE_PATH, COUNT_BY_PAGE_COMMENT, MAIN_PATH, USER_PAGE_PATH } from 'src/constants';
+
 import './style.css';
+import { getBoardRequest, getCommentListRequest, getFavoriteListRequest } from 'src/apis';
+import { GetBoardResponseDto, GetCommentListResponseDto, GetFavoriteListResponseDto } from 'src/interfaces/response/board';
+import ResponseDto from 'src/interfaces/response/response.dto';
+import { CommentListResponseDto } from 'src/interfaces/response/board/get-comment-list.response.dto';
+import { FavoriteListResponseDto } from 'src/interfaces/response/board/get-favorite-list.response.dto';
 
 //            component           //
 // description: 게시물 상세 화면 //
@@ -23,7 +25,7 @@ export default function BoardDetail() {
   // description: 페이지네이션 관련 상태 및 함수 //
   const { totalPage, currentPage, currentSection, onPreviousClickHandler, onNextClickHandler, onPageClickHandler, changeSection } = usePagination();
   // description: 게시물 정보 상태 //
-  const [board, setBoard] = useState<BoardDetailResponseDto | null >(null);
+  const [board, setBoard] = useState<GetBoardResponseDto | null >(null);
   // description: 게시물 좋아요 회원 리스트 상태 //
   const [favoriteList, setFavoriteList] = useState<FavoriteListResponseDto[]>([]);
   // description: 댓글 리스트 상태 //
@@ -39,13 +41,58 @@ export default function BoardDetail() {
   // description: 페이지 이동을 위한 네비게이트 함수 //
   const navigator = useNavigate();
   // description: 현재 페이지의 댓글 리스트 분류 함수 //
-  const getPageCommentlist = () => {
-    const lastIndex = commentListMock.length > COUNT_BY_PAGE_COMMENT * currentPage ?
-      COUNT_BY_PAGE_COMMENT * currentPage : commentListMock.length;
+  const getPageCommentlist = (commentList: CommentListResponseDto[]) => {
+    const lastIndex = commentList.length > COUNT_BY_PAGE_COMMENT * currentPage ?
+      COUNT_BY_PAGE_COMMENT * currentPage : commentList.length;
     const startIndex = COUNT_BY_PAGE_COMMENT * (currentPage - 1);
-    const pageCommentList = commentListMock.slice(startIndex, lastIndex);
+    const pageCommentList = commentList.slice(startIndex, lastIndex);
     setPageCommentList(pageCommentList);
   } 
+  // description: 게시물 불러오기 요청 함수 //
+  const getBoardResponseHandler = (responseBody: GetBoardResponseDto | ResponseDto) => {
+    const { code } = responseBody
+    
+    if (code === 'NB') alert('존재하지 않는 게시물입니다.');
+    if (code === 'VF') alert('게시물번호가 잘못되었습니다.');
+    if (code === 'DE') alert('데이터베이스 에러입니다.');
+    if (code !== 'SU') {
+      navigator(MAIN_PATH);
+      return;
+    }
+
+    setBoard(responseBody as GetBoardResponseDto);
+  }
+  // description: 좋아요 리스트 불러오기 요청 함수 //
+  const getFavoriteListResponseHandler = (responseBody: GetFavoriteListResponseDto | ResponseDto) => {
+    const { code } = responseBody;
+
+    if (code === 'VF') alert('잘못된 게시물번호입니다.');
+    if (code === 'DE') alert('데이터베이스 에러입니다.');
+    if (code !== 'SU') {
+      setFavoriteList([]);
+      return;
+    }
+    
+    const { favoriteList } = responseBody as GetFavoriteListResponseDto;
+    setFavoriteList(favoriteList);
+  }
+  // description: 댓글 리스트 불러오기 응답 처리 함수 //
+  const getCommentListResponseHandler = (responseBody: GetCommentListResponseDto | ResponseDto) => {
+    const { code } = responseBody;
+
+    if (code === 'VF') alert('잘못된 게시물번호입니다.');
+    if (code === 'DE') alert('데이터베이스 에러입니다.');
+    if (code !== 'SU') {
+      setCommentList([]);
+      return;
+    }
+
+    const { commentList } = responseBody as GetCommentListResponseDto;
+    setCommentList(commentList);
+
+    getPageCommentlist(commentList);
+    changeSection(commentList.length, COUNT_BY_PAGE_COMMENT);
+  }
 
   //            event handler           //
 
@@ -79,14 +126,6 @@ export default function BoardDetail() {
     }
     // description: 삭제 버튼 클릭 이벤트 //
     const onDeleteButtonClickHandler = () => {
-
-      axios.delete('url')
-        .then((response) => {
-          navigator(MAIN_PATH);
-        })
-        .catch((error) => {
-
-        });
       
     }
     // description: 좋아요 버튼 클릭 이벤트 //
@@ -105,13 +144,13 @@ export default function BoardDetail() {
     //            effect           //
     // description: 좋아요 리스트가 변경되면 실행 //
     useEffect(() => {
-      const favorited = favoriteList.findIndex((item) => item.favoriteUserEmail === user?.email);
+      const favorited = favoriteList.findIndex((item) => item.email === user?.email);
       setFavorite(favorited !== -1);
     }, [favoriteList])
     // description: 게시물 번호 혹은 로그인 유저 정보가 변경되면 실행 //
     useEffect(() => {
-      setviewMore(user?.email === board?.writerEamil);
-      const favorited = favoriteList.findIndex((item) => item.favoriteUserEmail === user?.email);
+      setviewMore(user?.email === board?.writerEmail);
+      const favorited = favoriteList.findIndex((item) => item.email === user?.email);
       setFavorite(favorited !== -1);
     }, [boardNumber, user]);
 
@@ -120,14 +159,14 @@ export default function BoardDetail() {
       <div className='board-detail-container'>
         <div className='board-detail-top'>
         <div className='board-detail-title-container'>
-          <div className='board-detail-title'>{board?.boardTitle}</div>
+          <div className='board-detail-title'>{board?.title}</div>
         </div>
         <div className='board-detail-meta-container'>
           <div className='board-detail-meta-left'>
             <div className='board-detail-writer-profile-image' style={{ backgroundImage : `url(${board?.writerProfileImage})` }}></div>
-            <div className='board-detail-writer-nickname' onClick={onWriterNicknameClickhandler}>{board?.writerNickName}</div>   
+            <div className='board-detail-writer-nickname' onClick={onWriterNicknameClickhandler}>{board?.writerNickname}</div>   
             <div className='board-detail-write-date'>{'|'}</div> 
-            <div className='board-detail-write-date'>{board?.writerDate}</div> 
+            <div className='board-detail-write-date'>{board?.writeDatetime}</div> 
           </div>
           <div className='board-detail-meta-right'>
             { openMore && (
@@ -147,9 +186,9 @@ export default function BoardDetail() {
         </div>
         <div className='divider'></div>
         <div className='board-detail-middle'>
-          <div className='board-detail-content'>{board?.boardContent}</div>
+          <div className='board-detail-content'>{board?.contents}</div>
           <div className='board-detail-image-box'>
-            <img className='board-detail-image' src={board?.boardImage}/>
+            <img className='board-detail-image' src={board?.imageUrl ? board?.imageUrl : ''}/>
           </div>
         </div>
         <div className='board-detail-bottom'>
@@ -197,8 +236,8 @@ export default function BoardDetail() {
         <div className='favorite-list-container'>
           { favoriteList.map((item) => (
             <div className='favorite-list-item'>
-              <div className='favorite-user-profile' style={{ backgroundImage: `url(${item.favoriteUserProfileImage})` }}></div>
-              <div className='favorite-user-nickname'>{item.favoriteUserNickName}</div>
+              <div className='favorite-user-profile' style={{ backgroundImage: `url(${item.profileImageUrl})` }}></div>
+              <div className='favorite-user-nickname'>{item.nickname}</div>
             </div>
           )) }
         </div>
@@ -262,20 +301,26 @@ export default function BoardDetail() {
   //            effect           //
   // description: 게시물 번호가 바뀔 때마다 새로운 정보 받아오기 //
   useEffect(() => {
-    setBoard(boardDetailMock);
-    setFavoriteList(favoriteListMock);
-    setCommentList(commentListMock);
+    if (!boardNumber) {
+      alert('게시물번호가 잘못되었습니다.');
+      navigator(MAIN_PATH);
+      return;
+    }
 
-    getPageCommentlist();
-    changeSection(commentListMock.length, COUNT_BY_PAGE_COMMENT);
+    getBoardRequest(boardNumber).then(getBoardResponseHandler);
+
+    getFavoriteListRequest(boardNumber).then(getFavoriteListResponseHandler);
+    getCommentListRequest(boardNumber).then(getCommentListResponseHandler);
+
+    
   }, [boardNumber])
   // description: 현재 페이지가 바뀔때마다 검색 게시물 분류하기 //
   useEffect(() => {
-    getPageCommentlist();
+    getPageCommentlist(commentList);
   }, [currentPage])
   // description: 현재 섹션이 바뀔때마다 페이지 리스트 변경 //
   useEffect(() => {
-    changeSection(commentListMock.length, COUNT_BY_PAGE_COMMENT);
+    changeSection(commentList.length, COUNT_BY_PAGE_COMMENT);
   }, [currentSection])
 
   //            render           //

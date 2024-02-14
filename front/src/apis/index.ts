@@ -3,7 +3,7 @@ import SignInRequestDto from "src/interfaces/request/auth/sign-in.request.dto";
 import SignUpRequestDto from "src/interfaces/request/auth/sign-up.request.dto";
 import { PatchBoardRequestDto, PostBoardRequestDto } from "src/interfaces/request/board";
 import { SignInResponseDto, SignUpResponseDto } from "src/interfaces/response/auth";
-import { PatchBoardResponseDto, PostBoardResponseDto } from "src/interfaces/response/board";
+import { GetBoardResponseDto, GetCommentListResponseDto, GetFavoriteListResponseDto, PatchBoardResponseDto, PostBoardResponseDto } from "src/interfaces/response/board";
 import ResponseDto from "src/interfaces/response/response.dto";
 import { GetLoginUserResponseDto, GetUserResponseDto } from "src/interfaces/response/user";
 
@@ -98,19 +98,37 @@ export const getRelationListRequest = async (searchWord: string) =>
 
 export const getBoardRequest = async (boardNumber: number | string) =>
   await axios.get(GET_BOARD_URL(boardNumber))
-    .then((response) => response)
-    .catch((error) => null);
+    .then((response) => {
+      const responseBody: GetBoardResponseDto = response.data;
+      return responseBody;
+    })
+    .catch((error) => {
+      const responseBody: ResponseDto = error.response.data;
+      return responseBody;
+    });
 
 export const getFavoriteListRequest = async (boardNumber: number | string) =>
   await axios.get(GET_FAVORITE_LIST_URL(boardNumber))
-    .then((response) => response)
-    .catch((error) => null);
+    .then((response) => {
+      const responseBody: GetFavoriteListResponseDto = response.data;
+      return responseBody;
+    })
+    .catch((error) => {
+      const responseBody: ResponseDto = error.response.data;
+      return responseBody;
+    });
 
   
 export const getCommentListRequest = async (boardNumber: number | string) =>
   await axios.get(GET_COMMENT_LIST_URL(boardNumber))
-    .then((response) => response)
-    .catch((error) => null);
+  .then((response) => {
+    const responseBody: GetCommentListResponseDto = response.data;
+    return responseBody;
+  })
+  .catch((error) => {
+    const responseBody: ResponseDto = error.response.data;
+    return responseBody;
+  });
 
 
 export const putFavoriteRequest = async (boardNumber: number | string, data: any) =>

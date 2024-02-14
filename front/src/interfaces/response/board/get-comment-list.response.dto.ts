@@ -1,10 +1,10 @@
 import ResponseDto from "../response.dto";
 
 export default interface GetCommentListResponseDto extends ResponseDto {
-  top3: CommentListResponseDto[];
+  commentList: CommentListResponseDto[];
 }
 
-interface CommentListResponseDto {
+export interface CommentListResponseDto {
   profileImageUrl: string;
   nickname: string;
   contents: string;
