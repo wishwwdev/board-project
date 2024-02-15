@@ -323,6 +323,8 @@
 
 .comment-list-container {
   margin-top: 5px 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .comment-box {

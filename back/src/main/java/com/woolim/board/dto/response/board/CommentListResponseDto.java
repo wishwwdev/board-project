@@ -19,7 +19,7 @@ public class CommentListResponseDto {
   public CommentListResponseDto(CommentListResultSet resultSets) {
     this.profileImageUrl = resultSets.getProfileImageUrl();
     this.nickname = resultSets.getNickname();
-    this.writeDatetime = resultSets.getWriterDatetime();
+    this.writeDatetime = resultSets.getWriteDatetime();
     this.contents = resultSets.getContents();
   }
 

@@ -8,7 +8,7 @@ import Pagination from 'src/components/Pagination';
 import { BOARD_UPDATE_PATH, COUNT_BY_PAGE_COMMENT, MAIN_PATH, USER_PAGE_PATH } from 'src/constants';
 
 import './style.css';
-import { getBoardRequest, getCommentListRequest, getFavoriteListRequest, postCommentRequest, putFavoriteRequest } from 'src/apis';
+import { deleteBoardRequest, getBoardRequest, getCommentListRequest, getFavoriteListRequest, postCommentRequest, putFavoriteRequest } from 'src/apis';
 import { GetBoardResponseDto, GetCommentListResponseDto, GetFavoriteListResponseDto, PostCommentResponseDto } from 'src/interfaces/response/board';
 import ResponseDto from 'src/interfaces/response/response.dto';
 import { CommentListResponseDto } from 'src/interfaces/response/board/get-comment-list.response.dto';
@@ -123,6 +123,18 @@ export default function BoardDetail() {
       if (!boardNumber) return;
       getFavoriteListRequest(boardNumber).then(getFavoriteListResponseHandler);
     }
+    // description: 게시물 삭제 응답 처리 함수 //
+    const deleteBoardResponseHandler = (code: string) => {
+      if (code === 'NU') alert('존재하지 않는 유저입니다.'); 
+      if (code === 'NB') alert('존재하지 않는 게시물입니다.');
+      if (code === 'NP') alert('권한이 없습니다.');
+      if (code === 'VF') alert('잘못된 입력입니다.');
+      if (code === 'DE') alert('데이터베이스 에러입니다.');
+      if (code !== 'SU') return;
+    
+      alert('게시물 삭제에 성공했습니다.');
+      navigator(MAIN_PATH);
+    }
 
     //            event handler           //
     // description: 작성자 닉네임 클릭 이벤트 //
@@ -141,7 +153,10 @@ export default function BoardDetail() {
     }
     // description: 삭제 버튼 클릭 이벤트 //
     const onDeleteButtonClickHandler = () => {
-      
+      if(!boardNumber) return;
+      const token = cookie.accessToken;
+
+      deleteBoardRequest(boardNumber, token).then(deleteBoardResponseHandler);
     }
     // description: 좋아요 버튼 클릭 이벤트 //
     const onFavoriteButtonClickHandler = () => {

@@ -1,17 +1,17 @@
 package com.woolim.board.entity;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Date;
-
-import javax.xml.stream.events.Comment;
-
-import com.woolim.board.dto.request.board.PostCommentRequestDto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
+import com.woolim.board.dto.request.board.PostCommentRequestDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,8 +31,8 @@ public class CommentEntity {
   private String writeDatetime;
 
   public CommentEntity (Integer boardNumber, String userEmail, PostCommentRequestDto dto) {
-    Date now = new Date();
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    Date now = Date.from(Instant.now());
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     String writeDatetime = simpleDateFormat.format(now);
 
     this.boardNumber = boardNumber;
