@@ -149,7 +149,12 @@ export default function BoardDetail() {
     }, [favoriteList])
     // description: 게시물 번호 혹은 로그인 유저 정보가 변경되면 실행 //
     useEffect(() => {
-      setviewMore(user?.email === board?.writerEmail);
+      // todo: m값이 계속 false로 나옴
+      // todo: 로그인한 이메일 === 게시글 작성자 이메일
+      const m = user?.email == board?.writerEmail;
+      setviewMore(!m);
+    
+      
       const favorited = favoriteList.findIndex((item) => item.email === user?.email);
       setFavorite(favorited !== -1);
     }, [boardNumber, user]);

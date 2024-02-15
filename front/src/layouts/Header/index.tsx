@@ -16,12 +16,10 @@ export default function Header() {
   //            state           //
   // description: url경로 상태 //
   const { pathname } = useLocation();
-  // description: PathVariable 상태 //
-  const { boardNumber, searchWord, userEmail } = useParams();
   // description: 로그인 유저 정보 상태 //
   const { user, setUser } = useUserStore();
   // description: 게시물 작성 데이터 상태 //
-  const { boardTitle, boardContent, boardImage, resetBoard } = useBoardWriteStore();
+  const { boardNumber, boardTitle, boardContent, boardImage, resetBoard } = useBoardWriteStore();
   // description: Cookie 상태 //
   const [cookeis, setCookie] = useCookies();
   // description: 검색 아이콘 클릭 상태 //

@@ -131,8 +131,8 @@ export const getCommentListRequest = async (boardNumber: number | string) =>
   });
 
 
-export const putFavoriteRequest = async (boardNumber: number | string, data: any) =>
-  await axios.put(PUT_FAVORTIE_URL(boardNumber), data)
+export const putFavoriteRequest = async (boardNumber: number | string, token: string) =>
+  await axios.put(PUT_FAVORTIE_URL(boardNumber), { headers: { Authoriztion: `Bearer ${token}`}})
     .then((response) => response)
     .catch((error) => null);
 

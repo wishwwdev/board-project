@@ -1,8 +1,13 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+
 import { useBoardWriteStore } from 'src/stores';
-import { boardUpdateMock } from 'src/mocks';
+
 import './style.css';
+import { MAIN_PATH } from 'src/constants';
+import { getBoardRequest } from 'src/apis';
+import { GetBoardResponseDto } from 'src/interfaces/response/board';
+import ResponseDto from 'src/interfaces/response/response.dto';
 
 //            component           //
 // description: 게시물 수정 화면 //
@@ -16,12 +21,29 @@ export default function BoardUpdate() {
   // description: 게시물 번호 상태 //
   const { boardNumber } = useParams();
   // description: 게시물 정보를 저장할 상태 //
-  const { boardTitle, boardContent, boardImage, setBoardTitle, setBoardContent, setBoardImage  } = useBoardWriteStore();
+  const { boardTitle, boardContent, boardImage, setBoardNumber, setBoardTitle, setBoardContent, setBoardImage  } = useBoardWriteStore();
   // description: 이미지를 저장할 상태 //
-  const [boardImageUrl, setBoardImageUrl] = useState<string>('');
+  const [boardImageUrl, setBoardImageUrl] = useState<string | null>('');
 
   //            function           //
+  const navigator = useNavigate();
 
+  // description: 게시물 불러오기 응답 처리 함수 //
+  const getBoardResponseHandler = (responseBody: GetBoardResponseDto | ResponseDto) => {
+    const { code } = responseBody;
+    if (code === 'NB') alert('존재하지 않는 게시물입니다.');
+    if (code === 'VF') alert('잘못된 게시물 번호입니다.');
+    if (code === 'DE') alert('데이터베이스 에러입니다.');
+    if (code !== 'SU') {
+      navigator(MAIN_PATH);
+      return;
+    }
+    const { title, contents, imageUrl } = responseBody as GetBoardResponseDto;
+    setBoardTitle(title);
+    setBoardContent(contents);
+    setBoardImageUrl(imageUrl);
+
+  }
   //            event handler           //
   // description: 제목이 바뀔시 실행될 이벤트 //
   const onTitleChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -56,9 +78,15 @@ export default function BoardUpdate() {
 
   //            effect           //
   useEffect(() => {
-    setBoardTitle(boardUpdateMock.boardTitle);
-    setBoardContent(boardUpdateMock.boardContent);
-    setBoardImageUrl(boardUpdateMock.boardImage);
+    if (!boardNumber) {
+      alert('게시물번호가 잘못되었습니다.');
+      navigator(MAIN_PATH);
+      return;
+    }
+    
+    setBoardNumber(boardNumber);
+    getBoardRequest(boardNumber).then(getBoardResponseHandler);
+
   }, [boardNumber]);
 
   //            render           //
