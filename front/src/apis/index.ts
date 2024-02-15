@@ -1,9 +1,10 @@
 import axios from "axios";
 import SignInRequestDto from "src/interfaces/request/auth/sign-in.request.dto";
 import SignUpRequestDto from "src/interfaces/request/auth/sign-up.request.dto";
-import { PatchBoardRequestDto, PostBoardRequestDto } from "src/interfaces/request/board";
+import { PatchBoardRequestDto, PostBoardRequestDto, PostCommentRequestDto } from "src/interfaces/request/board";
 import { SignInResponseDto, SignUpResponseDto } from "src/interfaces/response/auth";
-import { GetBoardResponseDto, GetCommentListResponseDto, GetFavoriteListResponseDto, PatchBoardResponseDto, PostBoardResponseDto } from "src/interfaces/response/board";
+import { GetBoardResponseDto, GetCommentListResponseDto, GetFavoriteListResponseDto, PatchBoardResponseDto, PostBoardResponseDto, PostCommentResponseDto, PutFavoriteResponseDto } from "src/interfaces/response/board";
+import DeleteBoardResponseDto from "src/interfaces/response/board/delete-board.response.dto";
 import ResponseDto from "src/interfaces/response/response.dto";
 import { GetLoginUserResponseDto, GetUserResponseDto } from "src/interfaces/response/user";
 
@@ -117,7 +118,6 @@ export const getFavoriteListRequest = async (boardNumber: number | string) =>
       const responseBody: ResponseDto = error.response.data;
       return responseBody;
     });
-
   
 export const getCommentListRequest = async (boardNumber: number | string) =>
   await axios.get(GET_COMMENT_LIST_URL(boardNumber))
@@ -130,17 +130,31 @@ export const getCommentListRequest = async (boardNumber: number | string) =>
     return responseBody;
   });
 
-
 export const putFavoriteRequest = async (boardNumber: number | string, token: string) =>
-  await axios.put(PUT_FAVORTIE_URL(boardNumber), { headers: { Authoriztion: `Bearer ${token}`}})
-    .then((response) => response)
-    .catch((error) => null);
-
+  await axios.put(PUT_FAVORTIE_URL(boardNumber), {}, { headers: { Authorization: `Bearer ${token}` } })
+    .then((response) => {
+      const responseBody: PutFavoriteResponseDto = response.data;
+      const { code } = responseBody;
+      return code;
+    })
+    .catch((error) => {
+      const responseBody: ResponseDto = error.response.data;
+      const { code } = responseBody;
+      return code;
+    });
   
-export const postCommentRequest = async (boardNumber: number | string, data: any) =>
-  await axios.post(POST_COMMENT_URL(boardNumber), data)
-    .then((response) => response)
-    .catch((error) => null);
+export const postCommentRequest = async (boardNumber: number | string, data: PostCommentRequestDto, token: string) =>
+  await axios.post(POST_COMMENT_URL(boardNumber), data, { headers: { Authorization: `Bearer ${token}` } })
+    .then((response) => {
+      const responseBody: PostCommentResponseDto = response.data;
+      const { code } = responseBody;
+      return code;
+    })
+    .catch((error) => {
+      const responseBody: ResponseDto = error.response.data;
+      const { code } = responseBody;
+      return code;
+    });
 
 export const patchBoardRequest = async (boardNumber: number | string, data: PatchBoardRequestDto, token: string) =>
   await axios.patch(PATCH_BOARD_URL(boardNumber), data, { headers: { Authorization: `Bearer ${token}` } })
@@ -155,10 +169,18 @@ export const patchBoardRequest = async (boardNumber: number | string, data: Patc
       return code;
     });
 
-export const deleteBoardRequest = async (boardNumber: number | string) =>
-  await axios.delete(DELETE_BOARD_URL(boardNumber))
-  .then((response) => response)
-  .catch((error) => {null});
+export const deleteBoardRequest = async (boardNumber: number | string, token: string) =>
+  await axios.delete(DELETE_BOARD_URL(boardNumber), { headers: { Authorization: `Bearer ${token}` } })
+    .then((response) => {
+      const responseBody: DeleteBoardResponseDto = response.data;
+      const { code } = responseBody;
+      return code;
+    })
+    .catch((error) => {
+      const responseBody: ResponseDto = error.response.data;
+      const { code } = responseBody;
+      return code;
+    });
 
 export const getUserRequest = async (email: string) =>
   await axios.get(GET_USER_URL(email))

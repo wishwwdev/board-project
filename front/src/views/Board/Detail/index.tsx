@@ -8,11 +8,13 @@ import Pagination from 'src/components/Pagination';
 import { BOARD_UPDATE_PATH, COUNT_BY_PAGE_COMMENT, MAIN_PATH, USER_PAGE_PATH } from 'src/constants';
 
 import './style.css';
-import { getBoardRequest, getCommentListRequest, getFavoriteListRequest } from 'src/apis';
-import { GetBoardResponseDto, GetCommentListResponseDto, GetFavoriteListResponseDto } from 'src/interfaces/response/board';
+import { getBoardRequest, getCommentListRequest, getFavoriteListRequest, postCommentRequest, putFavoriteRequest } from 'src/apis';
+import { GetBoardResponseDto, GetCommentListResponseDto, GetFavoriteListResponseDto, PostCommentResponseDto } from 'src/interfaces/response/board';
 import ResponseDto from 'src/interfaces/response/response.dto';
 import { CommentListResponseDto } from 'src/interfaces/response/board/get-comment-list.response.dto';
 import { FavoriteListResponseDto } from 'src/interfaces/response/board/get-favorite-list.response.dto';
+import { useCookies } from 'react-cookie';
+import { PostCommentRequestDto } from 'src/interfaces/request/board';
 
 //            component           //
 // description: 게시물 상세 화면 //
@@ -24,6 +26,9 @@ export default function BoardDetail() {
   const { user } = useUserStore();
   // description: 페이지네이션 관련 상태 및 함수 //
   const { totalPage, currentPage, currentSection, onPreviousClickHandler, onNextClickHandler, onPageClickHandler, changeSection } = usePagination();
+  // description: Cookie 상태
+  const [ cookie, setCookies ] = useCookies();
+
   // description: 게시물 정보 상태 //
   const [board, setBoard] = useState<GetBoardResponseDto | null >(null);
   // description: 게시물 좋아요 회원 리스트 상태 //
@@ -108,6 +113,16 @@ export default function BoardDetail() {
     const [favorite, setFavorite] = useState<boolean>(false);
 
     //            function           //
+    const putFavoriteResponseHandler = (code: string) => {
+      if (code === 'NU') alert('존재하지 않는 유저입니다.'); 
+      if (code === 'NB') alert('존재하지 않는 게시물입니다.');
+      if (code === 'VF') alert('잘못된 입력입니다.');
+      if (code === 'DE') alert('데이터베이스 에러입니다.');
+      if (code !== 'SU') return;
+
+      if (!boardNumber) return;
+      getFavoriteListRequest(boardNumber).then(getFavoriteListResponseHandler);
+    }
 
     //            event handler           //
     // description: 작성자 닉네임 클릭 이벤트 //
@@ -130,7 +145,9 @@ export default function BoardDetail() {
     }
     // description: 좋아요 버튼 클릭 이벤트 //
     const onFavoriteButtonClickHandler = () => {
-      setFavorite(!favorite);
+      if (!boardNumber) return;
+      const token = cookie.accessToken;
+      putFavoriteRequest(boardNumber, token).then(putFavoriteResponseHandler);
     }
     // description: 좋아요 리스트 펼치기 클릭 이벤트 //
     const onShowFavoriteListButtonClickHandler = () => {
@@ -151,7 +168,7 @@ export default function BoardDetail() {
     useEffect(() => {
       // todo: m값이 계속 false로 나옴
       // todo: 로그인한 이메일 === 게시글 작성자 이메일
-      const m = user?.email == board?.writerEmail;
+      const m = user?.email === board?.writerEmail;
       setviewMore(!m);
     
       
@@ -252,18 +269,39 @@ export default function BoardDetail() {
 
   //            component           //
   // description: 댓글 리스트 컴포넌트 //
-  const Comments = () => {
+  const Comments = () => { 
 
     //            state           //
     // description: 사용자 댓글 입력 상태 //
     const [comment, setComment] = useState<string>('');
 
     //            function           //
+    // description: 댓글 작성 응답 처리 함수 //
+    const postCommentResponseHandler = (code: string) => {
+      if (code === 'NU') alert('존재하지 않는 유저입니다.');
+      if (code === 'NB') alert('존재하지 않는 게시물입니다.');
+      if (code === 'VF') alert('잘못된 입력입니다.');
+      if (code === 'DE') alert('데이터베이스 에러입니다.');
+      if (code !== 'SU') return;
+
+      if (!boardNumber) return;
+      getCommentListRequest(boardNumber).then(getCommentListResponseHandler);
+    }
 
     //            event handler           //
     // description: 사용자 댓글 입력 변경 이벤트 //
     const onCommentChangeHandler = (event: ChangeEvent<HTMLTextAreaElement>) => {
       setComment(event.target.value);
+    }
+    // description: 댓글 작성 버튼 클릭 이벤트 //
+    const onCommentButtonClickHandler = () => {
+      if (!boardNumber) return;
+      const token = cookie.accessToken;
+      const data: PostCommentRequestDto = {
+        contents: comment
+      }
+      
+      postCommentRequest(boardNumber, data, token).then(postCommentResponseHandler);
     }
 
     //            component           //
@@ -293,7 +331,7 @@ export default function BoardDetail() {
           <textarea className='comment-textarea' placeholder='댓글을 작성해주세요' rows={3} value={comment} onChange={onCommentChangeHandler}></textarea>
           <div className='comment-button-box'>
           { comment ? (
-            <div className='black-button'>댓글달기</div>
+            <div className='black-button' onClick={onCommentButtonClickHandler}>댓글달기</div>
           ) : (
             <div className='black-disable-button'>댓글달기</div>
           ) }
