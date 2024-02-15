@@ -6,13 +6,11 @@ import { Address, useDaumPostcodePopup } from 'react-daum-postcode';
 import { SignInRequestDto, SignUpRequestDto } from 'src/interfaces/request/auth';
 import { useUserStore } from 'src/stores';
 import InputBox from 'src/components/InputBox';
-import { signInMock } from 'src/mocks';
-import { INPUT_ICON, MAIN_PATH, emailPattern, telNumberPattern } from 'src/constants';
+import { INPUT_ICON, emailPattern, telNumberPattern } from 'src/constants';
 import './style.css';
-import { getSignInUserRequest, signInRequest, signUpRequest } from 'src/apis';
+import { signInRequest, signUpRequest } from 'src/apis';
 import { SignInResponseDto } from 'src/interfaces/response/auth';
 import ResponseDto from 'src/interfaces/response/response.dto';
-import { GetLoginUserResponseDto } from 'src/interfaces/response/user';
 
 
 //            component           //
@@ -47,7 +45,7 @@ export default function Authentication() {
     // description: 로그인 에러 상태 //
     const [error, setError] = useState<boolean>(false);
     // description: 이메일 입력 값 상태 //
-    const [email, setEmail] = useState<string>(signInMock.email);
+    const [email, setEmail] = useState<string>('email@email.com');
     // description: 비밀번호 입력 값 상태 //
     const [password, setPassword] = useState<string>('11111111');
 

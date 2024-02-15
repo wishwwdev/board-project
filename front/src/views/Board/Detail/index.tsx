@@ -9,12 +9,13 @@ import { BOARD_UPDATE_PATH, COUNT_BY_PAGE_COMMENT, MAIN_PATH, USER_PAGE_PATH } f
 
 import './style.css';
 import { deleteBoardRequest, getBoardRequest, getCommentListRequest, getFavoriteListRequest, postCommentRequest, putFavoriteRequest } from 'src/apis';
-import { GetBoardResponseDto, GetCommentListResponseDto, GetFavoriteListResponseDto, PostCommentResponseDto } from 'src/interfaces/response/board';
+import { GetBoardResponseDto, GetCommentListResponseDto, GetFavoriteListResponseDto } from 'src/interfaces/response/board';
 import ResponseDto from 'src/interfaces/response/response.dto';
 import { CommentListResponseDto } from 'src/interfaces/response/board/get-comment-list.response.dto';
 import { FavoriteListResponseDto } from 'src/interfaces/response/board/get-favorite-list.response.dto';
 import { useCookies } from 'react-cookie';
 import { PostCommentRequestDto } from 'src/interfaces/request/board';
+import { dateFormat } from 'src/utils';
 
 //            component           //
 // description: 게시물 상세 화면 //
@@ -203,7 +204,7 @@ export default function BoardDetail() {
             <div className='board-detail-writer-profile-image' style={{ backgroundImage : `url(${board?.writerProfileImage})` }}></div>
             <div className='board-detail-writer-nickname' onClick={onWriterNicknameClickhandler}>{board?.writerNickname}</div>   
             <div className='board-detail-write-date'>{'|'}</div> 
-            <div className='board-detail-write-date'>{board?.writeDatetime}</div> 
+            <div className='board-detail-write-date'>{ dateFormat(board?.writeDatetime as string) }</div> 
           </div>
           <div className='board-detail-meta-right'>
             { openMore && (

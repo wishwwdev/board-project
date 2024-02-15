@@ -6,6 +6,7 @@ import { SignInResponseDto, SignUpResponseDto } from "src/interfaces/response/au
 import { GetBoardResponseDto, GetCommentListResponseDto, GetFavoriteListResponseDto, PatchBoardResponseDto, PostBoardResponseDto, PostCommentResponseDto, PutFavoriteResponseDto } from "src/interfaces/response/board";
 import DeleteBoardResponseDto from "src/interfaces/response/board/delete-board.response.dto";
 import ResponseDto from "src/interfaces/response/response.dto";
+import { GetPopularListResponseDto, GetRelationListResponseDto } from "src/interfaces/response/search";
 import { GetLoginUserResponseDto, GetUserResponseDto } from "src/interfaces/response/user";
 
 const API_DOMAIN = 'http://localhost:4040/api/v1';
@@ -84,8 +85,14 @@ export const getCurrentBoardListRequest = async () =>
 
 export const getPopularListRequest = async () =>
   await axios.get(GET_POPULAR_LIST_URL())
-    .then((response) => response)
-    .catch((error) => null);
+    .then((response) => {
+      const responseBody: GetPopularListResponseDto = response.data;
+      return responseBody;
+    })
+    .catch((error) => {
+      const responseBody: ResponseDto = error.response.data;
+      return responseBody;
+    });
 
 export const getSearchBoardListRequest = async (searchWord: string) =>
   await axios.get(GET_SEARCH_BOARD_LIST_URL(searchWord))
@@ -94,8 +101,14 @@ export const getSearchBoardListRequest = async (searchWord: string) =>
   
 export const getRelationListRequest = async (searchWord: string) =>
   await axios.get(GET_RELATION_LIST_URL(searchWord))
-    .then((response) => response)
-    .catch((error) => null);
+    .then((response) => {
+      const responseBody: GetRelationListResponseDto = response.data;
+      return responseBody;
+    })
+    .catch((error) => {
+      const responseBody: ResponseDto = error.response.data;
+      return responseBody;
+    });
 
 export const getBoardRequest = async (boardNumber: number | string) =>
   await axios.get(GET_BOARD_URL(boardNumber))

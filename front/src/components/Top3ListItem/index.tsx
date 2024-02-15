@@ -1,10 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import { Top3ListResponseDto } from 'src/interfaces/response';
 import { BOARD_DETAIL_PATH } from 'src/constants';
 import './style.css';
+import BoardListResponseDto from 'src/interfaces/response/board/board-list.response.dto';
+import { dateFormat } from 'src/utils';
+
+import defaultProfileImage from 'src/assets/default-profile-image.png';
 
 interface Props {
-  item: Top3ListResponseDto;
+  item: BoardListResponseDto
 }
 //            component           //
 // description: Top 3 게시물 컴포넌트 //
@@ -12,8 +15,8 @@ export default function Top3ListItem({item}: Props) {
 
   //            state           //
   // description: 속성으로 받아오는 Top3 게시물 상태 //
-  const { boardNumber, boardTitle, boardContent, boardImage } = item;
-  const { writerProfileImage, writerNickName, writeDate } = item;
+  const { boardNumber, title, contents, imageUrl } = item;
+  const { writerProfileImage, writerNickname, writeDatetime } = item;
   const { favoriteCount, commentCount, viewCount } = item;
 
   //            function           //
@@ -32,26 +35,26 @@ export default function Top3ListItem({item}: Props) {
 
   //            render           //
   return (
-    <div className='top3-list-item-box' style={{ backgroundImage: `url(${boardImage})` }} onClick={onClickHandler}>
+    <div className='top3-list-item-box' style={{ backgroundImage: `url(${imageUrl})` }} onClick={onClickHandler}>
       <div className='top3-list-container'>
         <div className='top3-list-item-writer'>
           <div className='top3-list-item-profile'>
-            <div className='top3-list-item-profile-image' style={{ backgroundImage: `url(${writerProfileImage})` }}></div>
+            <div className='top3-list-item-profile-image' style={{ backgroundImage: `url(${writerProfileImage ? writerProfileImage : defaultProfileImage})` }}></div>
           </div>
           <div className='top3-list-item-writer-right'>
             <div className='top3-list-item-writer-nickname'>
-              { writerNickName}
+              { writerNickname}
             </div>
             <div className='top3-list-item-writer-date'>
-              { writeDate }
+              { dateFormat(writeDatetime) }
             </div>
           </div>
         </div>
         <div className='top3-list-item-title'>
-          { boardTitle }
+          { title }
         </div>
         <div className='top3-list-item-content'>
-          { boardContent }
+          { contents }
         </div>
         <div className='top3-list-item-count'>
           { `댓글 ${commentCount} • 좋아요 ${favoriteCount} • 조회수 ${viewCount}` }
