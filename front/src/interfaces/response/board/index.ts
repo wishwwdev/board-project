@@ -9,8 +9,10 @@ import PatchBoardResponseDto from "./patch-board.response.dto";
 import PostBoardResponseDto from "./post-board.response.dto";
 import PostCommentResponseDto from "./post-comment.response.dto";
 import PutFavoriteResponseDto from "./put-favorite.response.dto";
+import BoardListResponseDto from "./board-list.response.dto";
 
 export type {
+  BoardListResponseDto,
   GetBoardResponseDto,
   GetCommentListResponseDto,
   GetCurrentResponseDto,

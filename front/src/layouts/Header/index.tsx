@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
@@ -14,6 +14,8 @@ import { PatchBoardRequestDto, PostBoardRequestDto } from 'src/interfaces/reques
 export default function Header() {
 
   //            state           //
+  // description: 검색 버튼 Ref 상태 //
+  const searchButtonRef = useRef<HTMLDivElement | null>(null);
   // description: url경로 상태 //
   const { pathname } = useLocation();
   // description: 로그인 유저 정보 상태 //
@@ -75,7 +77,7 @@ export default function Header() {
   // description: 현재 페이지가 인증 화면인지 여부 //
   const isAuth = pathname === AUTH_PATH;
   // description: 현재 페이지가 마이페이지인지 여부 //
-  const isMyPage = pathname.includes(USER_PAGE_PATH(''));
+  const isMyPage = user && pathname.includes(USER_PAGE_PATH(user.email));
   // description: upload 버튼 출력 여부 //
   const showUpload = pathname === BOARD_WRITE_PATH() || pathname.indexOf(BOARD_UPDATE_PATH('')) !== -1;
   // description: upload 버튼 활성화 여부 //
@@ -111,7 +113,7 @@ export default function Header() {
   // description: 마이페이지 버튼 클릭 이벤트 //
   const onMyPageButtonClickHandler = () => {
     if (!user) return;
-    navigator(USER_PAGE_PATH(user?.email));
+    navigator(USER_PAGE_PATH(user.email));
   }
   // description: 로그아웃 버튼 클릭 이벤트 //
   const onSignOutButtonClickHandler = () => {
@@ -138,7 +140,13 @@ export default function Header() {
       if (!boardNumber) return;
       patchBoardRequest(boardNumber, data, token).then(patchBoardResponseHandler);
     }
-    
+  }
+  // description: 검색 인풋 창 Enter 이벤트 //
+  const onSearchEnterPressHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key !== 'Enter') return;
+    if (!searchButtonRef.current) return;
+    searchButtonRef.current.click();
+
   }
 
   //            effect           //
@@ -164,8 +172,8 @@ export default function Header() {
       <div className='header-right'>
         { (showSearch) && (searchState ? (
           <div className='header-search-box'>
-            <input className='header-search-input' value={search} onChange={onSearchChangeHandler}/>
-            <div className='header-icon-box' onClick={onSearchButtonClickHandler}>
+            <input className='header-search-input' value={search} onChange={onSearchChangeHandler} onKeyDown={onSearchEnterPressHandler}/>
+            <div ref={searchButtonRef} className='header-icon-box' onClick={onSearchButtonClickHandler}>
               <div className='header-search-icon'></div>
             </div>
           </div>

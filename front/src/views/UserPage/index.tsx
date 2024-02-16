@@ -8,12 +8,13 @@ import BoardListItem from 'src/components/BoardListItem';
 import { AUTH_PATH, BOARD_WRITE_PATH, COUNT_BY_PAGE, MAIN_PATH, USER_PAGE_PATH } from 'src/constants';
 import './style.css';
 import DefaultProfile from './asset/my_page_profile_default.png'
-import { getUserRequest } from 'src/apis';
+import { getUserBoardListRequest, getUserRequest } from 'src/apis';
 import { GetUserResponseDto } from 'src/interfaces/response/user';
 import ResponseDto from 'src/interfaces/response/response.dto';
 
 import defaultProfileImage from 'src/assets/default-profile-image.png';
 import BoardListResponseDto from 'src/interfaces/response/board/board-list.response.dto';
+import { GetUserListResponseDto } from 'src/interfaces/response/board';
 
 //            component            //
 // description: 유저페이지 화면 //
@@ -43,7 +44,7 @@ export default function UserPage() {
     const fileInputRef = useRef<HTMLInputElement>(null);
     // description: 사용자 프로필 사진 URL 상태 //
     const [profileImageUrl, setProfileImageUrl] = useState<string>(DefaultProfile);
-    // description: 사용자 닉네입 상태 //
+    // description: 사용자 닉네임 상태 //
     const [nickname, setNickname] = useState<string>('나는 디벨림');
     // description: 닉네임 변경 버튼 상태 //
     const [nicknameChange, setNicknameChange] = useState<boolean>(false);
@@ -59,6 +60,8 @@ export default function UserPage() {
       setNickname(nickname);
       if (profileImageUrl) setProfileImageUrl(profileImageUrl);
       else setProfileImageUrl(DefaultProfile);
+
+      
     }
 
     //            event handler            //
@@ -75,7 +78,8 @@ export default function UserPage() {
     }
     // description: 프로필 이미지 선택시 파일 인풋창 열림 이벤트 //
     const onProfileClickHandler = () => {
-      fileInputRef.current?.click();
+      if (!fileInputRef.current) return;
+      fileInputRef.current.click();
     }
     // description: 닉네임 변경 버튼 클릭 이벤트 //
     const onNicknameButtonClickHandler = () => {
@@ -95,6 +99,7 @@ export default function UserPage() {
         else setProfileImageUrl(DefaultProfile);
         setNickname(user?.nickname as string);
       } else {
+        console.log(userEmail);
         getUserRequest(userEmail as string).then(getUserResponseHandler);
       }
     }, [userEmail])
@@ -151,6 +156,12 @@ export default function UserPage() {
 
       setPageBoardList(pageBoardList);
     }
+    // description: 유저 작성 게시물 리스트 불러오기 응답 처리 함수 //
+    const getUserBoardListResponseHandler = (responseBody: GetUserListResponseDto | ResponseDto) => {
+      const { code } = responseBody;
+      if (code === '') alert('');
+
+    }
 
     //            event handler            //
     // description: 글쓰기 버튼 클릭 이벤트 //
@@ -173,9 +184,15 @@ export default function UserPage() {
     //            effect            //
     // description: 화면 첫 로드시 게시물 리스트 불러오기 //
     useEffect(() => {
+      if (!userEmail) {
+        alert('잘못된 사용자 이메일입니다.');
+        navigator(MAIN_PATH);
+        return;
+      }
+      getUserBoardListRequest(userEmail).then(getUserBoardListResponseHandler);
       // setMyPageBoardList(myPageBoardListMock);
       // setBoardCount(myPageBoardListMock.length);
-    }, []);
+    }, [userEmail]);
 
     // description: 현재 페이지가 바뀔때 마다 마이페이지 게시물 분류하기 //
     useEffect(() => {
@@ -191,7 +208,7 @@ export default function UserPage() {
     return (
       <div className='my-page-bottom'>
         <div className='my-page-bottom-text'>
-          내 게시물 <span className='my-page-bottom-text-emhasis'>{boardCount}</span>
+          { myPage ? '내 게시물' : '게시물'} <span className='my-page-bottom-text-emhasis'>{boardCount}</span>
         </div>
         <div className='my-page-bottom-container'>
           { boardCount ? (
@@ -235,7 +252,7 @@ export default function UserPage() {
 
     const isMyPage = user?.email === userEmail;
     setMyPage(isMyPage);
-  }, [userEmail])
+  }, [userEmail, user])
 
   //            render            //
   return (
