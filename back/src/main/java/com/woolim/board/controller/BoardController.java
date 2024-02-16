@@ -1,5 +1,7 @@
 package com.woolim.board.controller;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,7 +31,6 @@ import com.woolim.board.dto.response.board.PostCommentResponseDto;
 import com.woolim.board.dto.response.board.PutFavoriteResponseDto;
 import com.woolim.board.service.BoardService;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 // controller : 게시물 컨트롤러 //
@@ -46,11 +47,13 @@ public class BoardController {
     ResponseEntity<? super GetTop3ResponseDto> response = boardService.getTop3();
     return response;
   }
-
+ 
   // API : 최신 게시물 리스트 불러오기 메서드 //
-  @GetMapping("/current-board")
-  public ResponseEntity<? super GetCurrentBoardResponseDto> getCurrnetBoard() {
-    ResponseEntity<? super GetCurrentBoardResponseDto> response = boardService.getCurrnetBoard();
+  @GetMapping("/current-board/{section}")
+  public ResponseEntity<? super GetCurrentBoardResponseDto> getCurrnetBoard(
+    @PathVariable(value = "section", required = true) Integer section
+  ) {
+    ResponseEntity<? super GetCurrentBoardResponseDto> response = boardService.getCurrnetBoard(section);
     return response;
   }
 

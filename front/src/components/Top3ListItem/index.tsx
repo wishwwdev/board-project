@@ -19,6 +19,10 @@ export default function Top3ListItem({item}: Props) {
   const { writerProfileImage, writerNickname, writeDatetime } = item;
   const { favoriteCount, commentCount, viewCount } = item;
 
+  const background = imageUrl ? 
+  { backgroundImage: `url(${imageUrl})` } :
+  { backgroundColor: `rgba(0, 0, 0, 0.3)` };
+
   //            function           //
   // description: 페이지 이동을 위한 네비게이트 함수 //
   const navigator = useNavigate();
@@ -35,7 +39,7 @@ export default function Top3ListItem({item}: Props) {
 
   //            render           //
   return (
-    <div className='top3-list-item-box' style={{ backgroundImage: `url(${imageUrl})` }} onClick={onClickHandler}>
+    <div className='top3-list-item-box' style={background} onClick={onClickHandler}>
       <div className='top3-list-container'>
         <div className='top3-list-item-writer'>
           <div className='top3-list-item-profile'>

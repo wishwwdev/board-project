@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import com.woolim.board.dto.request.board.PatchBoardRequestDto;
 import com.woolim.board.dto.request.board.PostBoardRequestDto;
 import com.woolim.board.dto.request.board.PostCommentRequestDto;
-import com.woolim.board.dto.request.board.PutFavoriteRequestDto;
 import com.woolim.board.dto.response.board.DeleteBoardResponseDto;
 import com.woolim.board.dto.response.board.GetBoardResponseDto;
 import com.woolim.board.dto.response.board.GetCommentListResponseDto;
@@ -25,7 +24,7 @@ public interface BoardService {
   // method : Top3 게시물 불러오기 메서드 //
   ResponseEntity<? super GetTop3ResponseDto> getTop3();
   // method : 최신 게시물 리스트 불러오기 메서드 //
-  ResponseEntity<? super GetCurrentBoardResponseDto> getCurrnetBoard();
+  ResponseEntity<? super GetCurrentBoardResponseDto> getCurrnetBoard(Integer section);
   // method : 게시물 불러오기 메서드 //
   ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber);
   // method : 검색 게시물 리스트 불러오기 메서드 //

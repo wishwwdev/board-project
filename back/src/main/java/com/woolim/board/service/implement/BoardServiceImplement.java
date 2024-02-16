@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.woolim.board.dto.request.board.PatchBoardRequestDto;
 import com.woolim.board.dto.request.board.PostBoardRequestDto;
 import com.woolim.board.dto.request.board.PostCommentRequestDto;
-import com.woolim.board.dto.request.board.PutFavoriteRequestDto;
 import com.woolim.board.dto.response.ResponseDto;
 import com.woolim.board.dto.response.board.DeleteBoardResponseDto;
 import com.woolim.board.dto.response.board.FavoriteListResponseDto;
@@ -76,14 +75,15 @@ public class BoardServiceImplement implements BoardService {
   }
 
   @Override
-  public ResponseEntity<? super GetCurrentBoardResponseDto> getCurrnetBoard() {
+  public ResponseEntity<? super GetCurrentBoardResponseDto> getCurrnetBoard(Integer section) {
 
     List<BoardListResponseDto> boardList = null;
 
     try {
 
       // description: 최신 게시물 리스트 불러오기 //
-      List<BoardListResultSet> resultSets = boardRepository.getCurrentList();
+      Integer limit = (section - 1) * 50;
+      List<BoardListResultSet> resultSets = boardRepository.getCurrentList(limit);
 
       // description: 검색 결과를 ResponseDto 형태로 변환 //
       boardList = BoardListResponseDto.copyList(resultSets);

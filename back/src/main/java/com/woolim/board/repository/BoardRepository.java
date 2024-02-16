@@ -33,8 +33,9 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
     "FROM board AS B " +
     "INNER JOIN user AS U " +
     "ON B.writer_email = U.email " +
-    "ORDER BY B.write_datetime DESC",
+    "ORDER BY B.write_datetime DESC " + 
+    "LIMIT ?1, 50",
     nativeQuery = true
   )
-  List<BoardListResultSet> getCurrentList();
+  List<BoardListResultSet> getCurrentList(Integer section);
 }
