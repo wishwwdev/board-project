@@ -26,7 +26,7 @@ export default function UserPage() {
   // description: 유저 이메일 상태 //
   const { userEmail } = useParams();
   // description: 로그인한 사용자의 정보 상태 //
-  const { user } = useUserStore();
+  const { user, setUser } = useUserStore();
   // description: Cookie 상태 //
   const [cookie, setCookies] = useCookies();
   // description: 마이페이지 여부 상태 //
@@ -63,9 +63,13 @@ export default function UserPage() {
 
       const { nickname, profileImageUrl } = result as GetUserResponseDto;
       setNickname(nickname);
-      // if (profileImageUrl) setProfileImageUrl(profileImageUrl);
-      if (user?.email === userEmail) setProfileImageUrl(profileImageUrl ? profileImageUrl : DefaultProfile);
-      else setProfileImageUrl(defaultProfileImage);
+      if (profileImageUrl) setProfileImageUrl(profileImageUrl);
+      else setProfileImageUrl(DefaultProfile);
+      
+      if (userEmail === user?.email) {
+        const after = { email: userEmail as string, nickname, profileImageUrl}
+        setUser(after);
+      }
     }
     // description: 닉네임 변경 응답 처리 함수 //
     const patchNicknameResponseHander = (code : string) => {
@@ -80,7 +84,31 @@ export default function UserPage() {
       }
       getUserRequest(user.email).then(getUserResponseHandler);
     }
-    
+    // description: 프로필 이미지 업로드 응답 처리 함수 //
+    const profileUploadResponseHandler = (url: string | null) => {
+      if (!user) return;
+      if (!url) {
+        setProfileImageUrl(user.profileImageUrl);
+        return;
+      }
+      
+      const data: PatchProfileImageRequestDto = { profileImage: url };
+      const token = cookie.accessToken;
+      patchProfileImageRequest(data, token).then(patchProfileImageResponseHandler);
+    }
+    // description: 프로필 이미지 변경 응답 처리 함수 //
+    const patchProfileImageResponseHandler = (code: string) => {
+      if (!user) return;
+      if (code === 'NU') alert('존재하지 않는 유저입니다.');
+      if (code === 'VF') alert('잘못된 입력입니다.');
+      if (code === 'DE') alert('데이터베이스 에러입니다.');
+      if (code !== 'SU') {
+        setProfileImageUrl(user.profileImageUrl);
+        return;
+      }
+
+      getUserRequest(user.email).then(getUserResponseHandler);
+    }
 
     //            event handler            //
     // description: 파일 인풋 변경 시 이미지 미리보기 //
@@ -89,14 +117,7 @@ export default function UserPage() {
 
       const data = new FormData();
       data.append('file', event.target.files[0]);
-      uploadFileRequest(data).then(uploadFileResponseHandler);
-
-      const data: PatchProfileImageRequestDto = { profileImage };
-      const token = cookie.accessToken;
-      patchProfileImageRequest(data, token).then(patchProfileImageResponseHandler);
-      // description: 입력받은 이미지 파일을 URL 형태로 변경해주는 구문 //
-      const imageUrl = URL.createObjectURL(event.target.files[0]);
-      setProfileImageUrl(imageUrl);
+      uploadFileRequest(data).then(profileUploadResponseHandler);
     }
     // description: 닉네임 변경 //
     const onNicknameChangeHandler = (nickname: string) => {
@@ -114,7 +135,6 @@ export default function UserPage() {
         const data: PatchNicknameRequestDto = { nickname };
         const token = cookie.accessToken;
         patchNicknameRequest(data, token).then(patchNicknameResponseHander);
-        setProfileImageUrl(DefaultProfile);
       }
     
       setNicknameChange(!nicknameChange)

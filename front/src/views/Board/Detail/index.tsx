@@ -9,7 +9,6 @@ import { BOARD_UPDATE_PATH, COUNT_BY_PAGE_COMMENT, MAIN_PATH, USER_PAGE_PATH } f
 
 import './style.css';
 import { deleteBoardRequest, getBoardRequest, getCommentListRequest, getFavoriteListRequest, postCommentRequest, putFavoriteRequest } from 'src/apis';
-import defaultProfileImage from 'src/assets/default-profile-image.png';
 import { GetBoardResponseDto, GetCommentListResponseDto, GetFavoriteListResponseDto } from 'src/interfaces/response/board';
 import ResponseDto from 'src/interfaces/response/response.dto';
 import { CommentListResponseDto } from 'src/interfaces/response/board/get-comment-list.response.dto';
@@ -17,6 +16,8 @@ import { FavoriteListResponseDto } from 'src/interfaces/response/board/get-favor
 import { useCookies } from 'react-cookie';
 import { PostCommentRequestDto } from 'src/interfaces/request/board';
 import { dateFormat } from 'src/utils';
+
+import defaultProfileImage from 'src/assets/default-profile-image.png';
 
 //            component           //
 // description: 게시물 상세 화면 //

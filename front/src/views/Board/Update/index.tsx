@@ -21,9 +21,8 @@ export default function BoardUpdate() {
   // description: 게시물 번호 상태 //
   const { boardNumber } = useParams();
   // description: 게시물 정보를 저장할 상태 //
-  const { boardTitle, boardContent, boardImage, setBoardNumber, setBoardTitle, setBoardContent, setBoardImage  } = useBoardWriteStore();
-  // description: 이미지를 저장할 상태 //
-  const [boardImageUrl, setBoardImageUrl] = useState<string | null>('');
+  const { boardTitle, boardContent, boardImageUrl } = useBoardWriteStore();
+  const { setBoardNumber, setBoardTitle, setBoardContent, setBoardImage, setBoardImageUrl } = useBoardWriteStore();
 
   //            function           //
   const navigator = useNavigate();
@@ -35,7 +34,7 @@ export default function BoardUpdate() {
     if (code === 'VF') alert('잘못된 게시물 번호입니다.');
     if (code === 'DE') alert('데이터베이스 에러입니다.');
     if (code !== 'SU') {
-      navigator(MAIN_PATH);
+      navigator(MAIN_PATH); 
       return;
     }
     const { title, contents, imageUrl } = responseBody as GetBoardResponseDto;
@@ -59,6 +58,8 @@ export default function BoardUpdate() {
   // description: 이미지 변경 시 이미지 미리보기 //
   const onImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files || !event.target.files.length) return;
+
+
     const imageUrl = URL.createObjectURL(event.target.files[0]);
     setBoardImageUrl(imageUrl);
     setBoardImage(event.target.files[0]);

@@ -5,11 +5,13 @@ interface BoardWriteStore {
   boardTitle: string;
   boardContent: string;
   boardImage: File | null;
+  boardImageUrl: string | null;
 
   setBoardNumber: (boarNumber: string) => void;
   setBoardTitle: (boardTitle: string) => void;
   setBoardContent: (boardContent: string) => void;
   setBoardImage: (boardImage: File | null) => void;
+  setBoardImageUrl: (boardImageUrl: string | null) => void;
 
   resetBoard: () => void;
 }
@@ -19,12 +21,15 @@ const useStore = create<BoardWriteStore>((set) => ({
   boardTitle: '',
   boardContent: '',
   boardImage: null,
+  boardImageUrl: null,
 
   setBoardNumber: (boardNumber) => set((state) => ({ ...state, boardNumber })),
   setBoardTitle: (boardTitle) => set((state) => ({ ...state, boardTitle })),
   setBoardContent: (boardContent) => set((state) => ({ ...state, boardContent })),
   setBoardImage: (boardImage) => set((state) => ({ ...state, boardImage })),
-  resetBoard: () => set((state) => ({ ...state, boardNumber: '', boardTitle: '', boardContent: '', boardImage: null })),
+  setBoardImageUrl: (boardImageUrl) => set((state) => ({ ...state, boardImageUrl })),
+
+  resetBoard: () => set((state) => ({ ...state, boardNumber: '', boardTitle: '', boardContent: '',boardImage: null, boardImageUrl: null })),
 }));
 
 export default useStore;

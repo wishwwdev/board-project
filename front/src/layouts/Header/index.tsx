@@ -21,9 +21,9 @@ export default function Header() {
   // description: 로그인 유저 정보 상태 //
   const { user, setUser } = useUserStore();
   // description: 게시물 작성 데이터 상태 //
-  const { boardNumber, boardTitle, boardContent, boardImage, resetBoard } = useBoardWriteStore();
+  const { boardNumber, boardTitle, boardContent, boardImage, boardImageUrl, resetBoard } = useBoardWriteStore();
   // description: Cookie 상태 //
-  const [cookeis, setCookie] = useCookies();
+  const [cookies, setCookie] = useCookies();
   // description: 검색 아이콘 클릭 상태 //
   const [searchState, setSearchState] = useState<boolean>(false);
   // description: 로그인 상태 //
@@ -95,8 +95,7 @@ export default function Header() {
   // description: 검색 버튼 클릭 이벤트 //
   const onSearchButtonClickHandler = () => {
     if (!search) {
-      // alert('검색어를 입력해주세요.');
-      setSearchState(false)
+      alert('검색어를 입력해주세요.');
       return;
     }
     navigator(SEARCH_PATH(search))
@@ -124,20 +123,29 @@ export default function Header() {
   }
   // description: 업로드 버튼 클릭 이벤트 //
   const onUploadButtonClickHandler = async () => {
+ 
+    const token = cookies.accessToken;
 
-    const imageUrl = await fileUpload();
+    if (pathname === BOARD_WRITE_PATH()) {
+      const imageUrl = await fileUpload();
 
-    const data: PostBoardRequestDto | PatchBoardRequestDto = {
-      title: boardTitle,
-      contents: boardContent,
-      imageUrl
-    }
-    const token = cookeis.accessToken;
-
-    if (pathname === BOARD_WRITE_PATH()) 
+      const data: PostBoardRequestDto = {
+        title: boardTitle,
+        contents: boardContent,
+        imageUrl
+      }
       postBoardRequest(data, token).then(postBoardResponseHandler);
+    }
     else {
       if (!boardNumber) return;
+
+      const imageUrl = boardImage ? await fileUpload() : boardImageUrl;
+
+      const data: PatchBoardRequestDto = {
+        title: boardTitle,
+        contents: boardContent,
+        imageUrl
+      }
       patchBoardRequest(boardNumber, data, token).then(patchBoardResponseHandler);
     }
   }
