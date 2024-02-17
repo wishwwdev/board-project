@@ -8,13 +8,15 @@ import BoardListItem from 'src/components/BoardListItem';
 import { AUTH_PATH, BOARD_WRITE_PATH, COUNT_BY_PAGE, MAIN_PATH, USER_PAGE_PATH } from 'src/constants';
 import './style.css';
 import DefaultProfile from './asset/my_page_profile_default.png'
-import { getUserBoardListRequest, getUserRequest } from 'src/apis';
+import { getUserBoardListRequest, getUserRequest, patchNicknameRequest, patchProfileImageRequest, uploadFileRequest } from 'src/apis';
 import { GetUserResponseDto } from 'src/interfaces/response/user';
 import ResponseDto from 'src/interfaces/response/response.dto';
 
 import defaultProfileImage from 'src/assets/default-profile-image.png';
 import BoardListResponseDto from 'src/interfaces/response/board/board-list.response.dto';
 import { GetUserListResponseDto } from 'src/interfaces/response/board';
+import { PatchNicknameRequestDto, PatchProfileImageRequestDto } from 'src/interfaces/request/user';
+import { useCookies } from 'react-cookie';
 
 //            component            //
 // description: 유저페이지 화면 //
@@ -25,6 +27,8 @@ export default function UserPage() {
   const { userEmail } = useParams();
   // description: 로그인한 사용자의 정보 상태 //
   const { user } = useUserStore();
+  // description: Cookie 상태 //
+  const [cookie, setCookies] = useCookies();
   // description: 마이페이지 여부 상태 //
   const [myPage, setMyPage] = useState<boolean>(false);
 
@@ -45,11 +49,12 @@ export default function UserPage() {
     // description: 사용자 프로필 사진 URL 상태 //
     const [profileImageUrl, setProfileImageUrl] = useState<string>(DefaultProfile);
     // description: 사용자 닉네임 상태 //
-    const [nickname, setNickname] = useState<string>('나는 디벨림');
+    const [nickname, setNickname] = useState<string>('');
     // description: 닉네임 변경 버튼 상태 //
     const [nicknameChange, setNicknameChange] = useState<boolean>(false);
 
     //            function            //
+    // description: 유저 정보 불러오기 응답 처리 함수 //
     const getUserResponseHandler = (result: GetUserResponseDto | ResponseDto) => {
       const { code } = result;
       if (code === 'NU') alert('존재하지 않는 유저입니다.');
@@ -58,16 +63,37 @@ export default function UserPage() {
 
       const { nickname, profileImageUrl } = result as GetUserResponseDto;
       setNickname(nickname);
-      if (profileImageUrl) setProfileImageUrl(profileImageUrl);
-      else setProfileImageUrl(DefaultProfile);
-
-      
+      // if (profileImageUrl) setProfileImageUrl(profileImageUrl);
+      if (user?.email === userEmail) setProfileImageUrl(profileImageUrl ? profileImageUrl : DefaultProfile);
+      else setProfileImageUrl(defaultProfileImage);
     }
+    // description: 닉네임 변경 응답 처리 함수 //
+    const patchNicknameResponseHander = (code : string) => {
+      if (!user) return;
+      if (code === 'NU') alert('존재하지 않는 유저입니다.');
+      if (code === 'EN') alert('중복되는 닉네임입니다.');
+      if (code === 'VF') alert('잘못된 입력입니다.');
+      if (code === 'DE') alert('데이터베이스 에러입니다.');
+      if (code !== 'SU') {
+        setNickname(user.nickname);
+        return;
+      }
+      getUserRequest(user.email).then(getUserResponseHandler);
+    }
+    
 
     //            event handler            //
     // description: 파일 인풋 변경 시 이미지 미리보기 //
     const onImageInputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
       if (!event.target.files || !event.target.files.length) return;
+
+      const data = new FormData();
+      data.append('file', event.target.files[0]);
+      uploadFileRequest(data).then(uploadFileResponseHandler);
+
+      const data: PatchProfileImageRequestDto = { profileImage };
+      const token = cookie.accessToken;
+      patchProfileImageRequest(data, token).then(patchProfileImageResponseHandler);
       // description: 입력받은 이미지 파일을 URL 형태로 변경해주는 구문 //
       const imageUrl = URL.createObjectURL(event.target.files[0]);
       setProfileImageUrl(imageUrl);
@@ -75,14 +101,22 @@ export default function UserPage() {
     // description: 닉네임 변경 //
     const onNicknameChangeHandler = (nickname: string) => {
       setNickname(nickname);
+      
     }
     // description: 프로필 이미지 선택시 파일 인풋창 열림 이벤트 //
     const onProfileClickHandler = () => {
-      if (!fileInputRef.current) return;
-      fileInputRef.current.click();
+      if (user?.email !== userEmail) return;
+      fileInputRef.current?.click();
     }
     // description: 닉네임 변경 버튼 클릭 이벤트 //
     const onNicknameButtonClickHandler = () => {
+      if (nicknameChange) {
+        const data: PatchNicknameRequestDto = { nickname };
+        const token = cookie.accessToken;
+        patchNicknameRequest(data, token).then(patchNicknameResponseHander);
+        setProfileImageUrl(DefaultProfile);
+      }
+    
       setNicknameChange(!nicknameChange)
     }
 
@@ -99,10 +133,9 @@ export default function UserPage() {
         else setProfileImageUrl(DefaultProfile);
         setNickname(user?.nickname as string);
       } else {
-        console.log(userEmail);
         getUserRequest(userEmail as string).then(getUserResponseHandler);
       }
-    }, [userEmail])
+    }, [userEmail, user])
 
     //            render            //
     return (
@@ -148,19 +181,26 @@ export default function UserPage() {
 
     //            function            //
     // description: 현재 페이지의 게시물 리스트 분류 함수 //
-    const getPageBoardList = (boardCount: number) => {
+    const getPageBoardList = (boardList: BoardListResponseDto[]) => {
       const startIndex = COUNT_BY_PAGE * (currentPage - 1) ;
-      const lastIndex =  boardCount > COUNT_BY_PAGE * currentPage ?
-        COUNT_BY_PAGE * currentPage : boardCount ;
-      const pageBoardList = myPageBoardList.slice(startIndex, lastIndex);
+      const lastIndex =  boardList.length > COUNT_BY_PAGE * currentPage ?
+        COUNT_BY_PAGE * currentPage : boardList.length ;
+      const pageBoardList = boardList.slice(startIndex, lastIndex);
 
       setPageBoardList(pageBoardList);
     }
     // description: 유저 작성 게시물 리스트 불러오기 응답 처리 함수 //
     const getUserBoardListResponseHandler = (responseBody: GetUserListResponseDto | ResponseDto) => {
       const { code } = responseBody;
-      if (code === '') alert('');
+      if (code === 'VF') alert('잘못된 입력입니다.');
+      if (code === 'DE') alert('데이터베이스 에러입니다.');
+      if (code !== 'SU') return;
 
+      const { boardList } = responseBody as GetUserListResponseDto;
+      setMyPageBoardList(boardList);
+      setBoardCount(boardList.length);
+      getPageBoardList(boardList);
+      changeSection(boardList.length, COUNT_BY_PAGE);
     }
 
     //            event handler            //
@@ -182,7 +222,7 @@ export default function UserPage() {
     //            component            //
 
     //            effect            //
-    // description: 화면 첫 로드시 게시물 리스트 불러오기 //
+    // description: 유저 이메일이 바뀔때 마다 유저 정보 및 로드시 게시물 리스트 불러오기 //
     useEffect(() => {
       if (!userEmail) {
         alert('잘못된 사용자 이메일입니다.');
@@ -190,18 +230,16 @@ export default function UserPage() {
         return;
       }
       getUserBoardListRequest(userEmail).then(getUserBoardListResponseHandler);
-      // setMyPageBoardList(myPageBoardListMock);
-      // setBoardCount(myPageBoardListMock.length);
     }, [userEmail]);
 
     // description: 현재 페이지가 바뀔때 마다 마이페이지 게시물 분류하기 //
     useEffect(() => {
-      // getPageBoardList(myPageBoardListMock.length);
+      getPageBoardList(myPageBoardList);
     }, [currentPage])
 
     // description: 현재 섹션이 바뀔때 마다 페이지 리스트 변경 //
     useEffect(() => {
-      // changeSection(myPageBoardListMock.length, COUNT_BY_PAGE);
+      changeSection(boardCount, COUNT_BY_PAGE);
     }, [currentSection])
 
     //            render            //
